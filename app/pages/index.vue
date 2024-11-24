@@ -4,6 +4,7 @@
     <HeroSection />
     <AboutSection />
     <ProjectsSection @select="selectedProject = $event" />
+    <FooterSection />
     <ProjectModal 
       :project="selectedProject"
       @close="selectedProject = null"
