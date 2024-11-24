@@ -19,7 +19,7 @@
     <!-- Content -->
     <div class="relative w-10/12 md:w-8/12 mx-auto max-w-[110rem] text-center">
       <!-- Main Content -->
-      <h2 class="text-4xl md:text-6xl font-bold mb-12 tracking-wide">
+      <h2 class="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-bold mb-12 tracking-wide font-['Exo_2']">
         Let's
         <span class="relative inline-block group">
           <span class="bg-gradient-to-r from-green-700 via-green-500 to-green-400 bg-clip-text text-transparent transition-all duration-300 group-hover:bg-[length:200%_100%] bg-[length:100%_100%] bg-[position:0%] hover:bg-[position:100%]">
@@ -42,7 +42,7 @@
           class="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#0A0A0A_0%,#0A0A0A_50%,#166534_100%)]" 
         />
         <span 
-          class="inline-flex items-center justify-center w-full h-full px-8 py-2 text-lg font-medium text-white transition-colors duration-300 rounded-lg cursor-pointer bg-black backdrop-blur-3xl group-hover:bg-black/80"
+          class="inline-flex items-center justify-center w-full h-full px-8 py-2 text-lg font-medium text-white transition-colors duration-300 bg-black rounded-lg cursor-pointer backdrop-blur-3xl group-hover:bg-black/80"
         >
           <Icon 
             :name="copied ? 'lucide:check' : 'lucide:copy'" 
@@ -60,7 +60,7 @@
           :href="link.url"
           target="_blank"
           rel="noopener noreferrer"
-          class="text-white/40 hover:text-white transition-colors duration-300"
+          class="transition-colors duration-300 text-white/40 hover:text-white"
         >
           <Icon :name="link.icon" class="w-6 h-6" />
           <span class="sr-only">{{ link.name }}</span>
