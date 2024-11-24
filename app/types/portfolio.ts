@@ -1,4 +1,6 @@
-export interface Project {
+import type { ParsedContent } from "@nuxt/content"
+
+export interface Project extends ParsedContent {
   id: string
   title: string
   subtitle: string

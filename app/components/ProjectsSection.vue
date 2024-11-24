@@ -27,63 +27,30 @@
 
       <!-- Filter System -->
       <div class="flex flex-wrap gap-2 mb-8">
-        <Badge 
+        <button 
           v-for="tech in allTechnologies"
           :key="tech"
-          variant="outline"
-          class="transition-colors cursor-pointer"
+          class="px-3 py-1.5 text-sm transition-colors border rounded-md border-white/10 hover:border-emerald-500/50"
           :class="[
             selectedTech === tech 
-              ? 'bg-emerald-500/20 border-emerald-500 text-emerald-400' 
-              : 'border-white/10 hover:border-emerald-500/50'
+              ? 'bg-emerald-500/10 border-emerald-500 text-emerald-400' 
+              : 'text-white/70 hover:text-emerald-400'
           ]"
           @click="selectedTech = selectedTech === tech ? null : tech"
         >
           {{ tech }}
-        </Badge>
+        </button>
       </div>
 
       <!-- Projects Grid -->
       <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-        <Card
+        <ProjectCard
           v-for="project in filteredProjects" 
           :key="project.id"
-          :ref="(el) => handleRef(el, project)"
-          class="relative overflow-hidden transition-all duration-300 group hover:shadow-lg hover:shadow-emerald-500/10 border-white/5"
-          :class="{ 'opacity-100 translate-y-0': elementVisibility[project.id], 'opacity-0 translate-y-4': !elementVisibility[project.id] }"
-        >
-          <CardHeader class="border-b border-white/5">
-            <CardTitle class="flex items-start justify-between">
-              <span>{{ project.title }}</span>
-              <Icon 
-                v-if="project.link"
-                name="lucide:external-link" 
-                class="w-4 h-4 transition-opacity opacity-0 group-hover:opacity-100" 
-              />
-            </CardTitle>
-            <CardDescription class="text-emerald-400">
-              {{ project.subtitle }}
-            </CardDescription>
-          </CardHeader>
-          
-          <CardContent class="space-y-4">
-            <p class="text-white/70">{{ project.description }}</p>
-            <div class="flex flex-wrap gap-2">
-              <Badge 
-                v-for="tech in project.tech" 
-                :key="tech"
-                variant="outline"
-                class="border-emerald-500/20 text-emerald-400"
-              >
-                {{ tech }}
-              </Badge>
-            </div>
-          </CardContent>
-
-          <div 
-            class="absolute inset-0 transition-opacity duration-300 opacity-0 pointer-events-none bg-gradient-to-t from-emerald-500/10 to-transparent group-hover:opacity-100"
-          />
-        </Card>
+          :ref="(el: Element | ComponentPublicInstance | null) => handleRef(el, project)"
+          :project="project"
+          :is-visible="elementVisibility[project.id] ?? false"
+        />
       </div>
     </div>
   </section>
@@ -92,7 +59,13 @@
 <script setup lang="ts">
 import type { Project } from '@/types/portfolio'
 
-const { projects } = usePortfolioData()
+// Fetch projects using Nuxt Content with proper typing
+const { data: projects } = await useAsyncData<Project[]>('projects', () => 
+  queryContent<Project>('projects')
+    .sort({ id: 1 })
+    .find()
+)
+
 const selectedProject = ref<Project | null>(null)
 const selectedTech = ref<string | null>(null)
 const elementVisibility = reactive<Record<string, boolean>>({})
@@ -127,14 +100,15 @@ const getHTMLElement = (el: Element | ComponentPublicInstance | null): HTMLEleme
 // Filter projects
 const filteredProjects = computed(() => {
   const tech = selectedTech.value
-  if (!tech) return projects.value
+  if (!tech || !projects.value) return projects.value
   return projects.value.filter(p => p.tech.includes(tech))
 })
 
 // Get unique technologies
 const allTechnologies = computed(() => {
+  if (!projects.value) return []
   const techs = new Set<string>()
-  projects.value.forEach(p => p.tech.forEach(t => techs.add(t)))
+  projects.value.forEach(p => p.tech.forEach((t: string) => techs.add(t)))
   return Array.from(techs)
 })
 
@@ -165,34 +139,6 @@ const handleRef = (el: Element | ComponentPublicInstance | null, project: Projec
   }
 }
 
-// Keyboard navigation
-const handleKeyNav = (e: KeyboardEvent): void => {
-  if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
-    const currentFocus = document.activeElement
-    const projectElements = document.querySelectorAll('.card')
-    const currentIndex = Array.from(projectElements).indexOf(currentFocus as Element)
-    
-    if (currentIndex === -1) return
-
-    let newIndex: number
-    if (e.key === 'ArrowRight') {
-      newIndex = (currentIndex + 1) % projectElements.length
-    } else {
-      newIndex = (currentIndex - 1 + projectElements.length) % projectElements.length
-    }
-    
-    const nextElement = projectElements[newIndex] as HTMLElement
-    if (nextElement) {
-      nextElement.focus()
-    }
-  }
-}
-
-// Setup keyboard navigation
-onMounted(() => {
-  window.addEventListener('keydown', handleKeyNav)
-  onUnmounted(() => window.removeEventListener('keydown', handleKeyNav))
-})
 
 defineEmits<{
   (e: 'select', project: Project): void

@@ -2,6 +2,7 @@
   <div>
     <BackgroundOrbs />
     <HeroSection />
+    <AboutSection />
     <ProjectsSection @select="selectedProject = $event" />
     <ProjectModal 
       :project="selectedProject"
