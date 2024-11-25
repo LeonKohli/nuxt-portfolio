@@ -1,10 +1,10 @@
 <template>
   <section 
-    class="flex flex-col justify-center h-screen px-4 sm:px-6 lg:px-8" 
+    class="flex flex-col justify-center min-h-screen px-4 sm:px-6 lg:px-8" 
     id="projects"
     ref="sectionRef"
   >
-    <div class="w-10/12 md:w-8/12 mx-auto max-w-[110rem] overflow-y-auto">
+    <div class="w-10/12 md:w-8/12 mx-auto max-w-[110rem]">
       <!-- Section Header -->
       <div class="flex w-full mb-16 space-between">
         <div class="w-full">
@@ -43,14 +43,69 @@
       </div>
 
       <!-- Projects Grid -->
-      <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-        <ProjectCard
-          v-for="project in filteredProjects" 
-          :key="project.id"
-          :ref="(el: Element | ComponentPublicInstance | null) => handleRef(el, project)"
-          :project="project"
-          :is-visible="elementVisibility[project.id] ?? false"
-        />
+      <div class="relative min-h-[800px]">
+        <Transition
+          mode="out-in"
+          @before-leave="onBeforeLeave"
+          @after-leave="onAfterLeave"
+          @before-enter="onBeforeEnter"
+        >
+          <div 
+            :key="pagination.currentPage"
+            class="grid gap-8 md:grid-cols-2 lg:grid-cols-3"
+          >
+            <ProjectCard
+              v-for="(project, index) in paginatedProjects" 
+              :key="project.id"
+              :ref="(el: Element | ComponentPublicInstance | null) => handleRef(el, project)"
+              :project="project"
+              :is-visible="elementVisibility[project.id] ?? false"
+              @click="$emit('select', project)"
+              class="transition-all duration-300"
+              :style="{
+                '--index': index,
+                'transitionDelay': `${index * 50}ms`
+              }"
+            />
+          </div>
+        </Transition>
+      </div>
+
+      <!-- Pagination -->
+      <div class="sticky flex justify-center px-6 py-4 mx-auto mt-8 space-x-2 rounded-full bottom-8 backdrop-blur-sm bg-black/30 w-fit">
+        <Button
+          variant="outline"
+          size="sm"
+          :disabled="pagination.currentPage === 1"
+          @click="changePage(pagination.currentPage - 1)"
+          class="hover:bg-emerald-500/10 hover:text-emerald-400"
+        >
+          <Icon name="lucide:chevron-left" class="w-4 h-4" />
+        </Button>
+        
+        <Button
+          v-for="page in displayedPages"
+          :key="page"
+          variant="outline"
+          size="sm"
+          :class="{ 
+            'bg-emerald-500/10 border-emerald-500 text-emerald-400': page === pagination.currentPage,
+            'hover:bg-emerald-500/10 hover:text-emerald-400': page !== pagination.currentPage
+          }"
+          @click="changePage(Number(page))"
+        >
+          {{ page }}
+        </Button>
+
+        <Button
+          variant="outline"
+          size="sm"
+          :disabled="pagination.currentPage === totalPages"
+          @click="changePage(pagination.currentPage + 1)"
+          class="hover:bg-emerald-500/10 hover:text-emerald-400"
+        >
+          <Icon name="lucide:chevron-right" class="w-4 h-4" />
+        </Button>
       </div>
     </div>
   </section>
@@ -68,32 +123,27 @@ const selectedProject = ref<Project | null>(null)
 const selectedTech = ref<string | null>(null)
 const elementVisibility = reactive<Record<string, boolean>>({})
 const projectRefs: Record<string, HTMLElement> = reactive({})
-const titleRef = ref<HTMLElement | null>(null)
 
-// Setup title intersection observer
-onMounted(() => {
-  if (titleRef.value) {
-    const { stop } = useIntersectionObserver(
-      titleRef,
-      (entries) => {
-        const entry = entries[0]
-        if (entry?.isIntersecting) {
-          elementVisibility['title'] = true
-          stop()
-        }
-      },
-      { threshold: 0.2 }
-    )
-  }
+// Pagination state
+const pagination = reactive<PaginationState>({
+  currentPage: 1,
+  itemsPerPage: 6,
+  totalItems: 0
 })
 
-// Helper function to get HTMLElement from ref
-const getHTMLElement = (el: Element | ComponentPublicInstance | null): HTMLElement | null => {
-  if (!el) return null
-  if (el instanceof HTMLElement) return el
-  if ('$el' in el) return el.$el as HTMLElement
-  return null
-}
+// Computed properties for pagination
+const totalPages = computed(() => 
+  Math.ceil((filteredProjects.value?.length || 0) / pagination.itemsPerPage)
+)
+
+const paginatedProjects = computed(() => {
+  if (!filteredProjects.value) return []
+  
+  const start = (pagination.currentPage - 1) * pagination.itemsPerPage
+  const end = start + pagination.itemsPerPage
+  
+  return filteredProjects.value.slice(start, end)
+})
 
 // Filter projects
 const filteredProjects = computed(() => {
@@ -106,8 +156,47 @@ const filteredProjects = computed(() => {
 const allTechnologies = computed(() => {
   if (!projects.value) return []
   const techs = new Set<string>()
-  projects.value.forEach(p => p.tech.forEach((t: string) => techs.add(t)))
+  projects.value.forEach(p => p.tech.forEach(t => techs.add(t)))
   return Array.from(techs)
+})
+
+// Computed property for displayed page numbers
+const displayedPages = computed(() => {
+  const current = pagination.currentPage
+  const total = totalPages.value
+  const delta = 1 // Number of pages to show on each side of current page
+
+  const range = []
+  for (let i = Math.max(2, current - delta); i <= Math.min(total - 1, current + delta); i++) {
+    range.push(i)
+  }
+
+  if (current - delta > 2) {
+    range.unshift('...')
+  }
+  if (current + delta < total - 1) {
+    range.push('...')
+  }
+
+  if (total > 1) {
+    range.unshift(1)
+    if (total !== 1) {
+      range.push(total)
+    }
+  }
+
+  return range
+})
+
+// Pagination methods
+const changePage = (page: number) => {
+  if (typeof page !== 'number') return
+  pagination.currentPage = page
+}
+
+// Watch for filter changes to reset pagination
+watch(selectedTech, () => {
+  pagination.currentPage = 1
 })
 
 // Setup intersection observers
@@ -117,8 +206,7 @@ watch(() => Object.entries(projectRefs), (entries) => {
 
     const { stop } = useIntersectionObserver(
       element,
-      (entries) => {
-        const entry = entries[0]
+      ([entry]) => {
         if (entry?.isIntersecting) {
           elementVisibility[id] = true
           stop()
@@ -137,6 +225,40 @@ const handleRef = (el: Element | ComponentPublicInstance | null, project: Projec
   }
 }
 
+// Helper function to get HTMLElement from ref
+const getHTMLElement = (el: Element | ComponentPublicInstance | null): HTMLElement | null => {
+  if (!el) return null
+  if (el instanceof HTMLElement) return el
+  if ('$el' in el) return el.$el as HTMLElement
+  return null
+}
+
+const isLeaving = ref(false)
+
+const onBeforeLeave = (el: Element) => {
+  isLeaving.value = true
+  const cards = el.querySelectorAll('.transition-all')
+  cards.forEach((card, i) => {
+    ;(card as HTMLElement).style.opacity = '0'
+    ;(card as HTMLElement).style.transform = 'translateX(-30px)'
+  })
+}
+
+const onAfterLeave = () => {
+  isLeaving.value = false
+}
+
+const onBeforeEnter = (el: Element) => {
+  const cards = el.querySelectorAll('.transition-all')
+  cards.forEach((card, i) => {
+    ;(card as HTMLElement).style.opacity = '0'
+    ;(card as HTMLElement).style.transform = 'translateX(30px)'
+    setTimeout(() => {
+      ;(card as HTMLElement).style.opacity = '1'
+      ;(card as HTMLElement).style.transform = 'translateX(0)'
+    }, 50 * i)
+  })
+}
 
 defineEmits<{
   (e: 'select', project: Project): void
@@ -144,11 +266,38 @@ defineEmits<{
 </script>
 
 <style scoped>
-.opacity-100 {
-  transition: all 0.3s ease-out;
+.v-enter-active,
+.v-leave-active {
+  transition: opacity 0.3s ease;
 }
 
-.opacity-0 {
-  transition: all 0.3s ease-out;
+.v-enter-from,
+.v-leave-to {
+  opacity: 0;
+}
+
+/* Grid layout preservation for different screen sizes */
+@media (min-width: 768px) {
+  .projects-leave-active {
+    width: calc(50% - 1rem);
+  }
+}
+
+@media (min-width: 1024px) {
+  .projects-leave-active {
+    width: calc(33.333% - 1.334rem);
+  }
+}
+
+/* Make pagination buttons more visible on hover */
+.button-hover {
+  @apply transition-colors duration-200;
+}
+
+/* Sticky pagination container */
+.sticky {
+  position: sticky;
+  bottom: 2rem;
+  z-index: 10;
 }
 </style> 

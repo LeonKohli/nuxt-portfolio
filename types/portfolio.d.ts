@@ -6,6 +6,8 @@ declare global {
     title: string
     subtitle: string
     description: string
+    problem?: string
+    solution?: string
     tech: string[]
     link?: string
     repo?: string
@@ -15,5 +17,11 @@ declare global {
     icon: string
     title: string
     items: string[]
+  }
+
+  interface PaginationState {
+    currentPage: number
+    itemsPerPage: number
+    totalItems: number
   }
 }
