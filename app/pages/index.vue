@@ -1,10 +1,12 @@
 <template>
   <div>
     <BackgroundOrbs />
-    <HeroSection />
-    <AboutSection />
-    <ProjectsSection @select="selectedProject = $event" />
-    <FooterSection />
+    <div class="flex flex-col">
+      <HeroSection />
+      <ProjectsSection @select="selectedProject = $event" />
+      <AboutSection />
+      <FooterSection />
+    </div>
     <ProjectModal 
       :project="selectedProject"
       @close="selectedProject = null"

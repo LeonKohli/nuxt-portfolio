@@ -1,6 +1,6 @@
 <!-- Start of Selection -->
 <template>
-  <section class="relative flex items-center justify-center min-h-screen">
+  <section class="relative flex items-center justify-center h-screen">
     <div class="w-10/12 md:w-8/12 mx-auto max-w-[110rem]">
       <div class="absolute inset-0">
         <TechIcons />

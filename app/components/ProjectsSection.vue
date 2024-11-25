@@ -1,10 +1,10 @@
 <template>
   <section 
-    class="px-4 py-24 sm:px-6 lg:px-8" 
+    class="px-4 h-screen flex flex-col justify-center sm:px-6 lg:px-8" 
     id="projects"
     ref="sectionRef"
   >
-    <div class="w-10/12 md:w-8/12 mx-auto max-w-[110rem]">
+    <div class="w-10/12 md:w-8/12 mx-auto max-w-[110rem] overflow-y-auto">
       <!-- Section Header -->
       <div class="flex w-full mb-16 space-between">
         <div class="w-full">
