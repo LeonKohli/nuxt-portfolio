@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import type { Project } from '~/types/portfolio'
 const props = defineProps<{
   project: Project | null
 }>()

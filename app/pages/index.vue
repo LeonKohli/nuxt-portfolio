@@ -15,8 +15,6 @@
 </template>
 
 <script setup lang="ts">
-import type { Project } from '~/types/portfolio'
-
 const selectedProject = ref<Project | null>(null)
 
 useHead({

@@ -87,8 +87,6 @@
 </template>
 
 <script setup lang="ts">
-import type { Project } from '~/types/portfolio'
-
 defineProps<{
   project: Project
   isVisible: boolean

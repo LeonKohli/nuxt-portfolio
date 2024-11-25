@@ -1,6 +1,6 @@
 <template>
   <section 
-    class="px-4 h-screen flex flex-col justify-center sm:px-6 lg:px-8" 
+    class="flex flex-col justify-center h-screen px-4 sm:px-6 lg:px-8" 
     id="projects"
     ref="sectionRef"
   >
@@ -57,8 +57,6 @@
 </template>
 
 <script setup lang="ts">
-import type { Project } from '@/types/portfolio'
-
 // Fetch projects using Nuxt Content with proper typing
 const { data: projects } = await useAsyncData<Project[]>('projects', () => 
   queryContent<Project>('projects')
