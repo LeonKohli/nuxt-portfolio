@@ -26,7 +26,7 @@ const isOpen = computed(() => !!props.project)
         <div class="flex flex-wrap gap-3 mt-6">
           <Badge 
             v-for="tech in project?.tech" 
-            :key="tech"
+            :key="tech.name"
             variant="secondary"
             class="px-3 py-1"
           >

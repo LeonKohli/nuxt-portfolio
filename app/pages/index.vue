@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="overflow-x-hidden">
     <BackgroundOrbs />
     <div class="flex flex-col">
       <HeroSection />

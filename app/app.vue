@@ -1,5 +1,5 @@
 <template>
-  <div class="relative min-h-screen font-mono antialiased text-white bg-black">
+  <div class="relative min-h-screen font-mono antialiased text-white bg-black overflow-x-hidden">
     <!-- Animated gradient backgrounds -->
     <div class="fixed inset-0 bg-gradient-radial from-[#22c55e]/10 via-black to-black" />
     

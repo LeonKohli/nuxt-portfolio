@@ -1,15 +1,20 @@
 <template>
-  <div class="relative w-full">
+  <div class="relative w-full touch-pan-x">
     <div 
-      class="flex w-full overflow-x-scroll overscroll-x-auto py-8 scroll-smooth [scrollbar-width:none] -mx-4 px-4" 
+      class="flex w-full overflow-x-scroll overscroll-x-contain py-8 scroll-smooth 
+             [scrollbar-width:none] snap-x snap-mandatory touch-pan-x" 
       ref="scrollContainer"
     >
       <!-- Projects Container -->
-      <div class="flex flex-row justify-start gap-6 max-w-[1440px]">
+      <div class="flex flex-row justify-start min-w-full gap-4 md:gap-6">
+        <!-- Initial spacer for mobile -->
+        <div class="w-4 shrink-0 md:hidden" aria-hidden="true" />
+        
         <div 
           v-for="project in projects" 
           :key="project.id"
-          class="last:pr-[5%] md:last:pr-[33%] rounded-[24px]"
+          class="shrink-0 snap-center w-[85vw] md:w-auto md:snap-start 
+                 first:pl-0 last:pr-4 md:last:pr-[33%]"
           :style="{
             opacity: elementVisibility[project.id] ? 1 : 0,
             transform: elementVisibility[project.id] ? 'none' : 'translateY(20px)',
@@ -17,7 +22,7 @@
           }"
         >
           <div 
-            class="rounded-[24px] h-[20rem] w-[280px] md:h-[32rem] md:w-[384px] group 
+            class="rounded-[24px] h-[20rem] md:h-[32rem] w-full md:w-[384px] group 
                    overflow-hidden flex flex-col items-start justify-start relative z-10 
                    cursor-pointer transition-all duration-500 ease-out hover:shadow-lg"
           >
@@ -144,38 +149,45 @@
             />
           </div>
         </div>
+
+        <!-- Final spacer for mobile -->
+        <div class="w-4 shrink-0 md:hidden" aria-hidden="true" />
       </div>
     </div>
 
     <!-- Navigation Buttons -->
-    <div class="justify-start hidden gap-3 mt-8 md:flex">
-      <button 
-        class="group/nav relative z-40 flex items-center justify-center w-12 h-12 
-               transition-all duration-300 rounded-full cursor-pointer disabled:opacity-50 
-               bg-white/5 hover:bg-white/10 hover:-translate-y-0.5 active:translate-y-0 
-               disabled:hover:scale-100 disabled:hover:translate-y-0"
-        :disabled="isAtStart"
-        @click="scrollLeft"
-      >
-        <Icon 
-          name="lucide:chevron-left" 
-          class="w-6 h-6 text-white transition-transform duration-300 group-hover/nav:scale-110" 
-        />
-      </button>
-      <button 
-        class="group/nav relative z-40 flex items-center justify-center w-12 h-12 
-               transition-all duration-300 rounded-full cursor-pointer disabled:opacity-50 
-               bg-white/5 hover:bg-white/10 hover:-translate-y-0.5 active:translate-y-0 
-               disabled:hover:scale-100 disabled:hover:translate-y-0"
-        :disabled="isAtEnd"
-        @click="scrollRight"
-      >
-        <Icon 
-          name="lucide:chevron-right" 
-          class="w-6 h-6 text-white transition-transform duration-300 group-hover/nav:scale-110" 
-        />
-      </button>
-    </div>
+    <ClientOnly>
+      <div class="justify-start hidden gap-3 mt-8 md:flex">
+        <button 
+          v-if="showNavigation"
+          class="group/nav relative z-40 flex items-center justify-center w-12 h-12 
+                 transition-all duration-300 rounded-full cursor-pointer disabled:opacity-50 
+                 bg-white/5 hover:bg-white/10 hover:-translate-y-0.5 active:translate-y-0 
+                 disabled:hover:scale-100 disabled:hover:translate-y-0"
+          :disabled="isAtStart"
+          @click="scrollLeft"
+        >
+          <Icon 
+            name="lucide:chevron-left" 
+            class="w-6 h-6 text-white transition-transform duration-300 group-hover/nav:scale-110" 
+          />
+        </button>
+        <button 
+          v-if="showNavigation"
+          class="group/nav relative z-40 flex items-center justify-center w-12 h-12 
+                 transition-all duration-300 rounded-full cursor-pointer disabled:opacity-50 
+                 bg-white/5 hover:bg-white/10 hover:-translate-y-0.5 active:translate-y-0 
+                 disabled:hover:scale-100 disabled:hover:translate-y-0"
+          :disabled="isAtEnd"
+          @click="scrollRight"
+        >
+          <Icon 
+            name="lucide:chevron-right" 
+            class="w-6 h-6 text-white transition-transform duration-300 group-hover/nav:scale-110" 
+          />
+        </button>
+      </div>
+    </ClientOnly>
   </div>
 </template>
 
@@ -187,19 +199,29 @@ const props = defineProps<{
 const scrollContainer = ref<HTMLElement | null>(null)
 const elementVisibility = reactive<Record<string, boolean>>({})
 
-// Scroll state
+// Initialize scroll state with default values
 const isAtStart = ref(true)
 const isAtEnd = ref(false)
+const showNavigation = ref(false)
 
-// Initialize visibility
+// Initialize visibility and scroll state
 onMounted(() => {
+  // Set initial visibility
   props.projects.forEach(project => {
     elementVisibility[project.id] = true
   })
   
+  // Initialize scroll container and state
   if (scrollContainer.value) {
-    scrollContainer.value.addEventListener('scroll', updateScrollState)
-    updateScrollState()
+    scrollContainer.value.addEventListener('scroll', updateScrollState, { passive: true })
+    
+    // Wait for next tick to ensure DOM is ready
+    nextTick(() => {
+      updateScrollState()
+      // Only show navigation if content is scrollable
+      showNavigation.value = 
+        scrollContainer.value!.scrollWidth > scrollContainer.value!.clientWidth
+    })
   }
 })
 
@@ -209,10 +231,37 @@ onUnmounted(() => {
   }
 })
 
+// Watch for changes in projects array
+watch(() => props.projects, () => {
+  nextTick(() => {
+    if (scrollContainer.value) {
+      updateScrollState()
+      showNavigation.value = 
+        scrollContainer.value.scrollWidth > scrollContainer.value.clientWidth
+    }
+  })
+}, { deep: true })
+
+// Update scroll buttons state with debounce
+const updateScrollState = useDebounceFn(() => {
+  if (!scrollContainer.value) return
+  
+  const container = scrollContainer.value
+  const atStart = container.scrollLeft <= 0
+  const atEnd = 
+    Math.abs(
+      container.scrollLeft + container.clientWidth - 
+      container.scrollWidth
+    ) <= 1 // Account for rounding errors
+
+  isAtStart.value = atStart
+  isAtEnd.value = atEnd
+}, 100)
+
 // Scroll functions with smooth easing
 const scrollLeft = () => {
   if (!scrollContainer.value) return
-  const scrollAmount = window.innerWidth >= 768 ? 400 : 296
+  const scrollAmount = window.innerWidth >= 768 ? 400 : scrollContainer.value.clientWidth
   scrollContainer.value.scrollBy({
     left: -scrollAmount,
     behavior: 'smooth'
@@ -221,21 +270,11 @@ const scrollLeft = () => {
 
 const scrollRight = () => {
   if (!scrollContainer.value) return
-  const scrollAmount = window.innerWidth >= 768 ? 400 : 296
+  const scrollAmount = window.innerWidth >= 768 ? 400 : scrollContainer.value.clientWidth
   scrollContainer.value.scrollBy({
     left: scrollAmount,
     behavior: 'smooth'
   })
-}
-
-// Update scroll buttons state
-const updateScrollState = () => {
-  if (!scrollContainer.value) return
-  
-  isAtStart.value = scrollContainer.value.scrollLeft <= 0
-  isAtEnd.value = 
-    scrollContainer.value.scrollLeft + scrollContainer.value.clientWidth >= 
-    scrollContainer.value.scrollWidth - 1 // Account for rounding errors
 }
 </script>
 
@@ -250,5 +289,18 @@ const updateScrollState = () => {
   transition-property: transform;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration: 500ms;
+}
+
+/* Smooth scrolling for Safari */
+@supports (-webkit-touch-callout: none) {
+  .snap-x {
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+/* Prevent vertical scroll bleed */
+.touch-pan-x {
+  touch-action: pan-x;
+  -webkit-overflow-scrolling: touch;
 }
 </style> 

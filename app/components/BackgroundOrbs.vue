@@ -1,28 +1,28 @@
 <template>
-  <div class="fixed inset-0 overflow-hidden pointer-events-none">
+  <div class="fixed inset-0 overflow-hidden pointer-events-none -z-1">
     <!-- Grid Pattern -->
     <div 
-      class="absolute inset-0 bg-[linear-gradient(rgba(34,197,94,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(34,197,94,0.02)_1px,transparent_1px)]" 
+      class="absolute inset-0 bg-[linear-gradient(rgba(34,197,94,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(34,197,94,0.02)_1px,transparent_1px)] overflow-hidden" 
       style="background-size: 8px 8px;"
     />
     
-    <!-- Orbs -->
+    <!-- Orbs with improved positioning -->
     <div 
-      class="orb-1" 
+      class="orb-1 fixed" 
       :style="{ 
         transform: `translate(${scrollY * 0.05}px, ${-scrollY * 0.02}px)`,
         opacity: Math.max(0, 1 - scrollY * 0.001)
       }"
     />
     <div 
-      class="orb-2"
+      class="orb-2 fixed"
       :style="{ 
         transform: `translate(${-scrollY * 0.03}px, ${scrollY * 0.04}px)`,
         opacity: Math.max(0, 1 - scrollY * 0.001)
       }"
     />
     <div 
-      class="orb-3"
+      class="orb-3 fixed"
       :style="{ 
         transform: `translate(${scrollY * 0.02}px, ${-scrollY * 0.03}px)`,
         opacity: Math.max(0, 1 - scrollY * 0.001)
@@ -60,8 +60,13 @@ onMounted(() => {
   }
 }
 
+.orb-1, .orb-2, .orb-3 {
+  position: fixed;
+  pointer-events: none;
+  will-change: transform, opacity;
+}
+
 .orb-1 {
-  position: absolute;
   width: 600px;
   height: 600px;
   top: -100px;
@@ -70,11 +75,9 @@ onMounted(() => {
   background: radial-gradient(circle at center, rgba(34, 197, 94, 0.15), transparent 70%);
   animation: float 20s ease-in-out infinite;
   filter: blur(50px);
-  will-change: transform, opacity;
 }
 
 .orb-2 {
-  position: absolute;
   width: 400px;
   height: 400px;
   bottom: -50px;
@@ -83,11 +86,9 @@ onMounted(() => {
   background: radial-gradient(circle at center, rgba(34, 197, 94, 0.1), transparent 70%);
   animation: float 25s ease-in-out infinite reverse;
   filter: blur(50px);
-  will-change: transform, opacity;
 }
 
 .orb-3 {
-  position: absolute;
   width: 300px;
   height: 300px;
   top: 50%;
@@ -97,6 +98,5 @@ onMounted(() => {
   animation: float 30s ease-in-out infinite;
   animation-delay: -10s;
   filter: blur(50px);
-  will-change: transform, opacity;
 }
 </style> 

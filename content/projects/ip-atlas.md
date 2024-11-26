@@ -1,6 +1,6 @@
 ---
 id: ip-atlas
-sort: 10
+sort: 9
 title: IP-Atlas
 subtitle: IPAM Tool 
 description: A Flask application for the efficient management of IP addresses in large networks
