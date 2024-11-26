@@ -13,8 +13,8 @@
         <div 
           v-for="project in projects" 
           :key="project.id"
-          class="shrink-0 snap-center w-[85vw] md:w-auto md:snap-start 
-                 first:pl-0 last:pr-4 md:last:pr-[33%]"
+          class="shrink-0 snap-center w-[min(85vw,380px)] md:w-[384px] md:snap-start 
+                 first:pl-0 last:pr-4 md:last:pr-0"
           :style="{
             opacity: elementVisibility[project.id] ? 1 : 0,
             transform: elementVisibility[project.id] ? 'none' : 'translateY(20px)',

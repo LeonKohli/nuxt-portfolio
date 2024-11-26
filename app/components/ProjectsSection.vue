@@ -36,7 +36,7 @@
 
     <!-- Full Width Container for ProjectCard -->
     <div class="w-full">
-      <div class="md:w-10/12 md:mx-auto md:max-w-[110rem]">
+      <div class="md:w-8/12 md:mx-auto md:max-w-[110rem]">
         <ProjectCard 
           :projects="sortedProjects" 
           class="transition-all duration-300 opacity-0 animate-fade-in"
