@@ -145,7 +145,6 @@
               sizes="sm:280px md:384px"
               format="webp"
               quality="90"
-              provider="ipx"
             />
           </div>
         </div>
