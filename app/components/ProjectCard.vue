@@ -45,7 +45,7 @@
                 <div class="transition-all duration-500 ease-out transform group-hover:-translate-y-1">
                   <h3 
                     class="text-2xl md:text-3xl font-bold max-w-xs text-left [text-wrap:balance] 
-                           mb-2 leading-tight tracking-tight text-white font-['Exo_2']"
+                           mb-2 leading-tight tracking-tight text-white font-exo"
                   >
                     {{ project.title }}
                   </h3>

@@ -19,7 +19,7 @@
     <!-- Content -->
     <div class="relative w-10/12 md:w-8/12 mx-auto max-w-[110rem] text-center">
       <!-- Main Content -->
-      <h2 class="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-bold mb-12 tracking-wide font-['Exo_2']">
+      <h2 class="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-bold mb-12 tracking-wide font-exo">
         Let's
         <span class="relative inline-block group">
           <span class="bg-gradient-to-r from-green-700 via-green-500 to-green-400 bg-clip-text text-transparent transition-all duration-300 group-hover:bg-[length:200%_100%] bg-[length:100%_100%] bg-[position:0%] hover:bg-[position:100%]">

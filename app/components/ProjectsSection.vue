@@ -10,7 +10,7 @@
       <div class="flex w-full mb-16 space-between">
         <div class="w-full">
           <h2 class="w-full font-bold tracking-tight text-center md:text-left">
-            <span class="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-['Exo_2']">
+            <span class="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-exo">
               <span class="opacity-0 text-zinc-100 animate-fade-in" style="animation-delay: 200ms;">My</span>
               <span class="relative inline-block ml-3 opacity-0 group animate-fade-in" style="animation-delay: 400ms;">
                 <span 

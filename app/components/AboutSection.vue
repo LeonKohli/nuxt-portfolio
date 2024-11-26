@@ -5,7 +5,7 @@
       <div class="flex w-full mb-16 space-between">
         <div class="w-full">
           <h2 class="w-full font-bold tracking-tight text-center md:text-left">
-            <span class="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-['Exo_2']">
+            <span class="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-exo">
               <span class="text-zinc-100">About</span>
               <span class="relative inline-block ml-3 group">
                 <span class="bg-gradient-to-r from-green-700 via-green-500 to-green-400 bg-clip-text text-transparent transition-all duration-300 group-hover:bg-[length:200%_100%] bg-[length:100%_100%] bg-[position:0%] hover:bg-[position:100%]">
