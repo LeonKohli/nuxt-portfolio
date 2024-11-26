@@ -8,7 +8,7 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   modules: [
     '@nuxt/icon',
-    '@nuxt/fonts',
+    '@nuxt/fonts', 
     '@nuxtjs/tailwindcss',
     '@nuxtjs/color-mode',
     '@nuxt/image',
@@ -23,5 +23,22 @@ export default defineNuxtConfig({
   colorMode: {
     classPrefix: '',
     classSuffix: '',
+  },
+  fonts: {
+    defaults: {
+      weights: [400, 500, 600, 700],
+      styles: ['normal'],
+      subsets: ['latin']
+    },
+    families: [
+      {
+        name: 'Exo 2',
+        provider: 'google'
+      }
+    ],
+    provider: 'google',
+    experimental: {
+      processCSSVariables: true
+    }
   }
 })
