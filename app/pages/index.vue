@@ -4,7 +4,7 @@
     <div class="flex flex-col">
       <HeroSection />
       <ProjectsSection @select="selectedProject = $event" />
-      <AboutSection />
+      <!-- <AboutSection /> -->
       <FooterSection />
     </div>
     <ProjectModal 
