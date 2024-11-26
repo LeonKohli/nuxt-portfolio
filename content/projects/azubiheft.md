@@ -9,4 +9,5 @@ tech:
   - Python
 repo: https://github.com/LeonKohli/azubiheft-api
 link: https://pypi.org/project/azubiheft
+image: /images/projects/azubiheft-preview.png
 --- 

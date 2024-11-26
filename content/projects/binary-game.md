@@ -11,4 +11,5 @@ tech:
   - JavaScript
 link: https://leonkohli.github.io/binaryGame
 repo: https://github.com/LeonKohli/binaryGame
+image: /images/projects/binary-preview.png
 --- 

@@ -8,4 +8,5 @@ tech:
   - JavaScript
 link: https://codepen.io/LeonKohli/pen/poQKLOL
 repo: https://github.com/LeonKohli/interactive-particle-network
+image: /images/projects/particle-preview.png
 --- 

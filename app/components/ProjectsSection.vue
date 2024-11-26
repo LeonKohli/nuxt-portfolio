@@ -19,93 +19,94 @@
             </span>
           </h2>
           <p class="max-w-2xl mt-8 text-base sm:text-lg text-white/70 md:text-xl">
-            A collection of projects I've worked on, ranging from full-stack applications 
-            to security research and open-source contributions.
+            Some of my most interesting projects.
           </p>
         </div>
       </div>
 
-      <!-- Filter System -->
-      <div class="flex flex-wrap gap-2 mb-8">
-        <button 
-          v-for="tech in allTechnologies"
-          :key="tech"
-          class="px-3 py-1.5 text-sm transition-colors border rounded-md border-white/10 hover:border-emerald-500/50"
-          :class="[
-            selectedTech === tech 
-              ? 'bg-emerald-500/10 border-emerald-500 text-emerald-400' 
-              : 'text-white/70 hover:text-emerald-400'
-          ]"
-          @click="selectedTech = selectedTech === tech ? null : tech"
-        >
-          {{ tech }}
-        </button>
-      </div>
-
-      <!-- Projects Grid -->
-      <div class="relative min-h-[800px]">
-        <Transition
-          mode="out-in"
-          @before-leave="onBeforeLeave"
-          @after-leave="onAfterLeave"
-          @before-enter="onBeforeEnter"
-        >
-          <div 
-            :key="pagination.currentPage"
-            class="grid gap-8 md:grid-cols-2 lg:grid-cols-3"
-          >
-            <ProjectCard
-              v-for="(project, index) in paginatedProjects" 
+      <!-- Projects Carousel -->
+      <div class="relative w-full">
+        <div class="flex w-full overflow-x-scroll overscroll-x-auto py-4 scroll-smooth [scrollbar-width:none] -mx-4 px-4" ref="scrollContainer">
+          <!-- Gradient Overlay -->
+          <div class="absolute right-0 z-[1000] h-full w-[5%] overflow-hidden bg-gradient-to-l from-background to-transparent pointer-events-none"></div>
+          
+          <!-- Projects Container -->
+          <div class="flex flex-row justify-start gap-4 max-w-7xl">
+            <div 
+              v-for="project in filteredProjects" 
               :key="project.id"
-              :ref="(el: Element | ComponentPublicInstance | null) => handleRef(el, project)"
-              :project="project"
-              :is-visible="elementVisibility[project.id] ?? false"
-              @click="$emit('select', project)"
-              class="transition-all duration-300"
+              class="last:pr-[5%] md:last:pr-[33%] rounded-3xl"
               :style="{
-                '--index': index,
-                'transitionDelay': `${index * 50}ms`
+                opacity: elementVisibility[project.id] ? 1 : 0,
+                transform: elementVisibility[project.id] ? 'none' : 'translateY(20px)',
+                transition: 'all 0.5s ease-out',
               }"
-            />
+            >
+              <a 
+                :href="project.link" 
+                target="_blank" 
+                class="rounded-3xl h-[20rem] w-56 md:h-[32rem] md:w-96 group overflow-hidden flex flex-col items-start justify-start relative z-10 cursor-pointer"
+              >
+                <!-- Overlay -->
+                <div class="absolute inset-x-0 top-0 z-30 h-full transition-all duration-300 pointer-events-none group-hover:bg-black/80 bg-black/65"></div>
+                
+                <!-- Content -->
+                <div class="relative z-40 p-6 md:p-8">
+                  <p class="gap-2 text-foreground text-2xl md:text-3xl font-bold max-w-xs text-left [text-wrap:balance] my-1 leading-tight tracking-tight">
+                    {{ project.title }}
+                  </p>
+                  <p class="text-foreground md:text-xl max-w-xs text-left [text-wrap:balance] my-1 tracking-tight leading-tight font-medium">
+                    {{ project.description }}
+                  </p>
+                  
+                  <!-- GitHub Link -->
+                  <div v-if="project.github" class="my-2 transition-all duration-300 -translate-x-2 lg:group-hover:opacity-100 lg:opacity-0 group-hover:translate-x-0">
+                    <a 
+                      :href="project.github" 
+                      target="_blank"
+                      class="px-2 py-1 my-1 font-medium border rounded-full text-neutral-50 backdrop-blur-xl border-foreground/15 bg-neutral-500/50"
+                    >
+                      Github
+                    </a>
+                  </div>
+                </div>
+
+                <!-- Project Image -->
+                <NuxtImg 
+                  :src="project.image"
+                  :alt="project.title"
+                  loading="lazy"
+                  width="384"
+                  height="512"
+                  placeholder
+                  class="transition duration-300 blur-0 object-cover absolute z-10 inset-0"
+                  sizes="sm:224px md:384px"
+                  format="webp"
+                  quality="90"
+                  provider="ipx"
+                />
+              </a>
+            </div>
           </div>
-        </Transition>
-      </div>
+        </div>
 
-      <!-- Pagination -->
-      <div class="sticky flex justify-center px-6 py-4 mx-auto mt-8 space-x-2 rounded-full bottom-8 backdrop-blur-sm bg-black/30 w-fit">
-        <Button
-          variant="outline"
-          size="sm"
-          :disabled="pagination.currentPage === 1"
-          @click="changePage(pagination.currentPage - 1)"
-          class="hover:bg-emerald-500/10 hover:text-emerald-400"
-        >
-          <Icon name="lucide:chevron-left" class="w-4 h-4" />
-        </Button>
-        
-        <Button
-          v-for="page in displayedPages"
-          :key="page"
-          variant="outline"
-          size="sm"
-          :class="{ 
-            'bg-emerald-500/10 border-emerald-500 text-emerald-400': page === pagination.currentPage,
-            'hover:bg-emerald-500/10 hover:text-emerald-400': page !== pagination.currentPage
-          }"
-          @click="changePage(Number(page))"
-        >
-          {{ page }}
-        </Button>
-
-        <Button
-          variant="outline"
-          size="sm"
-          :disabled="pagination.currentPage === totalPages"
-          @click="changePage(pagination.currentPage + 1)"
-          class="hover:bg-emerald-500/10 hover:text-emerald-400"
-        >
-          <Icon name="lucide:chevron-right" class="w-4 h-4" />
-        </Button>
+        <!-- Navigation Buttons -->
+        <div class="justify-start hidden gap-2 mt-4 md:flex">
+          <button 
+            class="relative z-40 flex items-center justify-center w-10 h-10 transition-all duration-300 rounded-full cursor-pointer disabled:opacity-50 hover:bg-foreground/10"
+            :disabled="isAtStart"
+            @click="scrollLeft"
+          >
+            <Icon name="mdi:arrow-left" class="w-6 h-6 text-foreground" />
+          </button>
+          <button 
+            class="relative z-40 flex items-center justify-center w-10 h-10 transition-all duration-300 rounded-full cursor-pointer disabled:opacity-50 hover:bg-foreground/10"
+            :disabled="isAtEnd"
+            @click="scrollRight"
+          >
+            <Icon name="mdi:arrow-right" class="w-6 h-6 text-foreground" />
+          </button>
+        </div>
       </div>
     </div>
   </section>
@@ -119,31 +120,9 @@ const { data: projects } = await useAsyncData<Project[]>('projects', () =>
     .find()
 )
 
-const selectedProject = ref<Project | null>(null)
 const selectedTech = ref<string | null>(null)
 const elementVisibility = reactive<Record<string, boolean>>({})
-const projectRefs: Record<string, HTMLElement> = reactive({})
-
-// Pagination state
-const pagination = reactive<PaginationState>({
-  currentPage: 1,
-  itemsPerPage: 6,
-  totalItems: 0
-})
-
-// Computed properties for pagination
-const totalPages = computed(() => 
-  Math.ceil((filteredProjects.value?.length || 0) / pagination.itemsPerPage)
-)
-
-const paginatedProjects = computed(() => {
-  if (!filteredProjects.value) return []
-  
-  const start = (pagination.currentPage - 1) * pagination.itemsPerPage
-  const end = start + pagination.itemsPerPage
-  
-  return filteredProjects.value.slice(start, end)
-})
+const scrollContainer = ref<HTMLElement | null>(null)
 
 // Filter projects
 const filteredProjects = computed(() => {
@@ -160,144 +139,73 @@ const allTechnologies = computed(() => {
   return Array.from(techs)
 })
 
-// Computed property for displayed page numbers
-const displayedPages = computed(() => {
-  const current = pagination.currentPage
-  const total = totalPages.value
-  const delta = 1 // Number of pages to show on each side of current page
+// Scroll state
+const isAtStart = ref(true)
+const isAtEnd = ref(false)
 
-  const range = []
-  for (let i = Math.max(2, current - delta); i <= Math.min(total - 1, current + delta); i++) {
-    range.push(i)
-  }
+// Scroll functions
+const scrollLeft = () => {
+  if (!scrollContainer.value) return
+  scrollContainer.value.scrollBy({
+    left: -400,
+    behavior: 'smooth'
+  })
+}
 
-  if (current - delta > 2) {
-    range.unshift('...')
-  }
-  if (current + delta < total - 1) {
-    range.push('...')
-  }
+const scrollRight = () => {
+  if (!scrollContainer.value) return
+  scrollContainer.value.scrollBy({
+    left: 400,
+    behavior: 'smooth'
+  })
+}
 
-  if (total > 1) {
-    range.unshift(1)
-    if (total !== 1) {
-      range.push(total)
-    }
-  }
+// Update scroll buttons state
+const updateScrollState = () => {
+  if (!scrollContainer.value) return
+  
+  isAtStart.value = scrollContainer.value.scrollLeft <= 0
+  isAtEnd.value = 
+    scrollContainer.value.scrollLeft + scrollContainer.value.clientWidth >= 
+    scrollContainer.value.scrollWidth
+}
 
-  return range
+// Watch for scroll events
+onMounted(() => {
+  if (!scrollContainer.value) return
+  
+  scrollContainer.value.addEventListener('scroll', updateScrollState)
+  updateScrollState()
+
+  // Set initial visibility
+  if (projects.value) {
+    projects.value.forEach(project => {
+      elementVisibility[project.id] = true
+    })
+  }
 })
 
-// Pagination methods
-const changePage = (page: number) => {
-  if (typeof page !== 'number') return
-  pagination.currentPage = page
-}
-
-// Watch for filter changes to reset pagination
-watch(selectedTech, () => {
-  pagination.currentPage = 1
+onUnmounted(() => {
+  if (!scrollContainer.value) return
+  scrollContainer.value.removeEventListener('scroll', updateScrollState)
 })
-
-// Setup intersection observers
-watch(() => Object.entries(projectRefs), (entries) => {
-  entries.forEach(([id, element]) => {
-    if (!element) return
-
-    const { stop } = useIntersectionObserver(
-      element,
-      ([entry]) => {
-        if (entry?.isIntersecting) {
-          elementVisibility[id] = true
-          stop()
-        }
-      },
-      { threshold: 0.1 }
-    )
-  })
-}, { immediate: true })
-
-// Template ref handler
-const handleRef = (el: Element | ComponentPublicInstance | null, project: Project) => {
-  const htmlElement = getHTMLElement(el)
-  if (htmlElement) {
-    projectRefs[project.id] = htmlElement
-  }
-}
-
-// Helper function to get HTMLElement from ref
-const getHTMLElement = (el: Element | ComponentPublicInstance | null): HTMLElement | null => {
-  if (!el) return null
-  if (el instanceof HTMLElement) return el
-  if ('$el' in el) return el.$el as HTMLElement
-  return null
-}
-
-const isLeaving = ref(false)
-
-const onBeforeLeave = (el: Element) => {
-  isLeaving.value = true
-  const cards = el.querySelectorAll('.transition-all')
-  cards.forEach((card, i) => {
-    ;(card as HTMLElement).style.opacity = '0'
-    ;(card as HTMLElement).style.transform = 'translateX(-30px)'
-  })
-}
-
-const onAfterLeave = () => {
-  isLeaving.value = false
-}
-
-const onBeforeEnter = (el: Element) => {
-  const cards = el.querySelectorAll('.transition-all')
-  cards.forEach((card, i) => {
-    ;(card as HTMLElement).style.opacity = '0'
-    ;(card as HTMLElement).style.transform = 'translateX(30px)'
-    setTimeout(() => {
-      ;(card as HTMLElement).style.opacity = '1'
-      ;(card as HTMLElement).style.transform = 'translateX(0)'
-    }, 50 * i)
-  })
-}
-
-defineEmits<{
-  (e: 'select', project: Project): void
-}>()
 </script>
 
 <style scoped>
-.v-enter-active,
-.v-leave-active {
-  transition: opacity 0.3s ease;
+/* Hide scrollbar */
+.overflow-x-scroll::-webkit-scrollbar {
+  display: none;
 }
 
-.v-enter-from,
-.v-leave-to {
-  opacity: 0;
+/* Smooth transitions */
+.transition-transform {
+  transition-property: transform;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 300ms;
 }
 
-/* Grid layout preservation for different screen sizes */
-@media (min-width: 768px) {
-  .projects-leave-active {
-    width: calc(50% - 1rem);
-  }
-}
-
-@media (min-width: 1024px) {
-  .projects-leave-active {
-    width: calc(33.333% - 1.334rem);
-  }
-}
-
-/* Make pagination buttons more visible on hover */
-.button-hover {
-  @apply transition-colors duration-200;
-}
-
-/* Sticky pagination container */
-.sticky {
-  position: sticky;
-  bottom: 2rem;
-  z-index: 10;
+/* Hover effects */
+.group:hover img {
+  transform: scale(1.05);
 }
 </style> 

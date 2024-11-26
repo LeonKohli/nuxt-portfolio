@@ -13,4 +13,5 @@ tech:
   - Nuxt Content
 link: https://trackme.dev
 repo: https://github.com/LeonKohli/browser-fingerprint
+image: /images/projects/trackme-preview.jpg
 --- 

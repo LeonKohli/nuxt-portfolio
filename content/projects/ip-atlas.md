@@ -11,6 +11,6 @@ tech:
   - HTML
   - JavaScript
   - TailwindCSS
-link: https://ip-atlas.de
 repo: https://github.com/ZIT-P22/IP-Atlas
+image: /images/projects/ipatlas-preview.png
 --- 

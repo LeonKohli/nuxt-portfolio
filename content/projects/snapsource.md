@@ -10,4 +10,5 @@ tech:
   - VS Code API
 link: https://marketplace.visualstudio.com/items?itemName=LeonKohli.snapsource
 repo: https://github.com/LeonKohli/snapsource
+image: /images/projects/snapsource-preview.png
 --- 

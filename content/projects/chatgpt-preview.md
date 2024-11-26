@@ -10,4 +10,5 @@ tech:
   - JavaScript
 link: https://leonkohli.dev
 repo: https://github.com/LeonKohli/ChatGPT-HTML-Web-View
+image: /images/projects/chatgpt-preview.png
 --- 

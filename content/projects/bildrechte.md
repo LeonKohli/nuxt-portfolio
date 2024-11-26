@@ -8,4 +8,5 @@ tech:
   - TailwindCSS
 link: https://bildrechte.vercel.app
 repo: https://github.com/LeonKohli/bildrechte
+image: /images/projects/bildrechte-preview.png
 --- 

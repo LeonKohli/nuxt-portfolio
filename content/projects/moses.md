@@ -8,4 +8,5 @@ solution: MOSES is an Outlook VBA module to shift emails into servity itsm via A
 tech: 
   - VBA
 repo: https://github.com/LeonKohli/MOSES
+image: /images/projects/moses-preview.png
 --- 

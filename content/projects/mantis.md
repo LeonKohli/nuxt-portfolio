@@ -16,4 +16,9 @@ stats:
   - "Growing user base through news coverage"
 link: https://gottesanbeterin-gesucht.de
 repo: https://github.com/opendata-apps/mantis
+# Image should be 768x1024px (3:4 aspect ratio) for optimal display
+# Minimum size: 384x512px
+# Format: WebP preferred, JPG fallback
+# Place images in the public/images/projects/ directory
+image: /images/projects/mantis-preview.jpg
 --- 

@@ -11,4 +11,5 @@ tech:
   - TypeScript
 link: https://repolingo.leonkohli.dev
 repo: https://github.com/LeonKohli/RepoLingo
+image: /images/projects/repolingo-preview.png
 --- 
