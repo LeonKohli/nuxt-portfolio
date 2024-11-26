@@ -1,118 +1,254 @@
 <template>
-  <div 
-    class="relative overflow-hidden transition-all duration-300 border rounded-lg bg-black/20 border-white/5 group hover:border-emerald-500/20"
-    :class="{ 'opacity-100 translate-y-0': isVisible, 'opacity-0 translate-y-4': !isVisible }"
-  >
-    <!-- Project Header -->
-    <div class="p-6 border-b border-white/5">
-      <div class="flex items-start justify-between">
-        <div class="space-y-2">
-          <div class="text-sm font-medium text-emerald-400">
-            {{ project.subtitle }}
-          </div>
-          <h3 class="text-xl font-semibold text-white">
-            {{ project.title }}
-          </h3>
-          <p class="text-sm text-white/70 line-clamp-2">
-            {{ project.description }}
-          </p>
-        </div>
-        <a 
-          v-if="project.link"
-          :href="project.link"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="p-2 -m-2 transition-all opacity-0 group-hover:opacity-100 hover:text-emerald-400"
+  <div class="relative w-full">
+    <div 
+      class="flex w-full overflow-x-scroll overscroll-x-auto py-8 scroll-smooth [scrollbar-width:none] -mx-4 px-4" 
+      ref="scrollContainer"
+    >
+      <!-- Projects Container -->
+      <div class="flex flex-row justify-start gap-6 max-w-[1440px]">
+        <div 
+          v-for="project in projects" 
+          :key="project.id"
+          class="last:pr-[5%] md:last:pr-[33%] rounded-[24px]"
+          :style="{
+            opacity: elementVisibility[project.id] ? 1 : 0,
+            transform: elementVisibility[project.id] ? 'none' : 'translateY(20px)',
+            transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+          }"
         >
-          <Icon name="lucide:external-link" class="w-4 h-4" />
-        </a>
-      </div>
-    </div>
-    
-    <!-- Project Content -->
-    <div class="p-6 space-y-6">
-      <!-- Tech Stack Section -->
-      <div>
-        <h4 class="mb-3 text-xs font-medium uppercase text-white/50">Technologies</h4>
-        <div class="flex flex-wrap gap-2">
           <div 
-            v-for="tech in project.tech" 
-            :key="tech"
-            class="flex items-center px-2 py-1 text-sm transition-colors border rounded-md text-white/70 border-white/10 hover:text-emerald-400 hover:border-emerald-500/20"
+            class="rounded-[24px] h-[20rem] w-[280px] md:h-[32rem] md:w-[384px] group 
+                   overflow-hidden flex flex-col items-start justify-start relative z-10 
+                   cursor-pointer transition-all duration-500 ease-out hover:shadow-lg"
           >
-            <Icon 
-              :name="getTechIcon(tech)" 
-              class="w-3.5 h-3.5 mr-1.5"
+            <!-- Dark Gradient Overlay (Always Present) -->
+            <div 
+              class="absolute inset-0 z-20 transition-opacity duration-500 ease-out bg-gradient-to-t from-black via-black/80 to-black/60 opacity-80 group-hover:opacity-90"
             />
-            {{ tech }}
+            
+            <!-- Hover Overlay -->
+            <div 
+              class="absolute inset-0 z-30 transition-opacity duration-500 ease-out 
+                     bg-[#000000] opacity-0 group-hover:opacity-75"
+            />
+            
+            <!-- Content -->
+            <div class="relative z-40 flex flex-col h-full p-6 md:p-8">
+              <!-- Initial Content Container -->
+              <div class="flex flex-col flex-grow">
+                <!-- Title and Subtitle (Always Visible) -->
+                <div class="transition-all duration-500 ease-out transform group-hover:-translate-y-1">
+                  <h3 
+                    class="text-2xl md:text-3xl font-bold max-w-xs text-left [text-wrap:balance] 
+                           mb-2 leading-tight tracking-tight text-white font-['Exo_2']"
+                  >
+                    {{ project.title }}
+                  </h3>
+                  <p 
+                    class="text-base md:text-lg max-w-xs text-left [text-wrap:balance] 
+                           tracking-tight leading-[1.6] text-white/80 transition-all 
+                           duration-500 ease-out group-hover:opacity-0 line-clamp-2"
+                  >
+                    {{ project.subtitle }}
+                  </p>
+                </div>
+
+                <!-- Description (Appears on Hover) -->
+                <div 
+                  class="flex-grow mt-4 transition-all duration-500 ease-out opacity-0 group-hover:opacity-100"
+                >
+                  <p 
+                    class="text-base md:text-lg max-w-xs text-left [text-wrap:balance] 
+                           tracking-tight leading-[1.6] text-white/90"
+                  >
+                    {{ project.description }}
+                  </p>
+                </div>
+              </div>
+              
+              <!-- Bottom Content (Tech Stack and Links) -->
+              <div 
+                class="mt-auto transition-all duration-500 ease-out transform translate-y-4 opacity-0 group-hover:opacity-100 group-hover:translate-y-0"
+              >
+                <!-- Tech Stack -->
+                <div class="flex flex-wrap gap-2 mb-6">
+                  <div 
+                    v-for="tech in project.tech" 
+                    :key="tech.name"
+                    class="px-3 py-1.5 text-sm transition-all duration-200 rounded-full 
+                           text-white/90 bg-white/10 backdrop-blur-xl hover:bg-white/20
+                           flex items-center gap-1.5 group/tech"
+                  >
+                    <Icon 
+                      :name="tech.icon" 
+                      class="w-3.5 h-3.5 transition-transform duration-300
+                             group-hover/tech:scale-110 group-hover/tech:rotate-[8deg]" 
+                    />
+                    {{ tech.name }}
+                  </div>
+                </div>
+
+                <!-- Links -->
+                <div class="flex gap-3">
+                  <a 
+                    v-if="project.repo"
+                    :href="project.repo" 
+                    target="_blank"
+                    class="group/btn flex items-center px-4 py-2 text-sm font-medium 
+                           transition-all duration-300 rounded-full text-white bg-white/10 
+                           hover:bg-white/20 hover:-translate-y-0.5 active:translate-y-0
+                           relative overflow-hidden"
+                  >
+                    <Icon 
+                      name="ph:github-logo-fill" 
+                      class="w-4 h-4 mr-2 transition-transform duration-300
+                             group-hover/btn:scale-110 group-hover/btn:rotate-[8deg]" 
+                    />
+                    <span class="relative z-10">GitHub</span>
+                  </a>
+                  <a 
+                    v-if="project.link"
+                    :href="project.link" 
+                    target="_blank"
+                    class="group/btn flex items-center px-4 py-2 text-sm font-medium 
+                           transition-all duration-300 rounded-full text-emerald-400 
+                           bg-emerald-500/20 hover:bg-emerald-500/30 hover:-translate-y-0.5 
+                           active:translate-y-0 relative overflow-hidden"
+                  >
+                    <Icon 
+                      name="lucide:external-link" 
+                      class="w-4 h-4 mr-2 transition-transform duration-300
+                             group-hover/btn:scale-110 group-hover/btn:rotate-[8deg]" 
+                    />
+                    <span class="relative z-10">Live Demo</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <!-- Project Image -->
+            <NuxtImg 
+              :src="project.image"
+              :alt="project.title"
+              loading="lazy"
+              width="384"
+              height="512"
+              placeholder
+              class="absolute inset-0 z-10 object-cover transition-all duration-500 
+                     ease-out scale-[1.01] brightness-[0.7] group-hover:scale-[1.02] 
+                     group-hover:brightness-[0.8] group-hover:blur-[2px]"
+              sizes="sm:280px md:384px"
+              format="webp"
+              quality="90"
+              provider="ipx"
+            />
           </div>
         </div>
       </div>
-
-      <!-- Links Section -->
-      <div v-if="project.repo || project.link" class="flex gap-3 pt-2">
-        <a
-          v-if="project.repo"
-          :href="project.repo"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="flex items-center px-4 py-2 text-sm transition-colors border rounded-md text-white/70 border-white/10 hover:text-emerald-400 hover:border-emerald-500/20 group/btn"
-        >
-          <Icon 
-            name="lucide:github" 
-            class="w-4 h-4 mr-2 transition-transform group-hover/btn:scale-110" 
-          />
-          View Source
-        </a>
-        <a
-          v-if="project.link"
-          :href="project.link"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="flex items-center px-4 py-2 text-sm transition-colors border rounded-md text-white/70 border-white/10 hover:text-emerald-400 hover:border-emerald-500/20 group/btn"
-        >
-          <Icon 
-            name="lucide:external-link" 
-            class="w-4 h-4 mr-2 transition-transform group-hover/btn:scale-110" 
-          />
-          Live Demo
-        </a>
-      </div>
     </div>
 
-    <!-- Hover Effects -->
-    <div class="absolute inset-0 transition-opacity duration-300 opacity-0 pointer-events-none bg-gradient-to-t from-emerald-500/5 to-transparent group-hover:opacity-100" />
-    <div class="absolute inset-0 transition-opacity duration-300 opacity-0 pointer-events-none bg-gradient-to-r from-emerald-500/5 to-transparent group-hover:opacity-100" />
+    <!-- Navigation Buttons -->
+    <div class="justify-start hidden gap-3 mt-8 md:flex">
+      <button 
+        class="group/nav relative z-40 flex items-center justify-center w-12 h-12 
+               transition-all duration-300 rounded-full cursor-pointer disabled:opacity-50 
+               bg-white/5 hover:bg-white/10 hover:-translate-y-0.5 active:translate-y-0 
+               disabled:hover:scale-100 disabled:hover:translate-y-0"
+        :disabled="isAtStart"
+        @click="scrollLeft"
+      >
+        <Icon 
+          name="lucide:chevron-left" 
+          class="w-6 h-6 text-white transition-transform duration-300 group-hover/nav:scale-110" 
+        />
+      </button>
+      <button 
+        class="group/nav relative z-40 flex items-center justify-center w-12 h-12 
+               transition-all duration-300 rounded-full cursor-pointer disabled:opacity-50 
+               bg-white/5 hover:bg-white/10 hover:-translate-y-0.5 active:translate-y-0 
+               disabled:hover:scale-100 disabled:hover:translate-y-0"
+        :disabled="isAtEnd"
+        @click="scrollRight"
+      >
+        <Icon 
+          name="lucide:chevron-right" 
+          class="w-6 h-6 text-white transition-transform duration-300 group-hover/nav:scale-110" 
+        />
+      </button>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
-defineProps<{
-  project: Project
-  isVisible: boolean
+const props = defineProps<{
+  projects: Project[]
 }>()
 
-// Tech stack icon mapping
-const getTechIcon = (tech: string): string => {
-  const iconMap: Record<string, string> = {
-    'Vue.js': 'simple-icons:vuedotjs',
-    'React': 'simple-icons:react',
-    'TypeScript': 'simple-icons:typescript',
-    'JavaScript': 'simple-icons:javascript',
-    'Python': 'simple-icons:python',
-    'Node.js': 'simple-icons:nodedotjs',
-    'PostgreSQL': 'simple-icons:postgresql',
-    'MongoDB': 'simple-icons:mongodb',
-    'Firebase': 'simple-icons:firebase',
-    'Flask': 'simple-icons:flask',
-    'Tailwind CSS': 'simple-icons:tailwindcss',
-    'GraphQL': 'simple-icons:graphql',
-    'API': 'lucide:code',
-    'WebAPI': 'lucide:code',
-    'Security': 'lucide:shield',
-    'NLP': 'lucide:brain',
-  }
+const scrollContainer = ref<HTMLElement | null>(null)
+const elementVisibility = reactive<Record<string, boolean>>({})
 
-  return iconMap[tech] || 'lucide:code'
+// Scroll state
+const isAtStart = ref(true)
+const isAtEnd = ref(false)
+
+// Initialize visibility
+onMounted(() => {
+  props.projects.forEach(project => {
+    elementVisibility[project.id] = true
+  })
+  
+  if (scrollContainer.value) {
+    scrollContainer.value.addEventListener('scroll', updateScrollState)
+    updateScrollState()
+  }
+})
+
+onUnmounted(() => {
+  if (scrollContainer.value) {
+    scrollContainer.value.removeEventListener('scroll', updateScrollState)
+  }
+})
+
+// Scroll functions with smooth easing
+const scrollLeft = () => {
+  if (!scrollContainer.value) return
+  const scrollAmount = window.innerWidth >= 768 ? 400 : 296
+  scrollContainer.value.scrollBy({
+    left: -scrollAmount,
+    behavior: 'smooth'
+  })
 }
-</script> 
+
+const scrollRight = () => {
+  if (!scrollContainer.value) return
+  const scrollAmount = window.innerWidth >= 768 ? 400 : 296
+  scrollContainer.value.scrollBy({
+    left: scrollAmount,
+    behavior: 'smooth'
+  })
+}
+
+// Update scroll buttons state
+const updateScrollState = () => {
+  if (!scrollContainer.value) return
+  
+  isAtStart.value = scrollContainer.value.scrollLeft <= 0
+  isAtEnd.value = 
+    scrollContainer.value.scrollLeft + scrollContainer.value.clientWidth >= 
+    scrollContainer.value.scrollWidth - 1 // Account for rounding errors
+}
+</script>
+
+<style scoped>
+/* Hide scrollbar */
+.overflow-x-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+/* Smooth transitions */
+.transition-transform {
+  transition-property: transform;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 500ms;
+}
+</style> 

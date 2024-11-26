@@ -1,6 +1,11 @@
 import type { ParsedContent } from "@nuxt/content"
 
 declare global {
+  interface TechStack {
+    name: string
+    icon: string
+  }
+
   interface Project extends ParsedContent {
     id: string
     title: string
@@ -8,9 +13,11 @@ declare global {
     description: string
     problem?: string
     solution?: string
-    tech: string[]
+    tech: TechStack[]
     link?: string
     repo?: string
+    image: string
+    sort: number
   }
 
   interface Skill {
