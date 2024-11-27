@@ -1,6 +1,6 @@
 <template>
-  <section class="px-4 h-screen flex flex-col justify-center sm:px-6 lg:px-8" id="about">
-    <div class="w-10/12 md:w-8/12 mx-auto max-w-[110rem] overflow-y-auto">
+  <section class="flex flex-col justify-center h-screen px-4 sm:px-6 lg:px-8" id="about">
+    <div class="w-10/12 md:w-8/12 mx-auto max-w-[110rem]">
       <!-- Section Header -->
       <div class="flex w-full mb-16 space-between">
         <div class="w-full">
@@ -17,70 +17,81 @@
         </div>
       </div>
 
-      <!-- Content Grid -->
-      <div class="grid gap-16 lg:grid-cols-2">
-        <!-- Left Column: Introduction -->
+      <!-- Content -->
+      <div class="max-w-3xl space-y-8">
+        <!-- Introduction -->
         <div class="space-y-6">
-          <p class="text-lg text-white/70 md:text-xl">{{ about?.description }}</p>
+          <p class="text-xl md:text-2xl text-white/90 leading-relaxed [text-wrap:balance]">
+            Hi, I'm <span class="font-medium text-emerald-400">Leon</span>, a Full Stack Web Developer from 
+            <span class="inline-flex items-center gap-1.5">
+              <Icon name="ph:map-pin-fill" class="w-5 h-5 text-emerald-400" />
+              <span class="text-white">Potsdam (Germany)</span>
+            </span>.
+          </p>
           
-          <!-- Location -->
-          <div class="flex items-center gap-2 text-white/70">
-            <Icon name="ph:map-pin-fill" class="w-5 h-5 text-emerald-400" />
-            <span>{{ about?.location }}</span>
-          </div>
-
-          <!-- Education -->
-          <div class="space-y-4 pt-6">
-            <h3 class="text-xs font-medium uppercase text-white/50">Education</h3>
-            <div class="space-y-4">
-              <div 
-                v-for="edu in about?.education" 
-                :key="edu.year"
-                class="space-y-1"
-              >
-                <div class="font-medium text-white">{{ edu.degree }}</div>
-                <div class="text-sm text-white/70">
-                  {{ edu.school }} • {{ edu.year }}
-                </div>
-              </div>
-            </div>
-          </div>
+          <p class="text-lg leading-relaxed md:text-xl text-white/70">
+            I specialized in building fast and secure web applications and solving problems using modern technologies.
+          </p>
         </div>
 
-        <!-- Right Column: Expertise -->
-        <div class="space-y-8">
-          <div 
-            v-for="exp in about?.expertise" 
-            :key="exp.title"
-            class="space-y-4"
-          >
-            <h3 class="text-lg font-medium text-white">{{ exp.title }}</h3>
-            <p class="text-white/70">{{ exp.description }}</p>
-            <div class="flex flex-wrap gap-2">
-              <div 
-                v-for="tech in exp.technologies" 
-                :key="tech"
-                class="flex items-center px-2 py-1 text-sm transition-colors border rounded-md text-white/70 border-white/10 hover:text-emerald-400 hover:border-emerald-500/20"
-              >
+        <!-- Interests & Skills -->
+        <div class="flex flex-col gap-8 pt-4 md:flex-row">
+          <!-- What I Do -->
+          <div class="flex-1 space-y-4">
+            <h3 class="text-sm font-medium tracking-wider uppercase text-emerald-400/90">
+              What I Do
+            </h3>
+            <div class="space-y-3">
+              <div class="flex items-start gap-3 group">
                 <Icon 
-                  :name="getTechIcon(tech)" 
-                  class="w-3.5 h-3.5 mr-1.5"
+                  name="ph:code-bold" 
+                  class="w-5 h-5 mt-1 transition-colors text-white/30 group-hover:text-emerald-400" 
                 />
-                {{ tech }}
+                <span class="text-white/70">Building fast & secure web applications</span>
+              </div>
+              <div class="flex items-start gap-3 group">
+                <Icon 
+                  name="ph:shield-check-bold" 
+                  class="w-5 h-5 mt-1 transition-colors text-white/30 group-hover:text-emerald-400" 
+                />
+                <span class="text-white/70">Implementing robust security measures</span>
+              </div>
+              <div class="flex items-start gap-3 group">
+                <Icon 
+                  name="ph:lightbulb-bold" 
+                  class="w-5 h-5 mt-1 transition-colors text-white/30 group-hover:text-emerald-400" 
+                />
+                <span class="text-white/70">Solving complex technical challenges</span>
               </div>
             </div>
           </div>
 
-          <!-- Interests -->
-          <div class="pt-6">
-            <h3 class="mb-4 text-xs font-medium uppercase text-white/50">Interests</h3>
-            <div class="flex flex-wrap gap-2">
-              <div 
-                v-for="interest in about?.interests" 
-                :key="interest"
-                class="px-3 py-1 text-sm transition-colors border rounded-md text-white/70 border-white/10"
-              >
-                {{ interest }}
+          <!-- What I Love -->
+          <div class="flex-1 space-y-4">
+            <h3 class="text-sm font-medium tracking-wider uppercase text-emerald-400/90">
+              What I Love
+            </h3>
+            <div class="space-y-3">
+              <div class="flex items-start gap-3 group">
+                <Icon 
+                  name="ph:lock-key-bold" 
+                  class="w-5 h-5 mt-1 transition-colors text-white/30 group-hover:text-emerald-400" 
+                />
+                <span class="text-white/70">Cybersecurity & Penetration Testing</span>
+              </div>
+              <div class="flex items-start gap-3 group">
+                <Icon 
+                  name="ph:devices-bold" 
+                  class="w-5 h-5 mt-1 transition-colors text-white/30 group-hover:text-emerald-400" 
+                />
+                <span class="text-white/70">IoT & Smart Home Solutions</span>
+              </div>
+              <div class="flex items-start gap-3 group">
+                <Icon 
+                  name="ph:robot-bold" 
+                  class="w-5 h-5 mt-1 transition-colors text-white/30 group-hover:text-emerald-400" 
+                />
+                <span class="text-white/70">Home Automation & Integration</span>
               </div>
             </div>
           </div>
@@ -91,28 +102,5 @@
 </template>
 
 <script setup lang="ts">
-// Fetch about data
-const { data: about } = await useAsyncData('about', () => 
-  queryContent('about').findOne()
-)
-
-// Tech stack icon mapping
-const getTechIcon = (tech: string): string => {
-  const iconMap: Record<string, string> = {
-    'Vue.js': 'simple-icons:vuedotjs',
-    'TypeScript': 'simple-icons:typescript',
-    'Python': 'simple-icons:python',
-    'Node.js': 'simple-icons:nodedotjs',
-    'PostgreSQL': 'simple-icons:postgresql',
-    'Nuxt.js': 'simple-icons:nuxtdotjs',
-    'Tailwind CSS': 'simple-icons:tailwindcss',
-    'RESTful APIs': 'lucide:code',
-    'Web Security': 'lucide:shield',
-    'Authentication': 'lucide:lock',
-    'API Security': 'lucide:shield-check',
-    'Penetration Testing': 'lucide:bug',
-  }
-
-  return iconMap[tech] || 'lucide:code'
-}
+// No additional script needed for this simplified version
 </script> 
