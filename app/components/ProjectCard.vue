@@ -73,7 +73,7 @@
               
               <!-- Bottom Content (Tech Stack and Links) -->
               <div 
-                class="mt-auto transition-all duration-500 ease-out transform translate-y-4 opacity-0 group-hover:opacity-100 group-hover:translate-y-0"
+                class="mt-auto transition-all duration-500 ease-out transform translate-y-4 opacity-0 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto"
               >
                 <!-- Tech Stack -->
                 <div class="flex flex-wrap gap-2 mb-6">
@@ -103,6 +103,7 @@
                            transition-all duration-300 rounded-full text-white bg-white/10 
                            hover:bg-white/20 hover:-translate-y-0.5 active:translate-y-0
                            relative overflow-hidden"
+                    @click.stop
                   >
                     <Icon 
                       name="ph:github-logo-fill" 
@@ -119,6 +120,7 @@
                            transition-all duration-300 rounded-full text-emerald-400 
                            bg-emerald-500/20 hover:bg-emerald-500/30 hover:-translate-y-0.5 
                            active:translate-y-0 relative overflow-hidden"
+                    @click.stop
                   >
                     <Icon 
                       name="lucide:external-link" 
