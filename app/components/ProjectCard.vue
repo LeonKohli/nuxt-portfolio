@@ -22,7 +22,7 @@
           }"
         >
           <div 
-            class="rounded-[24px] h-[20rem] md:h-[32rem] w-full md:w-[384px] group 
+            class="rounded-[24px] h-[24rem] sm:h-[26rem] md:h-[32rem] w-full md:w-[384px] group 
                    overflow-hidden flex flex-col items-start justify-start relative z-10 
                    cursor-pointer transition-all duration-500 ease-out hover:shadow-lg"
           >
