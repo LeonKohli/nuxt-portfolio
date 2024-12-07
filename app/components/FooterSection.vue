@@ -1,5 +1,5 @@
 <template>
-  <footer class="relative px-4 py-24 overflow-hidden sm:px-6 lg:px-8">
+  <footer class="relative px-4 py-12 overflow-hidden sm:px-6 lg:px-8">
     <!-- Background Elements -->
     <div class="absolute inset-0 opacity-15">
       <Icon 
@@ -35,20 +35,30 @@
 
       <!-- Contact Button -->
       <button 
-        class="relative inline-flex h-12 overflow-hidden rounded-lg p-[1px] focus:outline-none focus:ring-2 focus:ring-emerald-400/50 focus:ring-offset-2 focus:ring-offset-black group"
+        class="relative inline-flex h-10 sm:h-12 w-[180px] sm:w-[210px] overflow-hidden rounded-lg p-[1px] focus:outline-none focus:ring-2 focus:ring-emerald-400/50 focus:ring-offset-2 focus:ring-offset-black group"
         @click="copyEmail"
       >
         <span 
-          class="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#0A0A0A_0%,#0A0A0A_50%,#166534_100%)]" 
+          class="absolute inset-[-1000%] animate-[spin_4s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#0A0A0A_0%,#0A0A0A_50%,#166534_100%)]" 
         />
         <span 
-          class="inline-flex items-center justify-center w-full h-full px-8 py-2 text-lg font-medium text-white transition-colors duration-300 bg-black rounded-lg cursor-pointer backdrop-blur-3xl group-hover:bg-black/80"
+          class="inline-flex items-center justify-center w-full h-full px-6 py-2 text-base font-medium text-white transition-all duration-500 bg-black rounded-lg cursor-pointer sm:px-8 sm:text-lg backdrop-blur-3xl group-hover:bg-black/80"
         >
-          <Icon 
-            :name="copied ? 'lucide:check' : 'lucide:copy'" 
-            class="w-5 h-5 mr-3 transition-colors group-hover:text-emerald-400"
-          />
-          {{ copied ? 'Copied!' : 'Copy Email' }}
+          <div class="relative w-4 h-4 mr-2 sm:w-5 sm:h-5 sm:mr-3">
+            <Icon 
+              name="lucide:copy"
+              class="absolute inset-0 w-4 h-4 transition-all duration-300 ease-in-out transform sm:w-5 sm:h-5"
+              :class="copied ? 'opacity-0 scale-75' : 'opacity-100 group-hover:text-emerald-400'"
+            />
+            <Icon 
+              name="lucide:check"
+              class="absolute inset-0 w-4 h-4 transition-all duration-300 ease-in-out transform sm:w-5 sm:h-5 text-emerald-400"
+              :class="copied ? 'opacity-100 scale-100' : 'opacity-0 scale-125'"
+            />
+          </div>
+          <span class="transition-all duration-300 ease-in-out">
+            {{ copied ? 'Copied!' : 'Copy Email' }}
+          </span>
         </span>
       </button>
 
@@ -69,7 +79,7 @@
 
       <!-- Copyright -->
       <div class="mt-12 text-sm text-white/40">
-        © {{ new Date().getFullYear() }} Leon Kohlhaussen. All rights reserved.
+        © {{ new Date().getFullYear() }} Built with ❤️ by Leon Kohlhaussen
       </div>
     </div>
   </footer>
