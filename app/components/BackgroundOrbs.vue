@@ -6,26 +6,26 @@
       style="background-size: 8px 8px;"
     />
     
-    <!-- Orbs with improved positioning -->
+    <!-- Orbs with improved positioning and parallax -->
     <div 
-      class="orb-1 fixed" 
+      class="fixed orb-1" 
       :style="{ 
-        transform: `translate(${scrollY * 0.05}px, ${-scrollY * 0.02}px)`,
-        opacity: Math.max(0, 1 - scrollY * 0.001)
+        transform: `translate(${scrollY * 0.02}px, ${-scrollY * 0.01}px)`,
+        opacity: Math.max(0.3, 1 - scrollY * 0.0005)
       }"
     />
     <div 
-      class="orb-2 fixed"
+      class="fixed orb-2"
       :style="{ 
-        transform: `translate(${-scrollY * 0.03}px, ${scrollY * 0.04}px)`,
-        opacity: Math.max(0, 1 - scrollY * 0.001)
+        transform: `translate(${-scrollY * 0.015}px, ${scrollY * 0.02}px)`,
+        opacity: Math.max(0.2, 0.8 - scrollY * 0.0005)
       }"
     />
     <div 
-      class="orb-3 fixed"
+      class="fixed orb-3"
       :style="{ 
-        transform: `translate(${scrollY * 0.02}px, ${-scrollY * 0.03}px)`,
-        opacity: Math.max(0, 1 - scrollY * 0.001)
+        transform: `translate(${scrollY * 0.01}px, ${-scrollY * 0.015}px)`,
+        opacity: Math.max(0.1, 0.6 - scrollY * 0.0005)
       }"
     />
   </div>
@@ -38,6 +38,9 @@ onMounted(() => {
   const updateScroll = () => {
     scrollY.value = window.scrollY
   }
+  
+  // Initial scroll position
+  updateScroll()
   
   window.addEventListener('scroll', updateScroll, { passive: true })
   
@@ -64,6 +67,7 @@ onMounted(() => {
   position: fixed;
   pointer-events: none;
   will-change: transform, opacity;
+  transition: transform 0.1s ease-out;
 }
 
 .orb-1 {

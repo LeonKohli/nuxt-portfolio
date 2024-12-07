@@ -5,6 +5,7 @@
       <HeroSection />
       <ProjectsSection @select="selectedProject = $event" />
       <AboutSection />
+      <TechStackSection />
       <FooterSection />
     </div>
     <ProjectModal 
@@ -25,7 +26,6 @@ useHead({
   }]
 })
 </script>
-
 <style>
 @keyframes float {
   0%, 100% {

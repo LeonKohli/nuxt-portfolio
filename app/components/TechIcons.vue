@@ -1,20 +1,39 @@
 <template>
-  <div class="absolute inset-0 h-screen pointer-events-none -z-10">
+  <div 
+    class="absolute inset-0 overflow-hidden pointer-events-none"
+    :class="[
+      fullHeight ? 'h-screen' : 'h-full',
+      zIndex ? `-z-${zIndex}` : ''
+    ]"
+  >
     <div 
-      v-for="(icon, index) in techIcons" 
+      v-if="showGrid"
+      class="absolute inset-0 bg-[linear-gradient(rgba(34,197,94,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(34,197,94,0.02)_1px,transparent_1px)] overflow-hidden" 
+      style="background-size: 8px 8px;"
+    />
+    
+    <div 
+      v-for="(icon, index) in icons" 
       :key="icon.name"
-      class="absolute transition-all duration-300 opacity-0 hover:opacity-30"
-      :class="`float-animation-${index + 1}`"
+      class="absolute transition-all duration-300"
+      :class="[
+        `float-animation-${index + 1}`,
+        'opacity-[0.12]'
+      ]"
       :style="{
-        fontSize: '120px',
+        fontSize: `${iconSize}px`,
         top: `${icon.position.top}%`,
         left: `${icon.position.left}%`,
-        animationDelay: `${1500 + (index * 200)}ms`,
+        animationDelay: `${startDelay + (index * delayIncrement)}ms`,
+        opacity: scrollFade ? Math.max(0, 0.12 - scrollY * 0.001) : 0.12
       }"
     >
       <Icon 
         :name="icon.name" 
-        class="text-[#22c55e] [&>*]:!fill-current [&>*]:!stroke-current transition-transform duration-500 hover:scale-110" 
+        :class="[
+          'transition-transform duration-500 hover:scale-110',
+          iconColorClass
+        ]"
       />
     </div>
   </div>
@@ -29,14 +48,53 @@ interface TechIcon {
   }
 }
 
-const techIcons: TechIcon[] = [
-  { name: 'simple-icons:vuedotjs', position: { top: 10, left: 5 } },
-  { name: 'simple-icons:nuxtdotjs', position: { top: 25, left: 85 } },
-  { name: 'simple-icons:typescript', position: { top: 15, left: 35 } },
-  { name: 'simple-icons:tailwindcss', position: { top: 35, left: 55 } },
-  { name: 'simple-icons:python', position: { top: 70, left: 10 } },
-  { name: 'simple-icons:postgresql', position: { top: 85, left: 80 } },
-]
+// Props definition
+interface Props {
+  icons?: TechIcon[]
+  iconSize?: number
+  startDelay?: number
+  delayIncrement?: number
+  showGrid?: boolean
+  fullHeight?: boolean
+  scrollFade?: boolean
+  zIndex?: number
+  iconColorClass?: string
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  icons: () => [
+    { name: 'simple-icons:vuedotjs', position: { top: 10, left: 5 } },
+    { name: 'simple-icons:nuxtdotjs', position: { top: 25, left: 85 } },
+    { name: 'simple-icons:typescript', position: { top: 15, left: 35 } },
+    { name: 'simple-icons:tailwindcss', position: { top: 35, left: 55 } },
+    { name: 'simple-icons:python', position: { top: 70, left: 10 } },
+    { name: 'simple-icons:postgresql', position: { top: 85, left: 80 } },
+  ],
+  iconSize: 120,
+  startDelay: 1500,
+  delayIncrement: 200,
+  showGrid: true,
+  fullHeight: true,
+  scrollFade: true,
+  zIndex: 1,
+  iconColorClass: 'text-[#22c55e]'
+})
+
+const scrollY = ref(0)
+
+onMounted(() => {
+  if (props.scrollFade) {
+    const updateScroll = () => {
+      scrollY.value = window.scrollY
+    }
+    
+    window.addEventListener('scroll', updateScroll, { passive: true })
+    
+    onUnmounted(() => {
+      window.removeEventListener('scroll', updateScroll)
+    })
+  }
+})
 </script>
 
 <style scoped>
@@ -113,4 +171,4 @@ const techIcons: TechIcon[] = [
 .float-animation-6 {
   animation: fadeScale 0.8s ease-out forwards, float-6 26s ease-in-out infinite;
 }
-</style> 
+</style>

@@ -1,6 +1,6 @@
 <template>
   <section 
-    class="flex flex-col justify-center min-h-screen px-0 sm:px-6 lg:px-8 overflow-hidden" 
+    class="flex flex-col justify-center min-h-screen px-0 overflow-hidden sm:px-6 lg:px-8" 
     id="projects"
     ref="sectionRef"
   >

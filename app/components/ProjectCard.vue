@@ -127,7 +127,7 @@
                       class="w-4 h-4 mr-2 transition-transform duration-300
                              group-hover/btn:scale-110 group-hover/btn:rotate-[8deg]" 
                     />
-                    <span class="relative z-10">Live Demo</span>
+                    <span class="relative z-10">Live</span>
                   </a>
                 </div>
               </div>
