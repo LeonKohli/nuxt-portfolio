@@ -6,7 +6,6 @@
       style="background-size: 8px 8px;"
     />
     
-    <!-- Orbs with improved positioning and parallax -->
     <div 
       class="fixed orb-1" 
       :style="{ 
