@@ -7,12 +7,6 @@
     ]"
   >
     <div 
-      v-if="showGrid"
-      class="absolute inset-0 bg-[linear-gradient(rgba(34,197,94,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(34,197,94,0.02)_1px,transparent_1px)] overflow-hidden" 
-      style="background-size: 8px 8px;"
-    />
-    
-    <div 
       v-for="(icon, index) in icons" 
       :key="icon.name"
       class="absolute transition-all duration-300"
@@ -54,7 +48,6 @@ interface Props {
   iconSize?: number
   startDelay?: number
   delayIncrement?: number
-  showGrid?: boolean
   fullHeight?: boolean
   scrollFade?: boolean
   zIndex?: number
@@ -73,7 +66,6 @@ const props = withDefaults(defineProps<Props>(), {
   iconSize: 120,
   startDelay: 1500,
   delayIncrement: 200,
-  showGrid: true,
   fullHeight: true,
   scrollFade: true,
   zIndex: 1,
