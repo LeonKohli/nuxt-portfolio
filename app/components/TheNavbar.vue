@@ -1,6 +1,6 @@
 <template>
   <nav 
-    class="fixed z-50 transition-all duration-500 left-6"
+    class="fixed z-50 hidden transition-all duration-500 left-6 md:block"
     :class="[
       isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4',
       isVisible ? 'pointer-events-auto' : 'pointer-events-none'
@@ -8,7 +8,7 @@
     :style="{ top: '50%', transform: `translateY(-50%) ${isVisible ? '' : 'translateY(1rem)'}` }"
   >
     <!-- Navigation Links -->
-    <div class="flex-col items-start hidden gap-3 md:flex">
+    <div class="flex flex-col items-start gap-3">
       <a 
         v-for="(item, index) in navItems" 
         :key="item.label"
@@ -57,47 +57,6 @@
         <span class="relative">{{ item.label }}</span>
       </a>
     </div>
-
-    <!-- Mobile Menu Button -->
-    <button 
-      class="p-2 transition-all duration-300 border rounded-full md:hidden bg-black/30 backdrop-blur-sm border-white/5 text-white/50 hover:text-white hover:bg-black/50 hover:border-white/10"
-      @click="isMenuOpen = !isMenuOpen"
-    >
-      <Icon 
-        :name="isMenuOpen ? 'lucide:x' : 'lucide:menu'" 
-        class="w-5 h-5 transition-transform duration-300"
-        :class="{ 'rotate-90': isMenuOpen }"
-      />
-    </button>
-
-    <!-- Mobile Menu -->
-    <div 
-      v-if="isMenuOpen"
-      class="absolute top-0 ml-2 overflow-hidden border left-full rounded-xl bg-black/30 backdrop-blur-sm border-white/5 md:hidden"
-    >
-      <div class="flex flex-col min-w-[140px]">
-        <a 
-          v-for="(item, index) in navItems" 
-          :key="item.label"
-          :href="item.href"
-          class="relative px-4 py-2 overflow-hidden text-sm transition-all duration-300 hover:text-white"
-          :class="[
-            activeSection === item.href.substring(1) 
-              ? 'text-white bg-white/10' 
-              : 'text-white/50'
-          ]"
-          :style="{ transitionDelay: `${index * 50}ms` }"
-          @click.prevent="scrollToSection(item.href)"
-        >
-          <div 
-            class="absolute inset-0 transition-opacity duration-300 opacity-0 hover:opacity-100"
-          >
-            <div class="absolute inset-0 bg-gradient-to-r from-emerald-500/10 to-transparent" />
-          </div>
-          <span class="relative">{{ item.label }}</span>
-        </a>
-      </div>
-    </div>
   </nav>
 </template>
 
@@ -107,7 +66,6 @@ interface SpotlightStyle {
   transform: string;
 }
 
-const isMenuOpen = ref(false)
 const isVisible = ref(false)
 const activeSection = ref('')
 
@@ -177,7 +135,6 @@ onMounted(() => {
 
 // Smooth scroll to section
 const scrollToSection = (href: string) => {
-  isMenuOpen.value = false // Close mobile menu
   const element = document.querySelector(href)
   if (element) {
     element.scrollIntoView({ 
@@ -188,19 +145,4 @@ const scrollToSection = (href: string) => {
     activeSection.value = href.substring(1)
   }
 }
-
-// Close mobile menu on resize
-useEventListener(window, 'resize', () => {
-  if (window.innerWidth >= 768) {
-    isMenuOpen.value = false
-  }
-})
-
-// Close mobile menu when clicking outside
-useEventListener(document, 'click', (event) => {
-  const target = event.target as HTMLElement
-  if (!target.closest('nav')) {
-    isMenuOpen.value = false
-  }
-})
 </script> 

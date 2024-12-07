@@ -31,11 +31,11 @@
                 <!-- Name -->
                 <h1
                   class="font-bold text-6xl md:text-[9vw] lg:text-[9.8vw] text-zinc-100 leading-none z-50 text-center md:text-left">
-                  <span class="block transition-colors duration-300 opacity-0 animate-fade-in hover:text-emerald-400/80"
+                  <span class="block transition-colors duration-300 opacity-0 animate-fade-in "
                     style="animation-delay: 400ms;">
                     <span class="font-exo">LEON</span>
                   </span>
-                  <span class="block transition-colors duration-300 opacity-0 animate-fade-in hover:text-emerald-400/80"
+                  <span class="block transition-colors duration-300 opacity-0 animate-fade-in "
                     style="animation-delay: 600ms;">
                     <span class="font-exo">KOHLHAUßEN</span>
                   </span>
