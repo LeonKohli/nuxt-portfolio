@@ -162,10 +162,12 @@
                  disabled:hover:scale-100 disabled:hover:translate-y-0 project-hover-transition"
           :disabled="isAtStart"
           @click="scrollLeft"
+          aria-label="Scroll to previous projects"
         >
           <Icon 
             name="lucide:chevron-left" 
-            class="w-6 h-6 text-white project-hover-transition group-hover/nav:scale-110" 
+            class="w-6 h-6 text-white project-hover-transition group-hover/nav:scale-110"
+            aria-hidden="true"
           />
         </button>
         <button 
@@ -175,10 +177,12 @@
                  disabled:hover:scale-100 disabled:hover:translate-y-0 project-hover-transition"
           :disabled="isAtEnd"
           @click="scrollRight"
+          aria-label="Scroll to next projects"
         >
           <Icon 
             name="lucide:chevron-right" 
-            class="w-6 h-6 text-white project-hover-transition group-hover/nav:scale-110" 
+            class="w-6 h-6 text-white project-hover-transition group-hover/nav:scale-110"
+            aria-hidden="true"
           />
         </button>
       </div>
