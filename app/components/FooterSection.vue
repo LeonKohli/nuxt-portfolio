@@ -3,16 +3,13 @@
     <!-- Background Elements -->
     <div class="absolute inset-0 opacity-15">
       <Icon 
-        name="simple-icons:vuedotjs" 
-        class="absolute text-green-400 w-14 h-14 left-10 top-10" 
-      />
-      <Icon 
-        name="simple-icons:typescript" 
-        class="absolute text-green-400 w-14 h-14 right-20 top-20" 
-      />
-      <Icon 
-        name="simple-icons:python" 
-        class="absolute text-green-400 w-14 h-14 left-1/4 bottom-20" 
+        v-for="(icon, index) in backgroundIcons" 
+        :key="index"
+        :name="icon.name"
+        :class="[
+          'absolute text-green-400 w-14 h-14',
+          icon.position
+        ]"
       />
     </div>
 
@@ -64,22 +61,23 @@
 
       <!-- Social Links -->
       <div class="flex justify-center mt-12 space-x-6">
-        <a 
+        <NuxtLink
           v-for="link in socialLinks"
           :key="link.name"
-          :href="link.url"
+          :to="link.url"
+          external
           target="_blank"
-          rel="noopener noreferrer"
-          class="transition-colors duration-300 text-white/40 hover:text-white"
+          class="flex items-center justify-center w-10 h-10 transition-all duration-300 rounded-full text-white/40 hover:text-white focus:outline-none focus:ring-2 focus:ring-emerald-400/50"
         >
-          <Icon :name="link.icon" class="w-6 h-6" />
+          <Icon :name="link.icon" class="w-5 h-5" />
           <span class="sr-only">{{ link.name }}</span>
-        </a>
+        </NuxtLink>
       </div>
 
       <!-- Copyright -->
       <div class="mt-12 text-sm text-white/40">
-        © {{ new Date().getFullYear() }} Built with ❤️ by Leon Kohlhaussen
+        © {{ new Date().getFullYear() }} Built with 
+        <span class="text-red-400">❤️</span> by Leon Kohlhaussen
       </div>
     </div>
   </footer>
@@ -88,6 +86,12 @@
 <script setup lang="ts">
 const copied = ref(false)
 const email = 'contact@leonkohli.dev'
+
+const backgroundIcons = [
+  { name: 'simple-icons:vuedotjs', position: 'left-10 top-10' },
+  { name: 'simple-icons:typescript', position: 'right-20 top-20' }, 
+  { name: 'simple-icons:python', position: 'left-1/4 bottom-20' }
+]
 
 const socialLinks = [
   { name: 'GitHub', url: 'https://github.com/leonkohli', icon: 'simple-icons:github' },
@@ -106,4 +110,4 @@ const copyEmail = async () => {
     console.error('Failed to copy email:', err)
   }
 }
-</script> 
+</script>
