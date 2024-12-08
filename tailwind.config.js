@@ -18,6 +18,9 @@ module.exports = {
       fontFamily: {
         exo: ["Exo"],
       },
+      opacity: {
+        '0': '0.001'
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
