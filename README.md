@@ -2,6 +2,9 @@
 
 Welcome to the repository for [leonkohli.dev](https://leonkohli.dev) - my personal portfolio website showcasing my work and skills. Built with modern technologies, this site demonstrates clean code, smooth interactions, and optimal performance.
 
+![100Performance](https://github.com/user-attachments/assets/bde4f897-bca8-44d1-a733-97f724c46973)
+
+
 ## ✨ Features
 
 - **Modern Tech Stack**: Built with Nuxt 3, Vue 3, TypeScript, and Tailwind CSS
