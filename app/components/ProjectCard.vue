@@ -1,5 +1,5 @@
 <template>
-  <div class="relative w-full touch-pan-x">
+  <div class="relative w-full touch-pan-x" ref="cardRef">
     <div 
       class="flex w-full overflow-x-scroll overscroll-x-contain py-8 scroll-smooth 
              [scrollbar-width:none] snap-x snap-mandatory touch-pan-x" 
@@ -74,7 +74,7 @@
                            hover:bg-white/20 flex items-center gap-1.5 group/tech project-hover-transition"
                   >
                     <Icon 
-                      v-if="hoveredProjectId === project.id"
+                      v-if="isVisible"
                       :name="tech.icon" 
                       class="w-3.5 h-3.5 project-hover-transition group-hover/tech:scale-110 group-hover/tech:rotate-[8deg]" 
                       loading="lazy"
@@ -191,6 +191,18 @@ const props = defineProps<{
   projects: Project[]
 }>()
 
+const cardRef = ref<HTMLElement | null>(null)
+const isVisible = ref(false)
+
+useIntersectionObserver(
+  cardRef,
+  (entries) => {
+    const [entry] = entries
+    if (entry?.isIntersecting && !isVisible.value) {
+      isVisible.value = true
+    }
+  },
+)
 const scrollContainer = ref<HTMLElement | null>(null)
 const elementVisibility = reactive<Record<string, boolean>>({})
 const hoveredProjectId = ref<string | null>(null)
