@@ -19,6 +19,8 @@
             opacity: elementVisibility[project.id] ? 1 : 0,
             transform: elementVisibility[project.id] ? 'none' : 'translateY(20px)'
           }"
+          @mouseenter="handleProjectHover(project.id, true)"
+          @mouseleave="handleProjectHover(project.id, false)"
         >
           <div 
             class="rounded-[24px] h-[24rem] sm:h-[26rem] md:h-[32rem] w-full md:w-[384px] group 
@@ -72,10 +74,15 @@
                            hover:bg-white/20 flex items-center gap-1.5 group/tech project-hover-transition"
                   >
                     <Icon 
+                      v-if="hoveredProjectId === project.id"
                       :name="tech.icon" 
                       class="w-3.5 h-3.5 project-hover-transition group-hover/tech:scale-110 group-hover/tech:rotate-[8deg]" 
+                      loading="lazy"
+                      width="14"
+                      height="14"
+                      aria-hidden="true"
                     />
-                    {{ tech.name }}
+                    <span class="text-sm">{{ tech.name }}</span>
                   </div>
                 </div>
 
@@ -186,11 +193,17 @@ const props = defineProps<{
 
 const scrollContainer = ref<HTMLElement | null>(null)
 const elementVisibility = reactive<Record<string, boolean>>({})
+const hoveredProjectId = ref<string | null>(null)
 
 // Initialize scroll state with default values
 const isAtStart = ref(true)
 const isAtEnd = ref(false)
 const showNavigation = ref(false)
+
+// Track hover state for each project
+const handleProjectHover = (projectId: string, isHovering: boolean) => {
+  hoveredProjectId.value = isHovering ? projectId : null
+}
 
 // Initialize visibility and scroll state
 onMounted(() => {
