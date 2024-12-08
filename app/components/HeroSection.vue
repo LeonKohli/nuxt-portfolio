@@ -59,15 +59,24 @@
                       Germany</span>
                   </div>
                   <div class="flex items-center gap-4 opacity-0 animate-fade-in" style="animation-delay: 1000ms;">
-                    <a v-for="link in socialLinks" :key="link.name" :href="link.url" target="_blank"
+                    <a 
+                      v-for="link in socialLinks" 
+                      :key="link.name" 
+                      :href="link.url" 
+                      target="_blank"
                       rel="noopener noreferrer"
-                      class="hover:text-[#22c55e] transition-all duration-300 flex items-center gap-2 group hover:-translate-y-1">
-                      <Icon :name="link.playfulIcon"
+                      class="hover:text-[#22c55e] transition-all duration-300 flex items-center gap-2 group hover:-translate-y-1"
+                      :aria-label="`Visit my ${link.name} profile`"
+                    >
+                      <Icon 
+                        :name="link.playfulIcon"
                         class="w-5 h-5 transition-all duration-300 sm:w-6 sm:h-6 group-hover:scale-110"
                         loading="lazy"
                         width="20"
                         height="20"
-                        aria-hidden="true" />
+                        aria-hidden="true" 
+                      />
+                      <span class="sr-only">{{ link.screenReaderText }}</span>
                     </a>
                   </div>
                 </div>
@@ -94,10 +103,30 @@
 
 <script setup lang="ts">
 const socialLinks = [
-  { name: 'email', url: 'mailto:contact@leonkohli.dev', playfulIcon: 'lucide:mail-plus' },
-  { name: 'gitlab', url: 'https://gitlab.com/opendata-apps/mantis', playfulIcon: 'ph:gitlab-logo-simple-fill' },
-  { name: 'github', url: 'https://github.com/leonkohli', playfulIcon: 'ph:github-logo-fill' },
-  { name: 'linkedin', url: 'https://www.linkedin.com/in/leon-kohlhau%C3%9Fen/', playfulIcon: 'ri:linkedin-fill' }
+  { 
+    name: 'email',
+    url: 'mailto:contact@leonkohli.dev',
+    playfulIcon: 'lucide:mail-plus',
+    screenReaderText: 'Send me an email at contact@leonkohli.dev'
+  },
+  { 
+    name: 'GitLab',
+    url: 'https://gitlab.com/opendata-apps/mantis',
+    playfulIcon: 'ph:gitlab-logo-simple-fill',
+    screenReaderText: 'View my GitLab projects'
+  },
+  { 
+    name: 'GitHub',
+    url: 'https://github.com/leonkohli',
+    playfulIcon: 'ph:github-logo-fill',
+    screenReaderText: 'Check out my GitHub repositories'
+  },
+  { 
+    name: 'LinkedIn',
+    url: 'https://www.linkedin.com/in/leon-kohlhau%C3%9Fen/',
+    playfulIcon: 'ri:linkedin-fill',
+    screenReaderText: 'Connect with me on LinkedIn'
+  }
 ]
 
 const isScrolled = ref(false)
