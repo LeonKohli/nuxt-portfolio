@@ -44,7 +44,13 @@ const isOpen = computed(() => !!props.project)
           variant="outline"
           class="mr-4"
         >
-          <Icon name="lucide:code" class="w-4 h-4 mr-2" />
+          <Icon name="lucide:code" 
+            class="w-4 h-4 mr-2" 
+            loading="lazy"
+            width="16"
+            height="16"
+            aria-hidden="true"
+          />
           View Code
         </Button>
         <Button
@@ -53,7 +59,13 @@ const isOpen = computed(() => !!props.project)
           target="_blank"
           rel="noopener noreferrer"
         >
-          <Icon name="lucide:external-link" class="w-4 h-4 mr-2" />
+          <Icon name="lucide:external-link" 
+            class="w-4 h-4 mr-2" 
+            loading="lazy"
+            width="16"
+            height="16"
+            aria-hidden="true"
+          />
           Visit Project
         </Button>
       </DialogFooter>

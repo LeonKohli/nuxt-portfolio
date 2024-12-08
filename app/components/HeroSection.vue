@@ -50,7 +50,11 @@
                   <div class="flex items-center gap-2 text-base opacity-0 sm:text-lg animate-fade-in group"
                     style="animation-delay: 800ms;">
                     <Icon name="ph:map-pin-fill"
-                      class="w-5 h-5 text-emerald-400 transition-transform duration-300 group-hover:scale-125 group-hover:rotate-[15deg]" />
+                      class="w-5 h-5 text-emerald-400 transition-transform duration-300 group-hover:scale-125 group-hover:rotate-[15deg]"
+                      loading="lazy"
+                      width="20"
+                      height="20"
+                      aria-hidden="true" />
                     <span class="transition-colors duration-300 text-white/70 group-hover:text-white/90">Potsdam,
                       Germany</span>
                   </div>
@@ -59,7 +63,11 @@
                       rel="noopener noreferrer"
                       class="hover:text-[#22c55e] transition-all duration-300 flex items-center gap-2 group hover:-translate-y-1">
                       <Icon :name="link.playfulIcon"
-                        class="w-5 h-5 transition-all duration-300 sm:w-6 sm:h-6 group-hover:scale-110" />
+                        class="w-5 h-5 transition-all duration-300 sm:w-6 sm:h-6 group-hover:scale-110"
+                        loading="lazy"
+                        width="20"
+                        height="20"
+                        aria-hidden="true" />
                     </a>
                   </div>
                 </div>

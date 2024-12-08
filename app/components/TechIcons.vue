@@ -30,6 +30,9 @@
           iconColorClass
         ]"
         :aria-label="icon.name.split(':')[1]"
+        loading="lazy"
+        :width="iconSize"
+        :height="iconSize"
       />
     </div>
   </div>

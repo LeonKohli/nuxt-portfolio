@@ -93,6 +93,10 @@
                     <Icon 
                       name="ph:github-logo-fill" 
                       class="w-4 h-4 mr-2 project-hover-transition group-hover/btn:scale-110 group-hover/btn:rotate-[8deg]" 
+                      loading="lazy"
+                      width="16"
+                      height="16"
+                      aria-hidden="true"
                     />
                     <span class="relative z-10">GitHub</span>
                   </a>
@@ -108,6 +112,10 @@
                     <Icon 
                       name="lucide:external-link" 
                       class="w-4 h-4 mr-2 project-hover-transition group-hover/btn:scale-110 group-hover/btn:rotate-[8deg]" 
+                      loading="lazy"
+                      width="16"
+                      height="16"
+                      aria-hidden="true"
                     />
                     <span class="relative z-10">Live</span>
                   </a>

@@ -72,6 +72,10 @@
                       <Icon 
                         :name="item.icon" 
                         class="relative w-6 h-6 transition-all duration-300 text-emerald-400 group-hover:scale-110 group-hover:rotate-3" 
+                        loading="lazy"
+                        width="24"
+                        height="24"
+                        aria-hidden="true"
                       />
                     </div>
                   </div>
