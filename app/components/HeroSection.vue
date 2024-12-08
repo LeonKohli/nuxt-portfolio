@@ -152,6 +152,17 @@ const scrollToProjects = () => {
   }
 }
 
+@keyframes nameReveal {
+  0% {
+    opacity: 0;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 @keyframes bounceSoft {
   0%, 100% {
     transform: translateY(0);
@@ -159,6 +170,11 @@ const scrollToProjects = () => {
   50% {
     transform: translateY(6px);
   }
+}
+
+.animate-name-reveal {
+  animation: nameReveal 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+  will-change: opacity;
 }
 
 .animate-fade-in {
@@ -179,7 +195,8 @@ const scrollToProjects = () => {
 
 /* Prevent animation on reduced motion preference */
 @media (prefers-reduced-motion: reduce) {
-  .animate-fade-in {
+  .animate-fade-in,
+  .animate-name-reveal {
     animation: none;
     opacity: 1;
     transform: none;
