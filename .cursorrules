@@ -48,7 +48,7 @@ TypeScript Usage
 
 UI and Styling
 - Use shadcn-vue components (e.g., <Button>, <Input>, <Dialog>).
-- Apply inline Tailwind CSS classes for styling.
+- Use inline Tailwind CSS classes directly in HTML elements - avoid using @apply directives.
 - Implement responsive design using Tailwind's mobile-first approach.
 - Use `<NuxtImg>` or `<NuxtPicture>` for images and always add an explicit `width` and `height` attribute.
 - Use `<Icon>` component from @nuxt/icon module for icons.

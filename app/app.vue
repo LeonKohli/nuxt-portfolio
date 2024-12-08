@@ -1,20 +1,28 @@
 <template>
-  <div class="relative min-h-screen overflow-x-hidden font-mono antialiased text-white bg-black">
+  <div class="relative min-h-screen overflow-x-hidden font-mono antialiased text-white bg-black" role="document">
     <!-- Animated gradient backgrounds -->
-    <div class="fixed inset-0 bg-gradient-radial from-[#22c55e]/10 via-black to-black" />
+    <div class="fixed inset-0 bg-gradient-radial from-[#22c55e]/10 via-black to-black" aria-hidden="true" />
     
     <!-- Animated orbs -->
-    <BackgroundOrbs />
+    <BackgroundOrbs aria-hidden="true" />
 
     <!-- Navigation -->
-    <TheNavbar />
+    <Navbar />
 
-    <!-- Content -->
-    <div class="relative z-10">
+    <!-- Main content -->
+    <main id="main-content" class="relative z-10">
       <NuxtPage />
-    </div>
+    </main>
   </div>
 </template>
+
+<script setup lang="ts">
+useHead({
+  htmlAttrs: {
+    lang: 'en',
+  }
+})
+</script>
 
 <style>
 .bg-gradient-radial {
