@@ -135,7 +135,7 @@ const scrollToProjects = () => {
 <style scoped>
 @keyframes fadeIn {
   0% {
-    opacity: 0;
+    opacity: 0.001;
     transform: translateY(10px);
   }
   100% {

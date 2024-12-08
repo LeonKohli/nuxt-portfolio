@@ -96,7 +96,7 @@ onMounted(() => {
 <style scoped>
 @keyframes fadeScale {
   0% {
-    opacity: 0;
+    opacity: 0.001;
     transform: scale(0.8) translate(0, 0);
   }
   100% {

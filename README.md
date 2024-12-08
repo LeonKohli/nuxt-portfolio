@@ -1,75 +1,58 @@
-# Nuxt Minimal Starter
+# leonkohli.dev - Modern Portfolio Website
 
-Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+Welcome to the repository for [leonkohli.dev](https://leonkohli.dev) - my personal portfolio website showcasing my work and skills. Built with modern technologies, this site demonstrates clean code, smooth interactions, and optimal performance.
 
-## Setup
+## ✨ Features
 
-Make sure to install dependencies:
+- **Modern Tech Stack**: Built with Nuxt 3, Vue 3, TypeScript, and Tailwind CSS
+- **Responsive Design**: Mobile-first approach with fluid layouts
+- **Smooth Animations**: Custom fade-in and interaction animations
+- **Project Showcase**: Interactive project cards with hover effects
+- **Performance Optimized**: Leverages SSR and image optimization
+- **SEO Ready**: Built-in meta tags and structured data
+- **Component Library**: Uses shadcn-vue for consistent UI components
+- **Dark Mode**: Dark theme optimized for readability
+
+## 🛠️ Tech Stack
+
+- **Framework**: [Nuxt 3](https://nuxt.com/)
+- **UI Library**: [Vue 3](https://vuejs.org/)
+- **Styling**: [Tailwind CSS](https://tailwindcss.com/)
+- **Components**: [shadcn-vue](https://www.shadcn-vue.com/)
+- **Type Safety**: [TypeScript](https://www.typescriptlang.org/)
+- **Content**: [@nuxt/content](https://content.nuxt.com/)
+- **Icons**: [@nuxt/icon](https://github.com/nuxt-modules/icon)
+- **Image Optimization**: [@nuxt/image](https://image.nuxt.com/)
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- Node.js (v18 or higher)
+- bun (recommended) or npm
+
+### Installation
+
+1. Clone the repository:
+```bash
+git clone https://github.com/yourusername/portfolio.git
+cd portfolio
+```
+
+2. Install dependencies:
 
 ```bash
-# npm
-npm install
-
-# pnpm
-pnpm install
-
-# yarn
-yarn install
-
-# bun
 bun install
 ```
 
-## Development Server
-
-Start the development server on `http://localhost:3000`:
+3. Start the development server:
 
 ```bash
-# npm
-npm run dev
-
-# pnpm
-pnpm dev
-
-# yarn
-yarn dev
-
-# bun
-bun run dev
+bun dev
 ```
 
-## Production
+The site will be available at `http://localhost:3000`
 
-Build the application for production:
+## 📝 License
 
-```bash
-# npm
-npm run build
-
-# pnpm
-pnpm build
-
-# yarn
-yarn build
-
-# bun
-bun run build
-```
-
-Locally preview production build:
-
-```bash
-# npm
-npm run preview
-
-# pnpm
-pnpm preview
-
-# yarn
-yarn preview
-
-# bun
-bun run preview
-```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.

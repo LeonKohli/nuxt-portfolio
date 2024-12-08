@@ -123,7 +123,7 @@ useIntersectionObserver(
 <style scoped>
 @keyframes fadeIn {
     0% {
-        opacity: 0;
+        opacity: 0.001;
         transform: translateY(10px);
     }
 
@@ -135,7 +135,7 @@ useIntersectionObserver(
 
 @keyframes slideUp {
     0% {
-        opacity: 0;
+        opacity: 0.001;
         transform: translateY(20px);
     }
 
