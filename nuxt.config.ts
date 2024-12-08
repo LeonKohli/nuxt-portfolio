@@ -14,7 +14,8 @@ export default defineNuxtConfig({
     '@nuxt/image',
     'shadcn-nuxt',
     '@vueuse/nuxt',
-    '@nuxt/content'
+    '@nuxt/content',
+    '@nuxthq/studio'
   ],
   shadcn: {
     prefix: '',
