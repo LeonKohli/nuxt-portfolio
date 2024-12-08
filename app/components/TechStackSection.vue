@@ -38,7 +38,8 @@
                         <div class="flex items-center justify-center w-12 h-12 rounded-lg shrink-0 transition-all duration-500
                             shadow-[0_0_0_1px_rgba(255,255,255,0.1)] group-hover:shadow-[0_0_0_1.5px_rgba(16,185,129,0.2)]
                             group-hover:scale-110" :style="{ backgroundColor: `${tech.color}15` }">
-                            <Icon :name="tech.icon"
+                            <Icon v-if="isVisible" 
+                                :name="tech.icon"
                                 class="w-6 h-6 transition-all duration-500 group-hover:scale-110"
                                 :style="{ color: tech.color }" 
                                 loading="lazy"
@@ -56,7 +57,8 @@
                                 {{ tech.category }}
                             </p>
                         </div>
-                        <Icon name="lucide:external-link" 
+                        <Icon v-if="isVisible" 
+                            name="lucide:external-link" 
                             class="w-4 h-4 ml-auto text-white/30 opacity-0 transition-all duration-300 
                             group-hover:opacity-100 group-hover:translate-x-0.5 group-hover:text-emerald-400"
                             loading="lazy"
