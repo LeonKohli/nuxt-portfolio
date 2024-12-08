@@ -30,6 +30,7 @@
     "vue-router": "latest"
   },
   "devDependencies": {
+    "@iconify-json/lucide": "^1.2.18",
     "@iconify-json/ph": "^1.2.1",
     "typescript": "^5.7.2"
   }
