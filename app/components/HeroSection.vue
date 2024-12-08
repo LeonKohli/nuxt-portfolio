@@ -100,12 +100,13 @@ useIntersectionObserver(
   sectionRef,
   (entries) => {
     const [entry] = entries
-    if (entry?.isIntersecting) {
+    if (entry?.isIntersecting && !isVisible.value) {
       isVisible.value = true
     }
   },
   {
-    threshold: 0.1
+    threshold: 0.2,
+    rootMargin: '0px 0px -10% 0px'
   }
 )
 
@@ -137,7 +138,6 @@ const scrollToProjects = () => {
     opacity: 0;
     transform: translateY(10px);
   }
-
   100% {
     opacity: 1;
     transform: translateY(0);
@@ -145,20 +145,18 @@ const scrollToProjects = () => {
 }
 
 @keyframes bounceSoft {
-
-  0%,
-  100% {
+  0%, 100% {
     transform: translateY(0);
   }
-
   50% {
     transform: translateY(6px);
   }
 }
 
 .animate-fade-in {
-  animation: fadeIn 0.6s ease-out forwards;
+  animation: fadeIn 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
   will-change: transform, opacity;
+  animation-play-state: paused;
 }
 
 .animate-bounce-soft {
@@ -166,11 +164,21 @@ const scrollToProjects = () => {
   will-change: transform;
 }
 
-.section-visible [class*='animate-fade-in'] {
+/* Control animations when section is visible */
+.section-visible .animate-fade-in {
   animation-play-state: running;
 }
 
-[class*='animate-fade-in'] {
-  animation-play-state: paused;
+/* Prevent animation on reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  .animate-fade-in {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+  
+  .animate-bounce-soft {
+    animation: none;
+  }
 }
 </style>

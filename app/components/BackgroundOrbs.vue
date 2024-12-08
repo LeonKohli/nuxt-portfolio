@@ -3,50 +3,48 @@
     <!-- Grid Pattern -->
     <div 
       class="absolute inset-0 bg-[linear-gradient(rgba(34,197,94,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(34,197,94,0.02)_1px,transparent_1px)] overflow-hidden" 
-      style="background-size: 8px 8px;"
+      :style="{ backgroundSize: '8px 8px' }"
     />
     
+    <!-- Animated Orbs -->
     <div 
-      class="fixed orb-1" 
+      v-for="(orb, index) in orbs" 
+      :key="index"
+      class="fixed"
+      :class="`orb-${index + 1}`"
       :style="{ 
-        transform: `translate(${scrollY * 0.02}px, ${-scrollY * 0.01}px)`,
-        opacity: Math.max(0.3, 1 - scrollY * 0.0005)
-      }"
-    />
-    <div 
-      class="fixed orb-2"
-      :style="{ 
-        transform: `translate(${-scrollY * 0.015}px, ${scrollY * 0.02}px)`,
-        opacity: Math.max(0.2, 0.8 - scrollY * 0.0005)
-      }"
-    />
-    <div 
-      class="fixed orb-3"
-      :style="{ 
-        transform: `translate(${scrollY * 0.01}px, ${-scrollY * 0.015}px)`,
-        opacity: Math.max(0.1, 0.6 - scrollY * 0.0005)
+        transform: `translate(${orb.x * scrollY}px, ${orb.y * scrollY}px)`,
+        opacity: Math.max(orb.minOpacity, orb.maxOpacity - scrollY * 0.0005)
       }"
     />
   </div>
 </template>
 
 <script setup lang="ts">
+interface Orb {
+  x: number
+  y: number
+  minOpacity: number
+  maxOpacity: number
+}
+
+// Define orb configurations
+const orbs: Orb[] = [
+  { x: 0.02, y: -0.01, minOpacity: 0.3, maxOpacity: 1.0 },
+  { x: -0.015, y: 0.02, minOpacity: 0.2, maxOpacity: 0.8 },
+  { x: 0.01, y: -0.015, minOpacity: 0.1, maxOpacity: 0.6 }
+]
+
 const scrollY = ref(0)
 
-onMounted(() => {
-  const updateScroll = () => {
-    scrollY.value = window.scrollY
-  }
-  
-  // Initial scroll position
-  updateScroll()
-  
-  window.addEventListener('scroll', updateScroll, { passive: true })
-  
-  onUnmounted(() => {
-    window.removeEventListener('scroll', updateScroll)
-  })
+// Use VueUse's useWindowScroll for better scroll handling
+const { y } = useWindowScroll()
+watch(y, (newY) => {
+  scrollY.value = newY
 })
+
+// Handle reduced motion preference
+const prefersReducedMotion = usePreferredReducedMotion()
 </script>
 
 <style scoped>
@@ -67,6 +65,8 @@ onMounted(() => {
   pointer-events: none;
   will-change: transform, opacity;
   transition: transform 0.1s ease-out;
+  border-radius: 50%;
+  filter: blur(50px);
 }
 
 .orb-1 {
@@ -74,10 +74,8 @@ onMounted(() => {
   height: 600px;
   top: -100px;
   right: -100px;
-  border-radius: 50%;
   background: radial-gradient(circle at center, rgba(34, 197, 94, 0.15), transparent 70%);
   animation: float 20s ease-in-out infinite;
-  filter: blur(50px);
 }
 
 .orb-2 {
@@ -85,10 +83,8 @@ onMounted(() => {
   height: 400px;
   bottom: -50px;
   left: -50px;
-  border-radius: 50%;
   background: radial-gradient(circle at center, rgba(34, 197, 94, 0.1), transparent 70%);
   animation: float 25s ease-in-out infinite reverse;
-  filter: blur(50px);
 }
 
 .orb-3 {
@@ -96,10 +92,17 @@ onMounted(() => {
   height: 300px;
   top: 50%;
   left: 50%;
-  border-radius: 50%;
   background: radial-gradient(circle at center, rgba(34, 197, 94, 0.05), transparent 70%);
   animation: float 30s ease-in-out infinite;
   animation-delay: -10s;
-  filter: blur(50px);
 }
-</style> 
+
+/* Disable animations when reduced motion is preferred */
+@media (prefers-reduced-motion: reduce) {
+  .orb-1, .orb-2, .orb-3 {
+    animation: none;
+    transition: none;
+    transform: none !important;
+  }
+}
+</style>

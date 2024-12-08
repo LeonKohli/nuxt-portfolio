@@ -1,6 +1,6 @@
 <template>
   <nav 
-    class="fixed z-50 hidden transition-all duration-500 left-6 md:block"
+    class="fixed z-50 hidden left-6 md:block nav-transition"
     :class="[
       isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4',
       isVisible ? 'pointer-events-auto' : 'pointer-events-none'
@@ -13,7 +13,7 @@
         v-for="(item, index) in navItems" 
         :key="item.label"
         :href="item.href"
-        class="relative py-2 pl-8 pr-4 overflow-hidden text-sm transition-all duration-300 border rounded-full group hover:text-white bg-black/30 hover:bg-black/50 backdrop-blur-sm border-white/5 hover:border-white/10 hover:pl-10"
+        class="relative py-2 pl-8 pr-4 overflow-hidden text-sm border rounded-full group hover:text-white bg-black/30 hover:bg-black/50 backdrop-blur-sm border-white/5 hover:border-white/10 hover:pl-10 nav-item-transition"
         :class="[
           activeSection === item.href.substring(1) 
             ? 'text-white border-white/20 pl-10' 
@@ -45,7 +45,7 @@
 
         <!-- Dot Indicator -->
         <span 
-          class="absolute left-3 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full transition-all duration-300"
+          class="absolute left-3 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full nav-item-transition"
           :class="[
             activeSection === item.href.substring(1)
               ? 'bg-emerald-400 scale-100'
@@ -153,3 +153,29 @@ const scrollToSection = (href: string) => {
   }
 }
 </script>
+
+<style scoped>
+/* Base transitions */
+.nav-transition {
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.2, 0.8, 0.2, 1);
+  transition-duration: 500ms;
+  will-change: transform, opacity;
+}
+
+.nav-item-transition {
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.2, 0.8, 0.2, 1);
+  transition-duration: 300ms;
+  will-change: transform, opacity, background-color, padding;
+}
+
+/* Prevent animations on reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  .nav-transition,
+  .nav-item-transition {
+    transition: none;
+    transform: none !important;
+  }
+}
+</style>

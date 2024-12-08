@@ -3,7 +3,8 @@
     class="absolute inset-0 overflow-hidden pointer-events-none"
     :class="[
       fullHeight ? 'h-screen' : 'h-full',
-      zIndex ? `-z-${zIndex}` : ''
+      zIndex ? `-z-${zIndex}` : '',
+      { 'mounted': isMounted }
     ]"
   >
     <div 
@@ -73,8 +74,11 @@ const props = withDefaults(defineProps<Props>(), {
 })
 
 const scrollY = ref(0)
+const isMounted = ref(false)
 
 onMounted(() => {
+  isMounted.value = true
+  
   if (props.scrollFade) {
     const updateScroll = useThrottleFn(() => {
       scrollY.value = window.scrollY
@@ -139,34 +143,48 @@ onMounted(() => {
   66% { transform: translate(-18px, -18px) rotate(-5deg); }
 }
 
-/* Optimized animations with will-change */
-.float-animation-1 {
-  animation: fadeScale 0.8s ease-out forwards, float-1 20s ease-in-out infinite;
+/* Base animation classes */
+[class*='float-animation-'] {
+  animation-timing-function: cubic-bezier(0.2, 0.8, 0.2, 1), ease-in-out;
   will-change: transform, opacity;
+  animation-play-state: paused;
+}
+
+/* Individual animations */
+.float-animation-1 {
+  animation: fadeScale 0.8s forwards, float-1 20s infinite;
 }
 
 .float-animation-2 {
-  animation: fadeScale 0.8s ease-out forwards, float-2 25s ease-in-out infinite;
-  will-change: transform, opacity;
+  animation: fadeScale 0.8s forwards, float-2 25s infinite;
 }
 
 .float-animation-3 {
-  animation: fadeScale 0.8s ease-out forwards, float-3 22s ease-in-out infinite;
-  will-change: transform, opacity;
+  animation: fadeScale 0.8s forwards, float-3 22s infinite;
 }
 
 .float-animation-4 {
-  animation: fadeScale 0.8s ease-out forwards, float-4 28s ease-in-out infinite;
-  will-change: transform, opacity;
+  animation: fadeScale 0.8s forwards, float-4 28s infinite;
 }
 
 .float-animation-5 {
-  animation: fadeScale 0.8s ease-out forwards, float-5 24s ease-in-out infinite;
-  will-change: transform, opacity;
+  animation: fadeScale 0.8s forwards, float-5 24s infinite;
 }
 
 .float-animation-6 {
-  animation: fadeScale 0.8s ease-out forwards, float-6 26s ease-in-out infinite;
-  will-change: transform, opacity;
+  animation: fadeScale 0.8s forwards, float-6 26s infinite;
+}
+
+/* Control animations when component is mounted */
+.mounted [class*='float-animation-'] {
+  animation-play-state: running;
+}
+
+/* Prevent animation on reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  [class*='float-animation-'] {
+    animation: fadeScale 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+    transform: none !important;
+  }
 }
 </style>

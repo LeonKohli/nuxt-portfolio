@@ -40,7 +40,7 @@
       <div class="md:w-8/12 md:mx-auto md:max-w-[110rem]">
         <ProjectCard 
           :projects="sortedProjects" 
-          class="transition-all duration-300 opacity-0 animate-fade-in"
+          class="opacity-0 animate-fade-in"
           style="animation-delay: 800ms;"
         />
       </div>
@@ -66,12 +66,13 @@ useIntersectionObserver(
   sectionRef,
   (entries) => {
     const [entry] = entries
-    if (entry?.isIntersecting) {
+    if (entry?.isIntersecting && !isVisible.value) {
       isVisible.value = true
     }
   },
   {
-    threshold: 0.1
+    threshold: 0.2,
+    rootMargin: '0px 0px -10% 0px'
   }
 )
 </script>
@@ -89,15 +90,22 @@ useIntersectionObserver(
 }
 
 .animate-fade-in {
-  animation: fadeIn 0.6s ease-out forwards;
+  animation: fadeIn 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
   will-change: transform, opacity;
+  animation-play-state: paused;
 }
 
-.section-visible [class*='animate-fade-in'] {
+/* Control animations when section is visible */
+.section-visible .animate-fade-in {
   animation-play-state: running;
 }
 
-[class*='animate-fade-in'] {
-  animation-play-state: paused;
+/* Prevent animation on reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  .animate-fade-in {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
 }
 </style> 

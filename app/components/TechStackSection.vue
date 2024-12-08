@@ -20,8 +20,8 @@
                 </p>
             </div>
 
-            <!-- Tech Grid -->
-            <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:gap-6">
+            <!-- Tech Grid - Fixed 3 rows max -->
+            <div class="grid grid-cols-1 gap-3 gap-4 xs:grid-cols-2 sm:grid-cols-3 md:grid-cols-4">
                 <a v-for="(tech, index) in techStack?.technologies" :key="tech.name" :href="tech.url" target="_blank"
                     rel="noopener noreferrer" class="group relative p-4 transition-all duration-500 rounded-xl border border-white/10 
                     hover:border-emerald-500/20 bg-white/[0.02] hover:bg-emerald-500/[0.02] hover:-translate-y-1.5
@@ -109,12 +109,13 @@ useIntersectionObserver(
   sectionRef,
   (entries) => {
     const [entry] = entries
-    if (entry?.isIntersecting) {
+    if (entry?.isIntersecting && !isVisible.value) {
       isVisible.value = true
     }
   },
   {
-    threshold: 0.1
+    threshold: 0.2,
+    rootMargin: '0px 0px -10% 0px'
   }
 )
 </script>

@@ -14,80 +14,66 @@
           v-for="project in projects" 
           :key="project.id"
           class="shrink-0 snap-center w-[min(85vw,380px)] md:w-[384px] md:snap-start 
-                 first:pl-0 last:pr-4 md:last:pr-0"
+                 first:pl-0 last:pr-4 md:last:pr-0 project-transition"
           :style="{
             opacity: elementVisibility[project.id] ? 1 : 0,
-            transform: elementVisibility[project.id] ? 'none' : 'translateY(20px)',
-            transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+            transform: elementVisibility[project.id] ? 'none' : 'translateY(20px)'
           }"
         >
           <div 
             class="rounded-[24px] h-[24rem] sm:h-[26rem] md:h-[32rem] w-full md:w-[384px] group 
                    overflow-hidden flex flex-col items-start justify-start relative z-10 
-                   cursor-pointer transition-all duration-500 ease-out hover:shadow-lg"
+                   cursor-pointer project-transition"
           >
-            <!-- Dark Gradient Overlay (Always Present) -->
+            <!-- Dark Gradient Overlay -->
             <div 
-              class="absolute inset-0 z-20 transition-opacity duration-500 ease-out bg-gradient-to-t from-black via-black/80 to-black/60 opacity-80 group-hover:opacity-90"
+              class="absolute inset-0 z-20 bg-gradient-to-t from-black via-black/80 to-black/60 opacity-80 group-hover:opacity-90 project-transition"
             />
             
             <!-- Hover Overlay -->
             <div 
-              class="absolute inset-0 z-30 transition-opacity duration-500 ease-out 
-                     bg-[#000000] opacity-0 group-hover:opacity-75"
+              class="absolute inset-0 z-30 bg-[#000000] opacity-0 group-hover:opacity-75 project-transition"
             />
             
             <!-- Content -->
             <div class="relative z-40 flex flex-col h-full p-6 md:p-8">
               <!-- Initial Content Container -->
               <div class="flex flex-col flex-grow">
-                <!-- Title and Subtitle (Always Visible) -->
-                <div class="transition-all duration-500 ease-out transform group-hover:-translate-y-1">
-                  <h3 
-                    class="text-2xl md:text-3xl font-bold max-w-xs text-left [text-wrap:balance] 
-                           mb-2 leading-tight tracking-tight text-white font-exo"
-                  >
+                <!-- Title and Subtitle -->
+                <div class="transform project-transition group-hover:-translate-y-1">
+                  <h3 class="text-2xl md:text-3xl font-bold max-w-xs text-left [text-wrap:balance] 
+                           mb-2 leading-tight tracking-tight text-white font-exo">
                     {{ project.title }}
                   </h3>
-                  <p 
-                    class="text-base md:text-lg max-w-xs text-left [text-wrap:balance] 
-                           tracking-tight leading-[1.6] text-white/80 transition-all 
-                           duration-500 ease-out group-hover:opacity-0 line-clamp-2"
-                  >
+                  <p class="text-base md:text-lg max-w-xs text-left [text-wrap:balance] 
+                           tracking-tight leading-[1.6] text-white/80 project-transition 
+                           group-hover:opacity-0 line-clamp-2">
                     {{ project.subtitle }}
                   </p>
                 </div>
 
-                <!-- Description (Appears on Hover) -->
-                <div 
-                  class="flex-grow mt-4 transition-all duration-500 ease-out opacity-0 group-hover:opacity-100"
-                >
-                  <p 
-                    class="text-base md:text-lg max-w-xs text-left [text-wrap:balance] 
-                           tracking-tight leading-[1.6] text-white/90"
-                  >
+                <!-- Description -->
+                <div class="flex-grow mt-4 opacity-0 project-transition group-hover:opacity-100">
+                  <p class="text-base md:text-lg max-w-xs text-left [text-wrap:balance] 
+                           tracking-tight leading-[1.6] text-white/90">
                     {{ project.description }}
                   </p>
                 </div>
               </div>
               
-              <!-- Bottom Content (Tech Stack and Links) -->
-              <div 
-                class="mt-auto transition-all duration-500 ease-out transform translate-y-4 opacity-0 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto"
-              >
+              <!-- Bottom Content -->
+              <div class="mt-auto transform translate-y-4 opacity-0 pointer-events-none project-transition group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto">
                 <!-- Tech Stack -->
                 <div class="flex flex-wrap gap-2 mb-6">
                   <div 
                     v-for="tech in project.tech" 
                     :key="tech.name"
-                    class="px-3 py-1.5 text-sm transition-all duration-200 rounded-full 
-                           text-white/90 bg-white/10 backdrop-blur-xl hover:bg-white/20
-                           flex items-center gap-1.5 group/tech"
+                    class="px-3 py-1.5 text-sm rounded-full text-white/90 bg-white/10 backdrop-blur-xl 
+                           hover:bg-white/20 flex items-center gap-1.5 group/tech project-hover-transition"
                   >
                     <Icon 
                       :name="tech.icon" 
-                      class="w-3.5 h-3.5 transition-transform duration-300
-                             group-hover/tech:scale-110 group-hover/tech:rotate-[8deg]" 
+                      class="w-3.5 h-3.5 project-hover-transition group-hover/tech:scale-110 group-hover/tech:rotate-[8deg]" 
                     />
                     {{ tech.name }}
                   </div>
@@ -99,16 +85,14 @@
                     v-if="project.repo"
                     :href="project.repo" 
                     target="_blank"
-                    class="group/btn flex items-center px-4 py-2 text-sm font-medium 
-                           transition-all duration-300 rounded-full text-white bg-white/10 
-                           hover:bg-white/20 hover:-translate-y-0.5 active:translate-y-0
-                           relative overflow-hidden"
+                    class="group/btn flex items-center px-4 py-2 text-sm font-medium rounded-full text-white 
+                           bg-white/10 hover:bg-white/20 hover:-translate-y-0.5 active:translate-y-0 
+                           relative overflow-hidden project-hover-transition"
                     @click.stop
                   >
                     <Icon 
                       name="ph:github-logo-fill" 
-                      class="w-4 h-4 mr-2 transition-transform duration-300
-                             group-hover/btn:scale-110 group-hover/btn:rotate-[8deg]" 
+                      class="w-4 h-4 mr-2 project-hover-transition group-hover/btn:scale-110 group-hover/btn:rotate-[8deg]" 
                     />
                     <span class="relative z-10">GitHub</span>
                   </a>
@@ -116,16 +100,14 @@
                     v-if="project.link"
                     :href="project.link" 
                     target="_blank"
-                    class="group/btn flex items-center px-4 py-2 text-sm font-medium 
-                           transition-all duration-300 rounded-full text-emerald-400 
-                           bg-emerald-500/20 hover:bg-emerald-500/30 hover:-translate-y-0.5 
-                           active:translate-y-0 relative overflow-hidden"
+                    class="group/btn flex items-center px-4 py-2 text-sm font-medium rounded-full text-emerald-400 
+                           bg-emerald-500/20 hover:bg-emerald-500/30 hover:-translate-y-0.5 active:translate-y-0 
+                           relative overflow-hidden project-hover-transition"
                     @click.stop
                   >
                     <Icon 
                       name="lucide:external-link" 
-                      class="w-4 h-4 mr-2 transition-transform duration-300
-                             group-hover/btn:scale-110 group-hover/btn:rotate-[8deg]" 
+                      class="w-4 h-4 mr-2 project-hover-transition group-hover/btn:scale-110 group-hover/btn:rotate-[8deg]" 
                     />
                     <span class="relative z-10">Live</span>
                   </a>
@@ -141,9 +123,8 @@
               width="384"
               height="512"
               placeholder
-              class="absolute inset-0 z-10 object-cover transition-all duration-500 
-                     ease-out scale-[1.01] brightness-[0.7] group-hover:scale-[1.02] 
-                     group-hover:brightness-[0.8] group-hover:blur-[2px]"
+              class="absolute inset-0 z-10 object-cover scale-[1.01] brightness-[0.7] group-hover:scale-[1.02] 
+                     group-hover:brightness-[0.8] group-hover:blur-[2px] project-transition project-card-image"
               sizes="sm:280px md:384px"
               format="webp"
               quality="90"
@@ -161,30 +142,28 @@
       <div class="justify-start hidden gap-3 mt-8 md:flex">
         <button 
           v-if="showNavigation"
-          class="group/nav relative z-40 flex items-center justify-center w-12 h-12 
-                 transition-all duration-300 rounded-full cursor-pointer disabled:opacity-50 
-                 bg-white/5 hover:bg-white/10 hover:-translate-y-0.5 active:translate-y-0 
-                 disabled:hover:scale-100 disabled:hover:translate-y-0"
+          class="group/nav relative z-40 flex items-center justify-center w-12 h-12 rounded-full cursor-pointer 
+                 disabled:opacity-50 bg-white/5 hover:bg-white/10 hover:-translate-y-0.5 active:translate-y-0 
+                 disabled:hover:scale-100 disabled:hover:translate-y-0 project-hover-transition"
           :disabled="isAtStart"
           @click="scrollLeft"
         >
           <Icon 
             name="lucide:chevron-left" 
-            class="w-6 h-6 text-white transition-transform duration-300 group-hover/nav:scale-110" 
+            class="w-6 h-6 text-white project-hover-transition group-hover/nav:scale-110" 
           />
         </button>
         <button 
           v-if="showNavigation"
-          class="group/nav relative z-40 flex items-center justify-center w-12 h-12 
-                 transition-all duration-300 rounded-full cursor-pointer disabled:opacity-50 
-                 bg-white/5 hover:bg-white/10 hover:-translate-y-0.5 active:translate-y-0 
-                 disabled:hover:scale-100 disabled:hover:translate-y-0"
+          class="group/nav relative z-40 flex items-center justify-center w-12 h-12 rounded-full cursor-pointer 
+                 disabled:opacity-50 bg-white/5 hover:bg-white/10 hover:-translate-y-0.5 active:translate-y-0 
+                 disabled:hover:scale-100 disabled:hover:translate-y-0 project-hover-transition"
           :disabled="isAtEnd"
           @click="scrollRight"
         >
           <Icon 
             name="lucide:chevron-right" 
-            class="w-6 h-6 text-white transition-transform duration-300 group-hover/nav:scale-110" 
+            class="w-6 h-6 text-white project-hover-transition group-hover/nav:scale-110" 
           />
         </button>
       </div>
@@ -303,5 +282,34 @@ const scrollRight = () => {
 .touch-pan-x {
   touch-action: pan-x;
   -webkit-overflow-scrolling: touch;
+}
+
+/* Base transitions */
+.project-transition {
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.2, 0.8, 0.2, 1);
+  transition-duration: 500ms;
+  will-change: transform, opacity;
+}
+
+.project-hover-transition {
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.2, 0.8, 0.2, 1);
+  transition-duration: 300ms;
+  will-change: transform, opacity, background-color;
+}
+
+/* Prevent animations on reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  .project-transition,
+  .project-hover-transition {
+    transition: none;
+    transform: none !important;
+  }
+
+  .project-card-image {
+    transform: none !important;
+    filter: brightness(0.7) !important;
+  }
 }
 </style> 
