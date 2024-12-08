@@ -62,8 +62,13 @@
 
 <script setup lang="ts">
 interface SpotlightStyle {
-  background: string;
-  transform: string;
+  background: string
+  transform: string
+}
+
+interface NavItem {
+  label: string
+  href: string
 }
 
 const isVisible = ref(false)
@@ -95,7 +100,7 @@ const handleMouseLeave = (index: number) => {
   }
 }
 
-const navItems = [
+const navItems: NavItem[] = [
   { label: 'Projects', href: '#projects' },
   { label: 'About', href: '#about' },
   { label: 'Tech Stack', href: '#tech-stack' },
@@ -104,36 +109,39 @@ const navItems = [
 // Show/hide navbar and update active section based on scroll
 onMounted(() => {
   const sections = navItems.map(item => item.href.substring(1))
-  
-  const handleScroll = () => {
-    // Show/hide nav
-    isVisible.value = window.scrollY > window.innerHeight * 0.5
-
-    // Update active section
-    const scrollPosition = window.scrollY + window.innerHeight / 2
-
-    for (const section of sections) {
-      const element = document.getElementById(section)
-      if (element) {
-        const { top, bottom } = element.getBoundingClientRect()
-        const elementTop = top + window.scrollY
-        const elementBottom = bottom + window.scrollY
-
-        if (scrollPosition >= elementTop && scrollPosition <= elementBottom) {
-          activeSection.value = section
-          break
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          activeSection.value = entry.target.id
         }
-      }
+      })
+    },
+    {
+      rootMargin: '-50% 0px -50% 0px',
+      threshold: 0
     }
-  }
-  
+  )
+
+  sections.forEach(section => {
+    const element = document.getElementById(section)
+    if (element) observer.observe(element)
+  })
+
+  const handleScroll = useThrottleFn(() => {
+    isVisible.value = window.scrollY > window.innerHeight * 0.5
+  }, 100)
+
   window.addEventListener('scroll', handleScroll, { passive: true })
   handleScroll() // Initial check
   
-  onUnmounted(() => window.removeEventListener('scroll', handleScroll))
+  onUnmounted(() => {
+    window.removeEventListener('scroll', handleScroll)
+    observer.disconnect()
+  })
 })
 
-// Smooth scroll to section
+// Smooth scroll to section using native smooth scroll behavior
 const scrollToSection = (href: string) => {
   const element = document.querySelector(href)
   if (element) {
@@ -141,8 +149,7 @@ const scrollToSection = (href: string) => {
       behavior: 'smooth',
       block: 'start'
     })
-    // Update active section immediately for better UX
     activeSection.value = href.substring(1)
   }
 }
-</script> 
+</script>
