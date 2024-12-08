@@ -1,5 +1,9 @@
 <template>
-  <footer class="relative px-4 py-12 overflow-hidden sm:px-6 lg:px-8">
+  <footer 
+    class="relative px-4 py-12 overflow-hidden sm:px-6 lg:px-8"
+    ref="sectionRef"
+    :class="{ 'section-visible': isVisible }"
+  >
     <!-- Background Elements -->
     <div class="absolute inset-0 opacity-15">
       <Icon 
@@ -146,6 +150,22 @@ const copyEmail = async () => {
     console.error('Failed to copy email:', err)
   }
 }
+
+const sectionRef = ref<HTMLElement | null>(null)
+const isVisible = ref(false)
+
+useIntersectionObserver(
+  sectionRef,
+  (entries) => {
+    const [entry] = entries
+    if (entry?.isIntersecting) {
+      isVisible.value = true
+    }
+  },
+  {
+    threshold: 0.1
+  }
+)
 </script>
 
 <style scoped>
@@ -172,5 +192,13 @@ const copyEmail = async () => {
     opacity: 1;
     transform: none;
   }
+}
+
+.section-visible [class*='animate-fade-in'] {
+  animation-play-state: running;
+}
+
+[class*='animate-fade-in'] {
+  animation-play-state: paused;
 }
 </style>

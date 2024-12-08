@@ -1,6 +1,10 @@
 <!-- Start of Selection -->
 <template>
-  <section class="relative flex items-center justify-center h-screen">
+  <section 
+    ref="sectionRef"
+    class="relative flex items-center justify-center min-h-screen px-4 overflow-hidden sm:px-6 lg:px-8"
+    :class="{ 'section-visible': isVisible }"
+  >
     <div class="w-10/12 md:w-8/12 mx-auto max-w-[110rem]">
       <div class="absolute inset-0">
         <TechIcons :z-index="10" />
@@ -89,6 +93,21 @@ const socialLinks = [
 ]
 
 const isScrolled = ref(false)
+const sectionRef = ref<HTMLElement | null>(null)
+const isVisible = ref(false)
+
+useIntersectionObserver(
+  sectionRef,
+  (entries) => {
+    const [entry] = entries
+    if (entry?.isIntersecting) {
+      isVisible.value = true
+    }
+  },
+  {
+    threshold: 0.1
+  }
+)
 
 // Update scroll state
 onMounted(() => {
@@ -145,5 +164,13 @@ const scrollToProjects = () => {
 .animate-bounce-soft {
   animation: bounceSoft 2s ease-in-out infinite;
   will-change: transform;
+}
+
+.section-visible [class*='animate-fade-in'] {
+  animation-play-state: running;
+}
+
+[class*='animate-fade-in'] {
+  animation-play-state: paused;
 }
 </style>

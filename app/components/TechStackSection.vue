@@ -1,5 +1,5 @@
 <template>
-    <section id="tech-stack" class="flex flex-col justify-center min-h-screen px-0 py-24 overflow-hidden sm:px-6 lg:px-8">
+    <section id="tech-stack" class="flex flex-col justify-center min-h-screen px-4 overflow-hidden sm:px-6 lg:px-8" ref="sectionRef" :class="{ 'section-visible': isVisible }">
         <div class="w-10/12 md:w-8/12 mx-auto max-w-[110rem] px-4">
             <!-- Section Header -->
             <div class="flex flex-col items-center mb-16 text-center md:items-start md:text-left">
@@ -101,6 +101,22 @@ if (!techStack.value) {
         statusMessage: 'Failed to load tech stack data'
     })
 }
+
+const sectionRef = ref<HTMLElement | null>(null)
+const isVisible = ref(false)
+
+useIntersectionObserver(
+  sectionRef,
+  (entries) => {
+    const [entry] = entries
+    if (entry?.isIntersecting) {
+      isVisible.value = true
+    }
+  },
+  {
+    threshold: 0.1
+  }
+)
 </script>
 
 <style scoped>
@@ -131,11 +147,19 @@ if (!techStack.value) {
 .animate-fade-in {
     animation: fadeIn 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
     will-change: transform, opacity;
+    animation-play-state: paused;
 }
 
 .animate-slide-up {
     animation: slideUp 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
     will-change: transform, opacity;
+    animation-play-state: paused;
+}
+
+/* Control animations when section is visible */
+.section-visible .animate-fade-in,
+.section-visible .animate-slide-up {
+    animation-play-state: running;
 }
 
 /* Prevent animation on reduced motion preference */

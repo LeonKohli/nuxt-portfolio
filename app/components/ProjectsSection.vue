@@ -3,6 +3,7 @@
     class="flex flex-col justify-center min-h-screen px-0 overflow-hidden sm:px-6 lg:px-8" 
     id="projects"
     ref="sectionRef"
+    :class="{ 'section-visible': isVisible }"
   >
     <!-- Header Container -->
     <div class="w-10/12 md:w-8/12 mx-auto max-w-[110rem] px-4">
@@ -57,6 +58,22 @@ const { data: projects } = await useAsyncData<Project[]>('projects', () =>
 
 // Computed property for sorted projects with fallback to empty array
 const sortedProjects = computed(() => projects.value ?? [])
+
+const sectionRef = ref<HTMLElement | null>(null)
+const isVisible = ref(false)
+
+useIntersectionObserver(
+  sectionRef,
+  (entries) => {
+    const [entry] = entries
+    if (entry?.isIntersecting) {
+      isVisible.value = true
+    }
+  },
+  {
+    threshold: 0.1
+  }
+)
 </script>
 
 <style scoped>
@@ -74,5 +91,13 @@ const sortedProjects = computed(() => projects.value ?? [])
 .animate-fade-in {
   animation: fadeIn 0.6s ease-out forwards;
   will-change: transform, opacity;
+}
+
+.section-visible [class*='animate-fade-in'] {
+  animation-play-state: running;
+}
+
+[class*='animate-fade-in'] {
+  animation-play-state: paused;
 }
 </style> 
