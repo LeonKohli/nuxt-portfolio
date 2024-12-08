@@ -48,10 +48,10 @@
                                 aria-hidden="true" />
                         </div>
                         <div class="flex-1 min-w-0">
-                            <h4
+                            <h3
                                 class="text-sm font-medium truncate transition-colors duration-300 text-white/90 group-hover:text-white font-exo">
                                 {{ tech.name }}
-                            </h4>
+                            </h3>
                             <p
                                 class="text-xs truncate transition-colors duration-300 text-white/60 group-hover:text-emerald-400/80">
                                 {{ tech.category }}
