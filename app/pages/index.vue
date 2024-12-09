@@ -19,14 +19,14 @@
 const selectedProject = ref<Project | null>(null)
 
 useSeoMeta({
-  description: 'Portfolio of Leon Kohlhaußen - Full Stack Developer and Security Enthusiast based in Potsdam, Germany. Specializing in full-stack development, cybersecurity, and modern web technologies.',
+  description: 'Portfolio of Leon Kohlhaußen - Full Stack Developer based in Potsdam, Germany.',
   ogTitle: 'Leon Kohlhaußen - Full Stack Developer & Security Enthusiast',
-  ogDescription: 'Portfolio of Leon Kohlhaußen - Full Stack Developer and Security Enthusiast based in Potsdam, Germany',
+  ogDescription: 'Portfolio of Leon Kohlhaußen - Full Stack Developer based in Potsdam, Germany',
   ogUrl: 'https://leonkohli.com',
   twitterTitle: 'Leon Kohlhaußen - Full Stack Developer & Security Enthusiast',
-  twitterDescription: 'Portfolio of Leon Kohlhaußen - Full Stack Developer and Security Enthusiast based in Potsdam, Germany',
+  twitterDescription: 'Portfolio of Leon Kohlhaußen - Full Stack Developer based in Potsdam, Germany',
   robots: 'index, follow',
   author: 'Leon Kohlhaußen',
-  keywords: 'LeonKohli, Full Stack Developer, Security Enthusiast, Web Development, Cybersecurity, Potsdam, Germany, Software Engineer',
+  keywords: 'LeonKohli, Full Stack Developer, Web Development, Potsdam, Germany, Software Engineer',
 })
 </script>
