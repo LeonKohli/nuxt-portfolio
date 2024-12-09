@@ -135,12 +135,17 @@
               loading="lazy"
               width="384"
               height="512"
-              placeholder
+              :placeholder="[100, 133, 75, 5]"
               class="absolute inset-0 z-10 object-cover scale-[1.01] brightness-[0.7] group-hover:scale-[1.02] 
                      group-hover:brightness-[0.8] group-hover:blur-[2px] project-transition project-card-image"
-              sizes="sm:280px md:384px"
+              sizes="(max-width: 640px) 85vw, (max-width: 768px) 280px, 384px"
               format="webp"
-              quality="90"
+              quality="80"
+              fit="cover"
+              :modifiers="{
+                blur: 0.3,
+                background: 'black'
+              }"
             />
           </div>
         </div>
