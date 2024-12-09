@@ -40,8 +40,7 @@
       <div class="md:w-8/12 md:mx-auto md:max-w-[110rem]">
         <ProjectCard 
           :projects="sortedProjects" 
-          class="opacity-0 animate-fade-in"
-          style="animation-delay: 800ms;"
+          :is-section-visible="isVisible"
         />
       </div>
     </div>

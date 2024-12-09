@@ -11,14 +11,12 @@
         <div class="w-4 shrink-0 md:hidden" aria-hidden="true" />
         
         <div 
-          v-for="project in projects" 
+          v-for="(project, index) in projects" 
           :key="project.id"
           class="shrink-0 snap-center w-[min(85vw,380px)] md:w-[384px] md:snap-start 
                  first:pl-0 last:pr-4 md:last:pr-0 project-transition"
-          :style="{
-            opacity: elementVisibility[project.id] ? 1 : 0,
-            transform: elementVisibility[project.id] ? 'none' : 'translateY(20px)'
-          }"
+          :class="getCardClasses(index)"
+          :style="getCardStyles(index)"
           @mouseenter="handleProjectHover(project.id, true)"
           @mouseleave="handleProjectHover(project.id, false)"
         >
@@ -193,6 +191,7 @@
 <script setup lang="ts">
 const props = defineProps<{
   projects: Project[]
+  isSectionVisible: boolean
 }>()
 
 const cardRef = ref<HTMLElement | null>(null)
@@ -292,6 +291,24 @@ const scrollRight = () => {
     left: scrollAmount,
     behavior: 'smooth'
   })
+}
+
+// Update the card animation classes
+const getCardClasses = (index: number) => {
+  return {
+    'opacity-0': !props.isSectionVisible,
+    'opacity-100 translate-y-0': props.isSectionVisible,
+    'translate-y-4': !props.isSectionVisible,
+    'transition-all duration-500': true,
+  }
+}
+
+// Update the card styles
+const getCardStyles = (index: number) => {
+  return {
+    transitionDelay: `${(index * 200) + 800}ms`,
+    transitionTimingFunction: 'cubic-bezier(0.2, 0.8, 0.2, 1)'
+  }
 }
 </script>
 
