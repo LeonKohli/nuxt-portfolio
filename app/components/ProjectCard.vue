@@ -138,26 +138,9 @@
               placeholder
               class="absolute inset-0 z-10 object-cover scale-[1.01] brightness-[0.7] group-hover:scale-[1.02] 
                      group-hover:brightness-[0.8] group-hover:blur-[2px] project-transition project-card-image"
-              :sizes="[
-                {
-                  size: '280px',
-                  media: '(max-width: 768px)'
-                },
-                {
-                  size: '384px',
-                  media: '(min-width: 769px)'
-                }
-              ]"
+              sizes="sm:280px md:384px"
               format="webp"
-              :quality="75"
-              preload
-              :modifiers="{
-                format: 'webp',
-                quality: 75,
-                width: 384,
-                height: 512,
-                fit: 'cover'
-              }"
+              quality="90"
             />
           </div>
         </div>
