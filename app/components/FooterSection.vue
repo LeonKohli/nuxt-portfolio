@@ -156,8 +156,7 @@ const isVisible = ref(false)
 
 useIntersectionObserver(
   sectionRef,
-  (entries) => {
-    const [entry] = entries
+  ([entry]) => {
     if (entry?.isIntersecting && !isVisible.value) {
       isVisible.value = true
     }
@@ -171,35 +170,30 @@ useIntersectionObserver(
 
 <style scoped>
 @keyframes fadeIn {
-  0% {
-    opacity: 0.001;
+  from {
+    opacity: 0;
     transform: translateY(10px);
   }
-  100% {
+  to {
     opacity: 1;
     transform: translateY(0);
   }
 }
 
 .animate-fade-in {
-  animation: fadeIn 0.6s ease-out forwards;
+  animation: fadeIn 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) forwards paused;
   will-change: transform, opacity;
 }
 
-/* Prevent animation on reduced motion preference */
+.section-visible .animate-fade-in {
+  animation-play-state: running;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .animate-fade-in {
     animation: none;
     opacity: 1;
     transform: none;
   }
-}
-
-.section-visible [class*='animate-fade-in'] {
-  animation-play-state: running;
-}
-
-[class*='animate-fade-in'] {
-  animation-play-state: paused;
 }
 </style>
