@@ -26,9 +26,7 @@
       <!-- Content -->
       <div class="relative">
         <!-- Introduction and Cards Container -->
-        <div 
-          class="grid grid-cols-1 gap-8 lg:grid-cols-2 lg:gap-12"
-        >
+        <div class="grid grid-cols-1 gap-8 lg:grid-cols-2 lg:gap-12">
           <!-- Text Content -->
           <div class="space-y-6">
             <p class="text-xl md:text-2xl text-white/90 leading-relaxed [text-wrap:balance] opacity-0 animate-fade-in" style="animation-delay: 600ms;">
@@ -113,39 +111,40 @@ interface SpotlightStyle {
   transform: string;
 }
 
-const spotlightStyles = ref<SpotlightStyle[]>([
-  {
+// Use a composable for spotlight effect management
+const useSpotlightEffect = () => {
+  const spotlightStyles = ref<SpotlightStyle[]>(Array(3).fill({
     background: 'radial-gradient(circle at 50% 50%, rgba(16, 185, 129, 0) 0%, transparent 60%)',
     transform: 'translate(0%, 0%)'
-  },
-  {
-    background: 'radial-gradient(circle at 50% 50%, rgba(16, 185, 129, 0) 0%, transparent 60%)',
-    transform: 'translate(0%, 0%)'
-  },
-  {
-    background: 'radial-gradient(circle at 50% 50%, rgba(16, 185, 129, 0) 0%, transparent 60%)',
-    transform: 'translate(0%, 0%)'
+  }))
+
+  const handleMouseMove = (event: MouseEvent, index: number) => {
+    const target = event.currentTarget as HTMLElement
+    const rect = target.getBoundingClientRect()
+    const relativeX = ((event.clientX - rect.left) / rect.width) * 100
+    const relativeY = ((event.clientY - rect.top) / rect.height) * 100
+
+    spotlightStyles.value[index] = {
+      background: `radial-gradient(circle at ${relativeX}% ${relativeY}%, rgba(16, 185, 129, 0.15) 0%, transparent 60%)`,
+      transform: 'translate(0%, 0%)'
+    }
   }
-])
 
-const handleMouseMove = (event: MouseEvent, index: number) => {
-  const target = event.currentTarget as HTMLElement
-  const rect = target.getBoundingClientRect()
-  const relativeX = ((event.clientX - rect.left) / rect.width) * 100
-  const relativeY = ((event.clientY - rect.top) / rect.height) * 100
+  const handleMouseLeave = (index: number) => {
+    spotlightStyles.value[index] = {
+      background: 'radial-gradient(circle at 50% 50%, rgba(16, 185, 129, 0) 0%, transparent 60%)',
+      transform: 'translate(0%, 0%)'
+    }
+  }
 
-  spotlightStyles.value[index] = {
-    background: `radial-gradient(circle at ${relativeX}% ${relativeY}%, rgba(16, 185, 129, 0.15) 0%, transparent 60%)`,
-    transform: 'translate(0%, 0%)'
+  return {
+    spotlightStyles,
+    handleMouseMove,
+    handleMouseLeave
   }
 }
 
-const handleMouseLeave = (index: number) => {
-  spotlightStyles.value[index] = {
-    background: 'radial-gradient(circle at 50% 50%, rgba(16, 185, 129, 0) 0%, transparent 60%)',
-    transform: 'translate(0%, 0%)'
-  }
-}
+const { spotlightStyles, handleMouseMove, handleMouseLeave } = useSpotlightEffect()
 
 const whatILove = [
   {
@@ -165,31 +164,18 @@ const whatILove = [
   }
 ]
 
+// Use VueUse's useElementVisibility instead of manual intersection observer
 const sectionRef = ref<HTMLElement | null>(null)
-const isVisible = ref(false)
-
-useIntersectionObserver(
-  sectionRef,
-  (entries) => {
-    const [entry] = entries
-    if (entry?.isIntersecting && !isVisible.value) {
-      isVisible.value = true
-    }
-  },
-  {
-    threshold: 0.2,
-    rootMargin: '0px 0px -10% 0px'
-  }
-)
+const isVisible = useElementVisibility(sectionRef, { threshold: 0.2 })
 </script>
 
 <style scoped>
 @keyframes fadeIn {
-  0% {
-    opacity: 0.001;
+  from {
+    opacity: 0;
     transform: translateY(10px);
   }
-  100% {
+  to {
     opacity: 1;
     transform: translateY(0);
   }
@@ -201,12 +187,10 @@ useIntersectionObserver(
   animation-play-state: paused;
 }
 
-/* Control animations when section is visible */
 .section-visible .animate-fade-in {
   animation-play-state: running;
 }
 
-/* Prevent animation on reduced motion preference */
 @media (prefers-reduced-motion: reduce) {
   .animate-fade-in {
     animation: none;
