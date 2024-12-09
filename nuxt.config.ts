@@ -24,4 +24,5 @@ export default defineNuxtConfig({
     classPrefix: '',
     classSuffix: '',
   }
+  
 })

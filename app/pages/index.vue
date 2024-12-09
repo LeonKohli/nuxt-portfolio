@@ -18,22 +18,15 @@
 <script setup lang="ts">
 const selectedProject = ref<Project | null>(null)
 
-useHead({
-  htmlAttrs: {
-    lang: 'en',
-  },
-  title: 'Leon Kohli - Full Stack Developer & Security Enthusiast',
-})
-
 useSeoMeta({
-  description: 'Portfolio of Leon - Full Stack Developer and Security Enthusiast based in Potsdam, Germany. Specializing in full-stack development, cybersecurity, and modern web technologies.',
-  ogTitle: 'Leon - Full Stack Developer & Security Enthusiast',
-  ogDescription: 'Portfolio of Leon - Full Stack Developer and Security Enthusiast based in Potsdam, Germany',
+  description: 'Portfolio of Leon Kohlhaußen - Full Stack Developer and Security Enthusiast based in Potsdam, Germany. Specializing in full-stack development, cybersecurity, and modern web technologies.',
+  ogTitle: 'Leon Kohlhaußen - Full Stack Developer & Security Enthusiast',
+  ogDescription: 'Portfolio of Leon Kohlhaußen - Full Stack Developer and Security Enthusiast based in Potsdam, Germany',
   ogUrl: 'https://leonkohli.com',
-  twitterTitle: 'Leon - Full Stack Developer & Security Enthusiast',
-  twitterDescription: 'Portfolio of Leon - Full Stack Developer and Security Enthusiast based in Potsdam, Germany',
+  twitterTitle: 'Leon Kohlhaußen - Full Stack Developer & Security Enthusiast',
+  twitterDescription: 'Portfolio of Leon Kohlhaußen - Full Stack Developer and Security Enthusiast based in Potsdam, Germany',
   robots: 'index, follow',
-  author: 'Leon',
-  keywords: 'Leon, Full Stack Developer, Security Enthusiast, Web Development, Cybersecurity, Potsdam, Germany, Software Engineer',
+  author: 'Leon Kohlhaußen',
+  keywords: 'LeonKohli, Full Stack Developer, Security Enthusiast, Web Development, Cybersecurity, Potsdam, Germany, Software Engineer',
 })
 </script>
