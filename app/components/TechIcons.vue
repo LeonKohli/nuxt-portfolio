@@ -10,17 +10,15 @@
     <div 
       v-for="(icon, index) in icons" 
       :key="icon.name"
-      class="absolute transition-all duration-300"
+      class="absolute"
       :class="[
         `float-animation-${index + 1}`,
-        'opacity-[0.12] hover:opacity-[0.24]'
+        { 'visible': isMounted }
       ]"
       :style="{
         fontSize: `${iconSize}px`,
         top: `${icon.position.top}%`,
         left: `${icon.position.left}%`,
-        animationDelay: `${startDelay + (index * delayIncrement)}ms`,
-        opacity: scrollFade ? Math.max(0, 0.12 - scrollY * 0.001) : 0.12
       }"
     >
       <Icon 
@@ -99,94 +97,58 @@ onMounted(() => {
 <style scoped>
 @keyframes fadeScale {
   0% {
-    opacity: 0.001;
-    transform: scale(0.8) translate(0, 0);
+    opacity: 0;
+    transform: scale(0.9);
   }
   100% {
-    opacity: 0.12;
-    transform: scale(1) translate(0, 0);
+    opacity: var(--final-opacity);
+    transform: scale(1);
   }
-}
-
-/* Improved floating animations with smoother transitions */
-@keyframes float-1 {
-  0%, 100% { transform: translate(0, 0) rotate(0deg); }
-  25% { transform: translate(12px, -18px) rotate(6deg); }
-  50% { transform: translate(-6px, 22px) rotate(-6deg); }
-  75% { transform: translate(-18px, -12px) rotate(3deg); }
-}
-
-@keyframes float-2 {
-  0%, 100% { transform: translate(0, 0) rotate(0deg); }
-  33% { transform: translate(-18px, -22px) rotate(-4deg); }
-  66% { transform: translate(12px, 18px) rotate(4deg); }
-}
-
-@keyframes float-3 {
-  0%, 100% { transform: translate(0, 0) rotate(0deg); }
-  25% { transform: translate(-22px, 12px) rotate(-6deg); }
-  75% { transform: translate(18px, -18px) rotate(6deg); }
-}
-
-@keyframes float-4 {
-  0%, 100% { transform: translate(0, 0) rotate(0deg); }
-  33% { transform: translate(18px, -28px) rotate(4deg); }
-  66% { transform: translate(-12px, 12px) rotate(-4deg); }
-}
-
-@keyframes float-5 {
-  0%, 100% { transform: translate(0, 0) rotate(0deg); }
-  25% { transform: translate(-12px, -22px) rotate(-3deg); }
-  75% { transform: translate(22px, 12px) rotate(3deg); }
-}
-
-@keyframes float-6 {
-  0%, 100% { transform: translate(0, 0) rotate(0deg); }
-  33% { transform: translate(22px, -12px) rotate(5deg); }
-  66% { transform: translate(-18px, -18px) rotate(-5deg); }
 }
 
 /* Base animation classes */
 [class*='float-animation-'] {
-  animation-timing-function: cubic-bezier(0.2, 0.8, 0.2, 1), ease-in-out;
-  will-change: transform, opacity;
-  animation-play-state: paused;
+  --final-opacity: 0.12;
+  opacity: 0;
+  transition: opacity 0.5s ease-out;
 }
 
-/* Individual animations */
-.float-animation-1 {
-  animation: fadeScale 0.8s forwards, float-1 20s infinite;
+/* Individual animations with delays */
+.visible.float-animation-1 { animation: fadeScale 1s 0.1s forwards; }
+.visible.float-animation-2 { animation: fadeScale 1s 0.4s forwards; }
+.visible.float-animation-3 { animation: fadeScale 1s 0.7s forwards; }
+.visible.float-animation-4 { animation: fadeScale 1s 1.0s forwards; }
+.visible.float-animation-5 { animation: fadeScale 1s 1.3s forwards; }
+.visible.float-animation-6 { animation: fadeScale 1s 1.6s forwards; }
+
+/* Hover effect */
+[class*='float-animation-']:hover {
+  --final-opacity: 0.24;
 }
 
-.float-animation-2 {
-  animation: fadeScale 0.8s forwards, float-2 25s infinite;
+/* Float animations */
+@keyframes float {
+  0%, 100% { transform: translate(0, 0); }
+  50% { transform: translate(0, -10px); }
 }
 
-.float-animation-3 {
-  animation: fadeScale 0.8s forwards, float-3 22s infinite;
+.visible[class*='float-animation-'] {
+  animation: fadeScale 1s forwards, float 3s ease-in-out infinite;
+  animation-delay: var(--fade-delay), calc(var(--fade-delay) + 1s);
 }
 
-.float-animation-4 {
-  animation: fadeScale 0.8s forwards, float-4 28s infinite;
-}
-
-.float-animation-5 {
-  animation: fadeScale 0.8s forwards, float-5 24s infinite;
-}
-
-.float-animation-6 {
-  animation: fadeScale 0.8s forwards, float-6 26s infinite;
-}
-
-/* Control animations when component is mounted */
-.mounted [class*='float-animation-'] {
-  animation-play-state: running;
-}
+/* Set individual delays */
+.float-animation-1 { --fade-delay: 0.1s; }
+.float-animation-2 { --fade-delay: 0.4s; }
+.float-animation-3 { --fade-delay: 0.7s; }
+.float-animation-4 { --fade-delay: 1.0s; }
+.float-animation-5 { --fade-delay: 1.3s; }
+.float-animation-6 { --fade-delay: 1.6s; }
 
 /* Prevent animation on reduced motion preference */
 @media (prefers-reduced-motion: reduce) {
   [class*='float-animation-'] {
-    animation: fadeScale 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+    animation: fadeScale 0.8s ease-out forwards !important;
     transform: none !important;
   }
 }
