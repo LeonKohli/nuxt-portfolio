@@ -21,13 +21,15 @@
 </template>
 
 <script setup lang="ts">
-useHead
-  ({
-    title: 'Leon Kohlhaußen - Full Stack Developer & Security Enthusiast',
-    meta: [
-      { name: 'description', content: 'Portfolio of Leon Kohlhaußen - Full Stack Developer based in Potsdam, Germany.' }
-    ]
-  })
+useHead({
+  htmlAttrs: {
+    lang: 'en'
+  },
+  title: 'Leon Kohlhaußen - Full Stack Developer & Security Enthusiast',
+  meta: [
+    { name: 'description', content: 'Portfolio of Leon Kohlhaußen - Full Stack Developer based in Potsdam, Germany.' }
+  ]
+})
 </script>
 
 <style>
