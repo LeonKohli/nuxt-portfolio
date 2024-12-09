@@ -1,6 +1,7 @@
 <template>
   <nav 
-    class="fixed z-50 hidden left-6 md:block transition-all duration-500 ease-[cubic-bezier(0.2,0.8,0.2,1)] will-change-transform will-change-opacity"
+    ref="navRef"
+    class="fixed z-50 hidden transition-all duration-500 ease-in-out left-6 md:block will-change-transform will-change-opacity"
     :class="[
       isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4',
       isVisible ? 'pointer-events-auto' : 'pointer-events-none'
@@ -13,7 +14,7 @@
         v-for="(item, index) in navItems" 
         :key="item.label"
         :href="item.href"
-        class="relative py-2 pr-4 overflow-hidden text-sm border rounded-full group transition-all duration-300 ease-[cubic-bezier(0.2,0.8,0.2,1)] will-change-transform will-change-[background-color,padding] bg-black/30 backdrop-blur-sm border-white/5"
+        class="relative py-2 pr-4 overflow-hidden text-sm border rounded-full group transition-all duration-300 ease-in-out will-change-transform will-change-[background-color,padding] bg-black/30 backdrop-blur-sm border-white/5"
         :class="[
           activeSection === item.href.substring(1) 
             ? 'text-white border-white/20 pl-10' 
@@ -45,7 +46,7 @@
 
         <!-- Dot Indicator -->
         <span 
-          class="absolute left-3 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full transition-all duration-300 ease-[cubic-bezier(0.2,0.8,0.2,1)]"
+          class="absolute left-3 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full transition-all duration-300 ease-in-out"
           :class="[
             activeSection === item.href.substring(1)
               ? 'bg-emerald-400 scale-100'
@@ -73,6 +74,7 @@ interface NavItem {
 
 const isVisible = ref(false)
 const activeSection = ref('')
+const navRef = ref<HTMLElement | null>(null)
 
 const spotlightStyles = ref<SpotlightStyle[]>(
   Array(3).fill({
@@ -109,23 +111,17 @@ const navItems: NavItem[] = [
 // Show/hide navbar and update active section based on scroll
 onMounted(() => {
   const sections = navItems.map(item => item.href.substring(1))
-  const observer = new IntersectionObserver(
-    (entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          activeSection.value = entry.target.id
-        }
-      })
-    },
-    {
-      rootMargin: '-50% 0px -50% 0px',
-      threshold: 0
-    }
-  )
-
+  
   sections.forEach(section => {
     const element = document.getElementById(section)
-    if (element) observer.observe(element)
+    if (element) {
+      const isElementVisible = useElementVisibility(element, { threshold: 0.5 })
+      watch(isElementVisible, (visible) => {
+        if (visible) {
+          activeSection.value = section
+        }
+      })
+    }
   })
 
   const handleScroll = useThrottleFn(() => {
@@ -137,7 +133,6 @@ onMounted(() => {
   
   onUnmounted(() => {
     window.removeEventListener('scroll', handleScroll)
-    observer.disconnect()
   })
 })
 

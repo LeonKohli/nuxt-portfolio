@@ -59,21 +59,8 @@ const { data: projects } = await useAsyncData<Project[]>('projects', () =>
 const sortedProjects = computed(() => projects.value ?? [])
 
 const sectionRef = ref<HTMLElement | null>(null)
-const isVisible = ref(false)
+const isVisible = useElementVisibility(sectionRef, { threshold: 0.2 })
 
-useIntersectionObserver(
-  sectionRef,
-  (entries) => {
-    const [entry] = entries
-    if (entry?.isIntersecting && !isVisible.value) {
-      isVisible.value = true
-    }
-  },
-  {
-    threshold: 0.2,
-    rootMargin: '0px 0px -10% 0px'
-  }
-)
 </script>
 
 <style scoped>

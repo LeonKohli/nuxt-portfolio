@@ -195,17 +195,8 @@ const props = defineProps<{
 }>()
 
 const cardRef = ref<HTMLElement | null>(null)
-const isVisible = ref(false)
+const isVisible = useElementVisibility(cardRef)
 
-useIntersectionObserver(
-  cardRef,
-  (entries) => {
-    const [entry] = entries
-    if (entry?.isIntersecting && !isVisible.value) {
-      isVisible.value = true
-    }
-  },
-)
 const scrollContainer = ref<HTMLElement | null>(null)
 const elementVisibility = reactive<Record<string, boolean>>({})
 const hoveredProjectId = ref<string | null>(null)
@@ -293,23 +284,49 @@ const scrollRight = () => {
   })
 }
 
-// Update the card animation classes
+// Add this near the top of the script section
+const hasAnimated = ref(false)
+
+// Update the getCardClasses function
 const getCardClasses = (index: number) => {
+  // Only apply animations if we haven't animated before
+  if (!hasAnimated.value) {
+    return {
+      'opacity-0': !props.isSectionVisible,
+      'opacity-100 translate-y-0': props.isSectionVisible,
+      'translate-y-4': !props.isSectionVisible,
+      'transition-all duration-500': true,
+    }
+  }
+  // Return default visible state if already animated
   return {
-    'opacity-0': !props.isSectionVisible,
-    'opacity-100 translate-y-0': props.isSectionVisible,
-    'translate-y-4': !props.isSectionVisible,
-    'transition-all duration-500': true,
+    'opacity-100 translate-y-0': true,
   }
 }
 
-// Update the card styles
+// Update the getCardStyles function
 const getCardStyles = (index: number) => {
-  return {
-    transitionDelay: `${(index * 200) + 800}ms`,
-    transitionTimingFunction: 'cubic-bezier(0.2, 0.8, 0.2, 1)'
+  // Only apply transition delay if we haven't animated before
+  if (!hasAnimated.value) {
+    return {
+      transitionDelay: `${(index * 200) + 800}ms`,
+      transitionTimingFunction: 'cubic-bezier(0.2, 0.8, 0.2, 1)'
+    }
   }
+  // Return empty styles if already animated
+  return {}
 }
+
+// Add a watcher for isSectionVisible
+watch(() => props.isSectionVisible, (newValue) => {
+  if (newValue && !hasAnimated.value) {
+    // Set hasAnimated to true after the animation duration + maximum delay
+    const maxDelay = (props.projects.length * 200) + 800 + 500 // animation delays + duration
+    setTimeout(() => {
+      hasAnimated.value = true
+    }, maxDelay)
+  }
+}, { immediate: true })
 </script>
 
 <style scoped>

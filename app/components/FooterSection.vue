@@ -152,20 +152,7 @@ const copyEmail = async () => {
 }
 
 const sectionRef = ref<HTMLElement | null>(null)
-const isVisible = ref(false)
-
-useIntersectionObserver(
-  sectionRef,
-  ([entry]) => {
-    if (entry?.isIntersecting && !isVisible.value) {
-      isVisible.value = true
-    }
-  },
-  {
-    threshold: 0.2,
-    rootMargin: '0px 0px -10% 0px'
-  }
-)
+const isVisible = useElementVisibility(sectionRef, { threshold: 0.2 })
 </script>
 
 <style scoped>

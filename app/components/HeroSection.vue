@@ -131,21 +131,7 @@ const socialLinks = [
 
 const isScrolled = ref(false)
 const sectionRef = ref<HTMLElement | null>(null)
-const isVisible = ref(false)
-
-useIntersectionObserver(
-  sectionRef,
-  (entries) => {
-    const [entry] = entries
-    if (entry?.isIntersecting && !isVisible.value) {
-      isVisible.value = true
-    }
-  },
-  {
-    threshold: 0.2,
-    rootMargin: '0px 0px -10% 0px'
-  }
-)
+const isVisible = useElementVisibility(sectionRef, { threshold: 0.2 })
 
 // Update scroll state
 onMounted(() => {
