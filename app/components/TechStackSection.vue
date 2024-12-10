@@ -9,7 +9,7 @@
                         <span class="relative inline-block ml-3 opacity-0 group animate-fade-in"
                             style="animation-delay: 400ms;">
                             <span
-                                class="bg-gradient-to-r from-emerald-600 via-emerald-500 to-emerald-400 bg-clip-text text-transparent transition-all duration-300 bg-[length:200%_100%] bg-[position:0%] group-hover:bg-[position:100%]">
+                                class="bg-gradient-to-r from-green-700 via-green-500 to-green-400 bg-clip-text text-transparent transition-all duration-300 group-hover:bg-[length:200%_100%] bg-[length:100%_100%] bg-[position:0%] hover:bg-[position:100%]">
                                 Tech Stack
                             </span>
                         </span>
