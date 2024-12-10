@@ -1,6 +1,6 @@
 <template>
   <section 
-    class="flex flex-col justify-center min-h-screen px-0 overflow-hidden sm:px-6 lg:px-8" 
+    class="flex flex-col justify-center min-h-screen px-0 overflow-hidden sm:px-6 lg:px-8 relative" 
     id="projects"
     ref="sectionRef"
     :class="{ 'section-visible': isVisible }"
@@ -36,11 +36,36 @@
     </div>
 
     <!-- Full Width Container for ProjectCard -->
-    <div class="w-full">
+    <div class="w-full relative">
+      <!-- Scroll Indicators for Mobile -->
+      <div class="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-1.5 z-50 md:hidden">
+        <div 
+          v-for="(project, index) in sortedProjects" 
+          :key="project._id"
+          class="w-1.5 h-1.5 rounded-full transition-all duration-300"
+          :class="[
+            currentProjectIndex === index ? 'bg-white/80 scale-125' : 'bg-white/20',
+          ]"
+        />
+      </div>
+
+      <!-- Scroll Hint Animation for Mobile -->
+      <div 
+        v-if="!hasScrolled && sortedProjects.length > 1" 
+        class="absolute inset-y-0 right-0 w-12 bg-gradient-to-l from-black/20 to-transparent 
+               animate-pulse md:hidden pointer-events-none z-40"
+      >
+        <Icon 
+          name="lucide:chevron-right" 
+          class="absolute top-1/2 right-2 w-6 h-6 -translate-y-1/2 text-white/40 animate-scroll-hint"
+        />
+      </div>
+
       <div class="md:w-8/12 md:mx-auto md:max-w-[110rem]">
         <ProjectCard 
           :projects="sortedProjects" 
           :is-section-visible="isVisible"
+          @scroll="handleProjectScroll"
         />
       </div>
     </div>
@@ -58,6 +83,16 @@ const { data: projects } = await useAsyncData<Project[]>('projects', () =>
 // Computed property for sorted projects with fallback to empty array
 const sortedProjects = computed(() => projects.value ?? [])
 
+const currentProjectIndex = ref(0)
+const hasScrolled = ref(false)
+
+const handleProjectScroll = (index: number) => {
+  currentProjectIndex.value = index
+  if (!hasScrolled.value) {
+    hasScrolled.value = true
+  }
+}
+
 const sectionRef = ref<HTMLElement | null>(null)
 const isVisible = useElementVisibility(sectionRef, { threshold: 0.2 })
 
@@ -73,6 +108,21 @@ const isVisible = useElementVisibility(sectionRef, { threshold: 0.2 })
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+@keyframes scrollHint {
+  0%, 100% {
+    transform: translateX(0) translateY(-50%);
+    opacity: 0.4;
+  }
+  50% {
+    transform: translateX(-4px) translateY(-50%);
+    opacity: 0.8;
+  }
+}
+
+.animate-scroll-hint {
+  animation: scrollHint 2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
 }
 
 .animate-fade-in {
@@ -92,6 +142,10 @@ const isVisible = useElementVisibility(sectionRef, { threshold: 0.2 })
     animation: none;
     opacity: 1;
     transform: none;
+  }
+  
+  .animate-scroll-hint {
+    animation: none;
   }
 }
 </style> 

@@ -4,6 +4,7 @@
       class="flex w-full overflow-x-scroll overscroll-x-contain py-8 scroll-smooth 
              [scrollbar-width:none] snap-x snap-mandatory touch-pan-x" 
       ref="scrollContainer"
+      @scroll="handleScroll"
     >
       <!-- Projects Container -->
       <div class="flex flex-row justify-start min-w-full gap-4 md:gap-6">
@@ -199,6 +200,11 @@ const props = defineProps<{
   isSectionVisible: boolean
 }>()
 
+// Define emits
+const emit = defineEmits<{
+  scroll: [index: number]
+}>()
+
 const cardRef = ref<HTMLElement | null>(null)
 const isVisible = useElementVisibility(cardRef)
 
@@ -216,6 +222,20 @@ const handleProjectHover = (projectId: string, isHovering: boolean) => {
   hoveredProjectId.value = isHovering ? projectId : null
 }
 
+// Handle scroll events and emit current index
+const handleScroll = () => {
+  if (!scrollContainer.value) return
+  const container = scrollContainer.value
+  const scrollLeft = container.scrollLeft
+  const itemWidth = container.clientWidth * 0.85 // 85vw for mobile
+  const currentIndex = Math.round(scrollLeft / itemWidth)
+  
+  // Emit the current index
+  emit('scroll', currentIndex)
+  
+  updateScrollState()
+}
+
 // Initialize visibility and scroll state
 onMounted(() => {
   // Set initial visibility
@@ -225,7 +245,7 @@ onMounted(() => {
   
   // Initialize scroll container and state
   if (scrollContainer.value) {
-    scrollContainer.value.addEventListener('scroll', updateScrollState, { passive: true })
+    scrollContainer.value.addEventListener('scroll', handleScroll, { passive: true })
     
     // Wait for next tick to ensure DOM is ready
     nextTick(() => {
@@ -239,7 +259,7 @@ onMounted(() => {
 
 onUnmounted(() => {
   if (scrollContainer.value) {
-    scrollContainer.value.removeEventListener('scroll', updateScrollState)
+    scrollContainer.value.removeEventListener('scroll', handleScroll)
   }
 })
 
