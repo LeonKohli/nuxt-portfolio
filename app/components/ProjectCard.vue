@@ -20,6 +20,8 @@
           :style="getCardStyles(index)"
           @mouseenter="handleProjectHover(project.id, true)"
           @mouseleave="handleProjectHover(project.id, false)"
+          data-umami-event="View Project Details"
+          :data-umami-event-project="project.title"
         >
           <div 
             class="rounded-[24px] h-[24rem] sm:h-[26rem] md:h-[32rem] w-full md:w-[384px] group 
@@ -95,6 +97,8 @@
                            bg-white/10 hover:bg-white/20 hover:-translate-y-0.5 active:translate-y-0 
                            relative overflow-hidden project-hover-transition"
                     @click.stop
+                    data-umami-event="View Project GitHub"
+                    :data-umami-event-project="project.title"
                   >
                     <Icon 
                       name="ph:github-logo-fill" 
@@ -114,6 +118,8 @@
                            bg-emerald-500/20 hover:bg-emerald-500/30 hover:-translate-y-0.5 active:translate-y-0 
                            relative overflow-hidden project-hover-transition"
                     @click.stop
+                    data-umami-event="View Project Live"
+                    :data-umami-event-project="project.title"
                   >
                     <Icon 
                       name="lucide:external-link" 
@@ -167,6 +173,8 @@
           :disabled="isAtStart"
           @click="scrollLeft"
           aria-label="Scroll to previous projects"
+          data-umami-event="Projects Navigation"
+          data-umami-event-direction="previous"
         >
           <Icon 
             name="lucide:chevron-left" 
@@ -182,6 +190,8 @@
           :disabled="isAtEnd"
           @click="scrollRight"
           aria-label="Scroll to next projects"
+          data-umami-event="Projects Navigation"
+          data-umami-event-direction="next"
         >
           <Icon 
             name="lucide:chevron-right" 

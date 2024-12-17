@@ -59,14 +59,14 @@
                       Germany</span>
                   </div>
                   <div class="flex items-center gap-4 opacity-0 animate-fade-in" style="animation-delay: 1000ms;">
-                    <a 
-                      v-for="link in socialLinks" 
-                      :key="link.name" 
-                      :href="link.url" 
+                    <NuxtLink
+                      v-for="link in socialLinks"
+                      :key="link.name"
+                      :to="link.url"
+                      external
                       target="_blank"
-                      rel="noopener noreferrer"
-                      class="hover:text-[#22c55e] transition-all duration-300 flex items-center gap-2 group hover:-translate-y-1"
-                      :aria-label="`Visit my ${link.name} profile`"
+                      class="flex items-center justify-center transition-all duration-300 text-white/40 hover:text-white focus:outline-none focus:ring-2 focus:ring-emerald-400/50 hover:-translate-y-1"
+                      :data-umami-event="`Visit ${link.name}`"
                     >
                       <Icon 
                         :name="link.playfulIcon"
@@ -74,10 +74,10 @@
                         loading="lazy"
                         width="20"
                         height="20"
-                        aria-hidden="true" 
+                        aria-hidden="true"
                       />
                       <span class="sr-only">{{ link.screenReaderText }}</span>
-                    </a>
+                    </NuxtLink>
                   </div>
                 </div>
               </div>
@@ -89,7 +89,9 @@
         <div class="absolute flex justify-center w-full -translate-x-1/2 bottom-8 left-1/2">
           <button class="transition-all duration-300 opacity-0 animate-fade-in hover:-translate-y-1"
             :class="{ 'opacity-0 translate-y-4': isScrolled }" style="animation-delay: 1500ms;"
-            @click="scrollToProjects">
+            @click="scrollToProjects"
+            data-umami-event="Scroll to Projects"
+          >
             <div class="flex flex-col items-center gap-2 transition-colors text-white/50 hover:text-white/80">
               <span class="text-sm font-exo">Scroll</span>
               <Icon name="lucide:chevrons-down" class="w-6 h-6 animate-bounce-soft" />

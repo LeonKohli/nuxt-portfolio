@@ -40,6 +40,7 @@
         class="relative inline-flex h-10 sm:h-12 w-[180px] sm:w-[210px] overflow-hidden rounded-lg p-[1px] focus:outline-none focus:ring-2 focus:ring-emerald-400/50 focus:ring-offset-2 focus:ring-offset-black group opacity-0 animate-fade-in"
         style="animation-delay: 600ms;"
         @click="copyEmail"
+        data-umami-event="Copy Email"
         @mousemove="handleMouseMove($event)"
         @mouseleave="handleMouseLeave"
       >
@@ -84,6 +85,7 @@
           target="_blank"
           class="flex items-center justify-center w-10 h-10 transition-all duration-300 rounded-full opacity-0 text-white/40 hover:text-white focus:outline-none focus:ring-2 focus:ring-emerald-400/50 animate-fade-in hover:-translate-y-1"
           :style="{ animationDelay: `${800 + (index * 100)}ms` }"
+          :data-umami-event="`Visit ${link.name}`"
         >
           <Icon :name="link.icon" class="w-5 h-5" />
           <span class="sr-only">{{ link.name }}</span>
