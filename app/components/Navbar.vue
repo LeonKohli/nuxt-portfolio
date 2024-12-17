@@ -25,6 +25,9 @@
           transform: isVisible ? 'none' : 'translateX(-1rem)'
         }"
         @click.prevent="scrollToSection(item.href)"
+        data-umami-event="Navigation Click"
+        :data-umami-event-section="item.label"
+        :data-umami-event-active="activeSection === item.href.substring(1)"
       >
         <!-- Active Section Indicator -->
         <div 

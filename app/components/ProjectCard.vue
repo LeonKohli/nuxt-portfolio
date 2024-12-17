@@ -20,8 +20,6 @@
           :style="getCardStyles(index)"
           @mouseenter="handleProjectHover(project.id, true)"
           @mouseleave="handleProjectHover(project.id, false)"
-          data-umami-event="View Project Details"
-          :data-umami-event-project="project.title"
         >
           <div 
             class="rounded-[24px] h-[24rem] sm:h-[26rem] md:h-[32rem] w-full md:w-[384px] group 
