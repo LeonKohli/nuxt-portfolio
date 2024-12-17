@@ -8,7 +8,7 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   modules: [
     '@nuxt/icon',
-    '@nuxt/fonts', 
+    '@nuxt/fonts',
     '@nuxtjs/tailwindcss',
     '@nuxtjs/color-mode',
     '@nuxt/image',
@@ -23,6 +23,16 @@ export default defineNuxtConfig({
   colorMode: {
     classPrefix: '',
     classSuffix: '',
+  },
+  app: {
+    head: {
+      script: process.env.NODE_ENV === 'production' ? [
+        {
+          src: process.env.NUXT_PUBLIC_UMAMI_URL,
+          defer: true,
+          'data-website-id': process.env.NUXT_PUBLIC_UMAMI_WEBSITE_ID
+        }
+      ] : []
+    }
   }
-  
 })
