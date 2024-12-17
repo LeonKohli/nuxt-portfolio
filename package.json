@@ -32,6 +32,8 @@
   "devDependencies": {
     "@iconify-json/lucide": "^1.2.18",
     "@iconify-json/ph": "^1.2.1",
+    "@iconify-json/simple-icons": "^1.2.16",
+    "@iconify-json/vscode-icons": "^1.2.6",
     "typescript": "^5.7.2"
   }
 }
