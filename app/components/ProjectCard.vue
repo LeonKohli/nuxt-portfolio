@@ -20,6 +20,7 @@
           :style="getCardStyles(index)"
           @mouseenter="handleProjectHover(project.id, true)"
           @mouseleave="handleProjectHover(project.id, false)"
+          @click="$emit('select', project)"
         >
           <div 
             class="rounded-[24px] h-[24rem] sm:h-[26rem] md:h-[32rem] w-full md:w-[384px] group 
@@ -211,6 +212,7 @@ const props = defineProps<{
 // Define emits
 const emit = defineEmits<{
   scroll: [index: number]
+  select: [project: Project]
 }>()
 
 const cardRef = ref<HTMLElement | null>(null)

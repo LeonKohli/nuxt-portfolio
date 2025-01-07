@@ -66,9 +66,17 @@
           :projects="sortedProjects" 
           :is-section-visible="isVisible"
           @scroll="handleProjectScroll"
+          @select="handleProjectSelect"
         />
       </div>
     </div>
+
+    <!-- Update the ProjectModal component -->
+    <ProjectModal 
+      :open="isModalOpen"
+      :project="selectedProject"
+      @update:open="isModalOpen = $event"
+    />
   </section>
 </template>
 
@@ -85,12 +93,20 @@ const sortedProjects = computed(() => projects.value ?? [])
 
 const currentProjectIndex = ref(0)
 const hasScrolled = ref(false)
+const isModalOpen = ref(false)
+const selectedProject = ref<Project | null>(null)
 
 const handleProjectScroll = (index: number) => {
   currentProjectIndex.value = index
   if (!hasScrolled.value) {
     hasScrolled.value = true
   }
+}
+
+// Add this function to handle project selection
+const handleProjectSelect = (project: Project) => {
+  selectedProject.value = project
+  isModalOpen.value = true
 }
 
 const sectionRef = ref<HTMLElement | null>(null)

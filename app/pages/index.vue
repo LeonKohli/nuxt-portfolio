@@ -3,21 +3,15 @@
     <BackgroundOrbs />
     <div class="flex flex-col">
       <HeroSection />
-      <ProjectsSection @select="selectedProject = $event" />
+      <ProjectsSection />
       <AboutSection />
       <TechStackSection />
       <FooterSection />
     </div>
-    <ProjectModal 
-      :project="selectedProject"
-      @close="selectedProject = null"
-    />
   </div>
 </template>
 
 <script setup lang="ts">
-const selectedProject = ref<Project | null>(null)
-
 useSeoMeta({
   description: 'Portfolio of Leon Kohlhaußen - Full Stack Developer based in Potsdam, Germany.',
   ogTitle: 'Leon Kohlhaußen - Full Stack Developer & Security Enthusiast',
