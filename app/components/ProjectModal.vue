@@ -29,9 +29,20 @@ const formatDate = (date: string) => {
 
 <template>
   <Dialog :open="open" @update:open="emit('update:open', $event)">
-    <DialogContent class="border sm:max-w-3xl border-white/10 bg-black/95 backdrop-blur-xl">
-      <!-- Background Gradient Effect -->
-      <div class="absolute inset-0 rounded-lg opacity-50 bg-gradient-to-br from-emerald-500/10 via-transparent to-transparent" />
+    <DialogContent class="border sm:max-w-3xl border-white/10 bg-black/90 backdrop-blur-2xl">
+      <!-- Background Effects -->
+      <div class="absolute inset-0 overflow-hidden rounded-lg">
+        <!-- Grid Pattern -->
+        <div 
+          class="absolute inset-0 bg-[linear-gradient(rgba(34,197,94,0.015)_1px,transparent_1px),linear-gradient(90deg,rgba(34,197,94,0.015)_1px,transparent_1px)] 
+                 opacity-75"
+          style="background-size: 8px 8px"
+        />
+        
+        <!-- Gradient Overlays -->
+        <div class="absolute inset-0 bg-gradient-to-br from-emerald-500/10 via-emerald-400/5 to-transparent" />
+        <div class="absolute inset-0 opacity-25 bg-gradient-to-tl from-emerald-500/10 via-transparent to-transparent animate-gradient" />
+      </div>
       
       <DialogHeader class="space-y-6">
         <!-- Project Image -->
@@ -53,8 +64,9 @@ const formatDate = (date: string) => {
           <!-- Project Status Badge -->
           <div v-if="project?.status" class="absolute top-4 right-4">
             <div class="px-3 py-1.5 rounded-full text-sm font-medium 
-                      bg-white/10 text-white/90 backdrop-blur-xl border border-white/10
-                      hover:bg-white/20 hover:border-white/20 transition-all duration-300">
+                      bg-emerald-500/20 text-emerald-400 backdrop-blur-xl border border-emerald-500/20
+                      hover:bg-emerald-500/30 hover:border-emerald-500/30 transition-all duration-300
+                      hover:-translate-y-0.5 active:translate-y-0">
               {{ project.status }}
             </div>
           </div>
@@ -62,12 +74,13 @@ const formatDate = (date: string) => {
 
         <!-- Title and Subtitle -->
         <div class="relative space-y-2">
-          <DialogTitle class="text-3xl font-bold sm:text-4xl font-exo">
-            <span class="text-transparent transition-all duration-300 bg-gradient-to-r from-green-700 via-green-500 to-green-400 bg-clip-text">
+          <DialogTitle class="text-3xl font-bold sm:text-4xl font-exo group">
+            <span class="text-transparent transition-all duration-300 bg-gradient-to-r from-green-700 via-green-500 to-green-400 bg-clip-text
+                       bg-[length:100%_100%] group-hover:bg-[length:200%_100%] bg-[position:0%] group-hover:bg-[position:100%]">
               {{ project?.title }}
             </span>
           </DialogTitle>
-          <DialogDescription class="text-lg sm:text-xl text-white/80">
+          <DialogDescription class="text-lg transition-colors duration-300 sm:text-xl text-white/80 group-hover:text-white/90">
             {{ project?.subtitle }}
           </DialogDescription>
         </div>
@@ -90,14 +103,13 @@ const formatDate = (date: string) => {
             <div 
               v-for="tech in project?.tech" 
               :key="tech.name"
-              class="flex items-center gap-1.5 px-3 py-1.5 text-sm rounded-full 
-                     text-white/90 bg-white/10 backdrop-blur-xl group 
-                     hover:bg-white/20 transition-all duration-300"
+              class="px-3 py-1.5 text-sm rounded-full text-white/90 bg-white/10 backdrop-blur-xl 
+                     hover:bg-white/20 flex items-center gap-1.5 group/tech project-hover-transition"
             >
               <Icon 
                 :name="tech.icon" 
-                class="w-3.5 h-3.5 transition-transform duration-300
-                       group-hover:scale-110 group-hover:rotate-[8deg]"
+                class="w-3.5 h-3.5 project-hover-transition 
+                       group-hover/tech:scale-110 group-hover/tech:rotate-[8deg]"
                 loading="lazy"
                 width="14"
                 height="14"
@@ -115,12 +127,12 @@ const formatDate = (date: string) => {
             <li 
               v-for="feature in project.features" 
               :key="feature"
-              class="flex items-start gap-3 group"
+              class="flex items-start gap-3 p-2 rounded-lg group/feature project-hover-transition hover:bg-white/5"
             >
               <Icon 
                 name="lucide:check-circle" 
-                class="w-5 h-5 mt-0.5 text-emerald-400 transition-transform duration-300
-                       group-hover:scale-110 group-hover:rotate-[8deg]"
+                class="w-5 h-5 mt-0.5 text-emerald-400 project-hover-transition
+                       group-hover/feature:scale-110 group-hover/feature:rotate-[8deg]"
                 aria-hidden="true"
               />
               <span class="transition-colors duration-300 text-white/70 group-hover:text-white/90">
@@ -139,14 +151,14 @@ const formatDate = (date: string) => {
             :href="project.repo"
             target="_blank"
             variant="outline"
-            class="group flex items-center px-4 py-2 text-sm font-medium rounded-full 
+            class="group/btn flex items-center px-4 py-2 text-sm font-medium rounded-full 
                    text-white bg-white/10 hover:bg-white/20 hover:-translate-y-0.5 
                    active:translate-y-0 relative overflow-hidden project-hover-transition"
           >
             <Icon 
               name="ph:github-logo-fill" 
-              class="w-4 h-4 mr-2 transition-transform duration-300 
-                     group-hover:scale-110 group-hover:rotate-[8deg]"
+              class="w-4 h-4 mr-2 project-hover-transition 
+                     group-hover/btn:scale-110 group-hover/btn:rotate-[8deg]"
             />
             <span class="relative z-10">View Code</span>
           </Button>
@@ -154,15 +166,15 @@ const formatDate = (date: string) => {
             v-if="project?.link"
             :href="project.link"
             target="_blank"
-            class="group flex items-center px-4 py-2 text-sm font-medium rounded-full 
+            class="group/btn flex items-center px-4 py-2 text-sm font-medium rounded-full 
                    text-emerald-400 bg-emerald-500/20 hover:bg-emerald-500/30 
                    hover:-translate-y-0.5 active:translate-y-0 relative overflow-hidden 
                    project-hover-transition"
           >
             <Icon 
               name="lucide:external-link" 
-              class="w-4 h-4 mr-2 transition-transform duration-300 
-                     group-hover:scale-110 group-hover:rotate-[8deg]"
+              class="w-4 h-4 mr-2 project-hover-transition 
+                     group-hover/btn:scale-110 group-hover/btn:rotate-[8deg]"
             />
             <span class="relative z-10">Visit Project</span>
           </Button>
@@ -173,6 +185,23 @@ const formatDate = (date: string) => {
 </template>
 
 <style scoped>
+@keyframes subtleGradient {
+  0% {
+    opacity: 0.2;
+  }
+  50% {
+    opacity: 0.3;
+  }
+  100% {
+    opacity: 0.2;
+  }
+}
+
+.animate-gradient {
+  animation: subtleGradient 8s ease-in-out infinite;
+  will-change: opacity;
+}
+
 /* Smooth scrollbar styling */
 ::-webkit-scrollbar {
   width: 6px;
@@ -204,4 +233,4 @@ const formatDate = (date: string) => {
     transition: none !important;
   }
 }
-</style> 
+</style>
