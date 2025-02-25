@@ -2,7 +2,7 @@
 <template>
   <section 
     ref="sectionRef"
-    class="relative flex items-center justify-center min-h-screen px-4 overflow-hidden sm:px-6 lg:px-8"
+    class="relative flex items-center justify-center min-h-screen px-4 overflow-hidden sm:px-6 lg:px-8 pb-16 md:pb-0"
     :class="{ 'section-visible': isVisible }"
   >
     <div class="w-10/12 md:w-8/12 mx-auto max-w-[110rem]">

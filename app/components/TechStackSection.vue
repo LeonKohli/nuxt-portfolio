@@ -1,5 +1,5 @@
 <template>
-    <section id="tech-stack" class="flex flex-col justify-center min-h-screen px-4 overflow-hidden sm:px-6 lg:px-8" ref="sectionRef" :class="{ 'section-visible': isVisible }">
+    <section id="tech-stack" class="flex flex-col justify-center min-h-screen px-4 overflow-hidden sm:px-6 lg:px-8 pt-24 md:pt-0" ref="sectionRef" :class="{ 'section-visible': isVisible }">
         <div class="w-10/12 md:w-8/12 mx-auto max-w-[110rem] px-4">
             <!-- Section Header -->
             <div class="flex flex-col items-center mb-16 text-center md:items-start md:text-left">
@@ -37,7 +37,7 @@
                     <div class="relative z-10 flex items-center gap-4">
                         <div class="flex items-center justify-center w-12 h-12 rounded-lg shrink-0 transition-all duration-500
                             shadow-[0_0_0_1px_rgba(255,255,255,0.1)] group-hover:shadow-[0_0_0_1.5px_rgba(16,185,129,0.2)]
-                            group-hover:scale-110" :style="{ backgroundColor: `${tech.color}15` }">
+                            group-hover:scale-110" :class="getIconBackgroundClass(tech.color)">
                             <Icon v-if="isVisible" 
                                 :name="tech.icon"
                                 class="w-6 h-6 transition-all duration-500 group-hover:scale-110"
@@ -115,6 +115,27 @@ if (!techStack.value) {
 
 const sectionRef = ref<HTMLElement | null>(null)
 const isVisible = useElementVisibility(sectionRef, { threshold: 0.2 })
+
+// Convert hex color to tailwind-compatible background classes to avoid hydration mismatch
+function getIconBackgroundClass(hexColor: string): string {
+  // Map common colors to tailwind classes to avoid inline styles
+  const colorMap: Record<string, string> = {
+    '#3178C6': 'bg-[#3178C615]', // TypeScript
+    '#3776AB': 'bg-[#3776AB15]', // Python
+    '#42b883': 'bg-[#42b88315]', // Vue.js
+    '#00DC82': 'bg-[#00DC8215]', // Nuxt.js
+    '#009688': 'bg-[#00968815]', // FastAPI
+    '#FFFFFF': 'bg-[#FFFFFF15]', // Flask
+    '#38BDF8': 'bg-[#38BDF815]', // Tailwind
+    '#F05032': 'bg-[#F0503215]', // Git
+    '#4169E1': 'bg-[#4169E115]', // PostgreSQL
+    '#2496ED': 'bg-[#2496ED15]', // Docker
+    '#FCC624': 'bg-[#FCC62415]', // Linux
+    '#4EAA25': 'bg-[#4EAA2515]', // Bash
+  }
+  
+  return colorMap[hexColor] || 'bg-white/5' // Fallback for any colors not in the map
+}
 
 </script>
 

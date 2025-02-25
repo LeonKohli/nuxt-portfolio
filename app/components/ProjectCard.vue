@@ -25,7 +25,8 @@
           <div 
             class="rounded-[24px] h-[24rem] sm:h-[26rem] md:h-[32rem] w-full md:w-[384px] group 
                    overflow-hidden flex flex-col items-start justify-start relative z-10 
-                   cursor-pointer project-transition"
+                   cursor-pointer project-transition hover:shadow-[0_8px_30px_rgba(0,0,0,0.12)] 
+                   hover:shadow-emerald-500/10"
           >
             <!-- Dark Gradient Overlay -->
             <div 
@@ -163,12 +164,13 @@
 
     <!-- Navigation Buttons -->
     <ClientOnly>
-      <div class="justify-start hidden gap-3 mt-8 md:flex">
+      <div class="justify-start hidden gap-4 mt-8 md:flex">
         <button 
           v-if="showNavigation"
           class="group/nav relative z-40 flex items-center justify-center w-12 h-12 rounded-full cursor-pointer 
-                 disabled:opacity-50 bg-white/5 hover:bg-white/10 hover:-translate-y-0.5 active:translate-y-0 
-                 disabled:hover:scale-100 disabled:hover:translate-y-0 project-hover-transition"
+                 disabled:opacity-30 bg-white/5 hover:bg-emerald-500/10 hover:-translate-y-1 active:translate-y-0 
+                 disabled:hover:scale-100 disabled:hover:translate-y-0 project-hover-transition
+                 hover:shadow-[0_0_15px_rgba(16,185,129,0.15)] transition-all duration-300"
           :disabled="isAtStart"
           @click="scrollLeft"
           aria-label="Scroll to previous projects"
@@ -177,15 +179,16 @@
         >
           <Icon 
             name="lucide:chevron-left" 
-            class="w-6 h-6 text-white project-hover-transition group-hover/nav:scale-110"
+            class="w-6 h-6 text-white/80 group-hover/nav:text-emerald-400 project-hover-transition group-hover/nav:scale-110"
             aria-hidden="true"
           />
         </button>
         <button 
           v-if="showNavigation"
           class="group/nav relative z-40 flex items-center justify-center w-12 h-12 rounded-full cursor-pointer 
-                 disabled:opacity-50 bg-white/5 hover:bg-white/10 hover:-translate-y-0.5 active:translate-y-0 
-                 disabled:hover:scale-100 disabled:hover:translate-y-0 project-hover-transition"
+                 disabled:opacity-30 bg-white/5 hover:bg-emerald-500/10 hover:-translate-y-1 active:translate-y-0 
+                 disabled:hover:scale-100 disabled:hover:translate-y-0 project-hover-transition
+                 hover:shadow-[0_0_15px_rgba(16,185,129,0.15)] transition-all duration-300"
           :disabled="isAtEnd"
           @click="scrollRight"
           aria-label="Scroll to next projects"
@@ -194,7 +197,7 @@
         >
           <Icon 
             name="lucide:chevron-right" 
-            class="w-6 h-6 text-white project-hover-transition group-hover/nav:scale-110"
+            class="w-6 h-6 text-white/80 group-hover/nav:text-emerald-400 project-hover-transition group-hover/nav:scale-110"
             aria-hidden="true"
           />
         </button>
@@ -280,6 +283,10 @@ watch(() => props.projects, () => {
       updateScrollState()
       showNavigation.value = 
         scrollContainer.value.scrollWidth > scrollContainer.value.clientWidth
+      
+      // Reset scroll position when projects array changes
+      scrollContainer.value.scrollLeft = 0
+      handleScroll()
     }
   })
 }, { deep: true })
@@ -300,21 +307,31 @@ const updateScrollState = useDebounceFn(() => {
   isAtEnd.value = atEnd
 }, 100)
 
-// Scroll functions with smooth easing
+// Scroll functions with enhanced smooth easing
 const scrollLeft = () => {
   if (!scrollContainer.value) return
-  const scrollAmount = window.innerWidth >= 768 ? 400 : scrollContainer.value.clientWidth
+  
+  // Calculate the card width plus gap for precise scrolling by exact card positions
+  const cardWidth = window.innerWidth >= 768 ? 384 : Math.min(window.innerWidth * 0.85, 380)
+  const cardGap = window.innerWidth >= 768 ? 24 : 16 // md:gap-6 (24px) or gap-4 (16px)
+  
+  // Move by exactly one card position
   scrollContainer.value.scrollBy({
-    left: -scrollAmount,
+    left: -(cardWidth + cardGap),
     behavior: 'smooth'
   })
 }
 
 const scrollRight = () => {
   if (!scrollContainer.value) return
-  const scrollAmount = window.innerWidth >= 768 ? 400 : scrollContainer.value.clientWidth
+  
+  // Calculate the card width plus gap for precise scrolling by exact card positions
+  const cardWidth = window.innerWidth >= 768 ? 384 : Math.min(window.innerWidth * 0.85, 380)
+  const cardGap = window.innerWidth >= 768 ? 24 : 16 // md:gap-6 (24px) or gap-4 (16px)
+  
+  // Move by exactly one card position
   scrollContainer.value.scrollBy({
-    left: scrollAmount,
+    left: cardWidth + cardGap,
     behavior: 'smooth'
   })
 }
@@ -329,8 +346,8 @@ const getCardClasses = (index: number) => {
     return {
       'opacity-0': !props.isSectionVisible,
       'opacity-100 translate-y-0': props.isSectionVisible,
-      'translate-y-4': !props.isSectionVisible,
-      'transition-all duration-500': true,
+      'translate-y-8': !props.isSectionVisible,
+      'transition-all duration-700': true,
     }
   }
   // Return default visible state if already animated
@@ -343,9 +360,11 @@ const getCardClasses = (index: number) => {
 const getCardStyles = (index: number) => {
   // Only apply transition delay if we haven't animated before
   if (!hasAnimated.value) {
+    // Calculate a staggered delay based on position
+    // Cards animate in from left to right with a slight stagger
     return {
-      transitionDelay: `${(index * 200) + 800}ms`,
-      transitionTimingFunction: 'cubic-bezier(0.2, 0.8, 0.2, 1)'
+      transitionDelay: `${(index * 120) + 600}ms`,
+      transitionTimingFunction: 'cubic-bezier(0.25, 0.1, 0.25, 1.0)' // Improved easing
     }
   }
   // Return empty styles if already animated
@@ -393,7 +412,7 @@ watch(() => props.isSectionVisible, (newValue) => {
 /* Base transitions */
 .project-transition {
   transition-property: all;
-  transition-timing-function: cubic-bezier(0.2, 0.8, 0.2, 1);
+  transition-timing-function: cubic-bezier(0.25, 0.1, 0.25, 1.0);
   transition-duration: 500ms;
   will-change: transform, opacity;
 }

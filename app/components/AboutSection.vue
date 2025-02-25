@@ -1,6 +1,6 @@
 <template>
   <section 
-    class="flex flex-col justify-center min-h-screen px-4 overflow-hidden sm:px-6 lg:px-8" 
+    class="flex flex-col justify-center min-h-screen px-4 overflow-hidden sm:px-6 lg:px-8 pt-24 md:pt-0" 
     id="about"
     ref="sectionRef"
     :class="{ 'section-visible': isVisible }"

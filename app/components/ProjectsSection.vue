@@ -13,7 +13,7 @@
           <h2 class="w-full font-bold tracking-tight text-center md:text-left">
             <span class="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-exo">
               <span class="opacity-0 text-zinc-100 animate-fade-in" style="animation-delay: 200ms;">My</span>
-              <span class="relative inline-block ml-3 opacity-0 group animate-fade-in" style="animation-delay: 400ms;">
+              <span class="relative inline-block ml-3 opacity-0 group animate-fade-in" style="animation-delay: 350ms;">
                 <span 
                   class="bg-gradient-to-r from-green-700 via-green-500 to-green-400 
                          bg-clip-text text-transparent transition-all duration-300 
@@ -22,12 +22,15 @@
                 >
                   Projects
                 </span>
+                <!-- Decorative dot -->
+                <span class="absolute -right-5 -top-1 w-2.5 h-2.5 rounded-full bg-emerald-400 opacity-0 animate-fade-in" 
+                      style="animation-delay: 800ms; box-shadow: 0 0 10px rgba(52,211,153,0.7);"></span>
               </span>
             </span>
           </h2>
           <p 
             class="max-w-[680px] mt-8 text-lg text-white/70 md:text-xl opacity-0 animate-fade-in" 
-            style="animation-delay: 600ms;"
+            style="animation-delay: 500ms;"
           >
             Some of my most interesting projects, showcasing my skills and experience in web development.
           </p>
@@ -38,13 +41,15 @@
     <!-- Full Width Container for ProjectCard -->
     <div class="w-full relative">
       <!-- Scroll Indicators for Mobile -->
-      <div class="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-1.5 z-50 md:hidden">
+      <div class="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-50 md:hidden">
         <div 
           v-for="(project, index) in sortedProjects" 
           :key="project._id"
-          class="w-1.5 h-1.5 rounded-full transition-all duration-300"
+          class="w-2 h-2 rounded-full transition-all duration-500"
           :class="[
-            currentProjectIndex === index ? 'bg-white/80 scale-125' : 'bg-white/20',
+            currentProjectIndex === index 
+              ? 'bg-emerald-400/80 scale-125 shadow-[0_0_8px_rgba(52,211,153,0.5)]' 
+              : 'bg-white/20',
           ]"
         />
       </div>
@@ -52,16 +57,19 @@
       <!-- Scroll Hint Animation for Mobile -->
       <div 
         v-if="!hasScrolled && sortedProjects.length > 1" 
-        class="absolute inset-y-0 right-0 w-12 bg-gradient-to-l from-black/20 to-transparent 
-               animate-pulse md:hidden pointer-events-none z-40"
+        class="absolute inset-y-0 right-0 w-16 bg-gradient-to-l from-black/30 to-transparent 
+               md:hidden pointer-events-none z-40 flex items-center justify-end pr-3"
       >
-        <Icon 
-          name="lucide:chevron-right" 
-          class="absolute top-1/2 right-2 w-6 h-6 -translate-y-1/2 text-white/40 animate-scroll-hint"
-        />
+        <div class="p-2 rounded-full bg-emerald-500/10 animate-pulse">
+          <Icon 
+            name="lucide:chevron-right" 
+            class="w-6 h-6 text-emerald-400/80 animate-scroll-hint"
+            aria-hidden="true"
+          />
+        </div>
       </div>
 
-      <div class="md:w-8/12 md:mx-auto md:max-w-[110rem]">
+      <div class="md:w-8/12 md:mx-auto md:max-w-[110rem] pb-16 md:pb-0">
         <ProjectCard 
           :projects="sortedProjects" 
           :is-section-visible="isVisible"
@@ -118,32 +126,41 @@ const isVisible = useElementVisibility(sectionRef, { threshold: 0.2 })
 @keyframes fadeIn {
   0% {
     opacity: 0.001;
-    transform: translateY(10px);
+    transform: translateY(15px);
+    filter: blur(2px);
+  }
+  70% {
+    filter: blur(0);
   }
   100% {
     opacity: 1;
     transform: translateY(0);
+    filter: blur(0);
   }
 }
 
 @keyframes scrollHint {
-  0%, 100% {
-    transform: translateX(0) translateY(-50%);
-    opacity: 0.4;
+  0% {
+    transform: translateX(0);
+    opacity: 0.7;
   }
   50% {
-    transform: translateX(-4px) translateY(-50%);
-    opacity: 0.8;
+    transform: translateX(-6px);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 0.7;
   }
 }
 
 .animate-scroll-hint {
-  animation: scrollHint 2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  animation: scrollHint 2s ease-in-out infinite;
 }
 
 .animate-fade-in {
-  animation: fadeIn 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
-  will-change: transform, opacity;
+  animation: fadeIn 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+  will-change: transform, opacity, filter;
   animation-play-state: paused;
 }
 
