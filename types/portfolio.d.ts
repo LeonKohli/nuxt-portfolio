@@ -18,6 +18,14 @@ declare global {
     repo?: string
     image: string
     sort: number
+    category?: string
+    tags?: string[]
+    featured?: boolean
+    status?: string
+    startDate?: string
+    endDate?: string
+    complexity?: number
+    features?: string[]
   }
 
   interface Skill {

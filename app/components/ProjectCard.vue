@@ -11,6 +11,7 @@
         <!-- Initial spacer for mobile -->
         <div class="w-4 shrink-0 md:hidden" aria-hidden="true" />
         
+        <ClientOnly>
         <div 
           v-for="(project, index) in projects" 
           :key="project.id"
@@ -20,9 +21,9 @@
           :style="getCardStyles(index)"
           @mouseenter="handleProjectHover(project.id, true)"
           @mouseleave="handleProjectHover(project.id, false)"
-          @click="$emit('select', project)"
         >
-          <div 
+          <NuxtLink 
+            :to="`/projects/${project.id}`"
             class="rounded-[24px] h-[24rem] sm:h-[26rem] md:h-[32rem] w-full md:w-[384px] group 
                    overflow-hidden flex flex-col items-start justify-start relative z-10 
                    cursor-pointer project-transition hover:shadow-[0_8px_30px_rgba(0,0,0,0.12)] 
@@ -154,8 +155,9 @@
                 background: 'black'
               }"
             />
-          </div>
+          </NuxtLink>
         </div>
+        </ClientOnly>
 
         <!-- Final spacer for mobile -->
         <div class="w-4 shrink-0 md:hidden" aria-hidden="true" />
@@ -215,7 +217,6 @@ const props = defineProps<{
 // Define emits
 const emit = defineEmits<{
   scroll: [index: number]
-  select: [project: Project]
 }>()
 
 const cardRef = ref<HTMLElement | null>(null)
@@ -229,6 +230,9 @@ const hoveredProjectId = ref<string | null>(null)
 const isAtStart = ref(true)
 const isAtEnd = ref(false)
 const showNavigation = ref(false)
+
+// Add this near the top of the script section
+const hasAnimated = ref(process.server ? true : false)
 
 // Track hover state for each project
 const handleProjectHover = (projectId: string, isHovering: boolean) => {
@@ -336,13 +340,10 @@ const scrollRight = () => {
   })
 }
 
-// Add this near the top of the script section
-const hasAnimated = ref(false)
-
 // Update the getCardClasses function
 const getCardClasses = (index: number) => {
-  // Only apply animations if we haven't animated before
-  if (!hasAnimated.value) {
+  // Only apply animations on client-side
+  if (process.client && !hasAnimated.value) {
     return {
       'opacity-0': !props.isSectionVisible,
       'opacity-100 translate-y-0': props.isSectionVisible,
@@ -350,7 +351,7 @@ const getCardClasses = (index: number) => {
       'transition-all duration-700': true,
     }
   }
-  // Return default visible state if already animated
+  // Return default visible state for server-side rendering or if already animated
   return {
     'opacity-100 translate-y-0': true,
   }
@@ -358,22 +359,23 @@ const getCardClasses = (index: number) => {
 
 // Update the getCardStyles function
 const getCardStyles = (index: number) => {
-  // Only apply transition delay if we haven't animated before
-  if (!hasAnimated.value) {
+  // Only apply transition delay on client-side
+  if (process.client && !hasAnimated.value) {
     // Calculate a staggered delay based on position
     // Cards animate in from left to right with a slight stagger
+    const delay = `${(index * 120) + 600}ms`;
     return {
-      transitionDelay: `${(index * 120) + 600}ms`,
+      transitionDelay: delay,
       transitionTimingFunction: 'cubic-bezier(0.25, 0.1, 0.25, 1.0)' // Improved easing
     }
   }
-  // Return empty styles if already animated
+  // Return empty styles for server-side rendering or if already animated
   return {}
 }
 
 // Add a watcher for isSectionVisible
 watch(() => props.isSectionVisible, (newValue) => {
-  if (newValue && !hasAnimated.value) {
+  if (process.client && newValue && !hasAnimated.value) {
     // Set hasAnimated to true after the animation duration + maximum delay
     const maxDelay = (props.projects.length * 200) + 800 + 500 // animation delays + duration
     setTimeout(() => {

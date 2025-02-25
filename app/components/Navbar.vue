@@ -1,12 +1,13 @@
 <template>
+  <!-- Desktop Navbar (Left Side) -->
   <nav 
     ref="navRef"
-    class="fixed z-50 hidden transition-all duration-500 ease-in-out left-6 md:block will-change-transform will-change-opacity"
+    class="fixed z-50 hidden transition-all duration-700 ease-in-out left-6 md:block will-change-transform will-change-opacity"
     :class="[
-      isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4',
-      isVisible ? 'pointer-events-auto' : 'pointer-events-none'
+      isVisible && !isProjectPage ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4',
+      isVisible && !isProjectPage ? 'pointer-events-auto' : 'pointer-events-none'
     ]"
-    :style="{ top: '50%', transform: `translateY(-50%) ${isVisible ? '' : 'translateY(1rem)'}` }"
+    :style="{ top: '50%', transform: `translateY(-50%) ${isVisible && !isProjectPage ? '' : 'translateY(1rem)'}` }"
   >
     <!-- Navigation Links -->
     <div class="flex flex-col items-start gap-3">
@@ -14,32 +15,32 @@
         v-for="(item, index) in navItems" 
         :key="item.label"
         :href="item.href"
-        class="relative py-2 pr-4 overflow-hidden text-sm border rounded-full group transition-all duration-300 ease-in-out will-change-transform will-change-[background-color,padding] bg-black/30 backdrop-blur-sm border-white/5"
+        class="relative py-2 pr-4 overflow-hidden text-sm border rounded-full group transition-all duration-500 ease-in-out will-change-transform will-change-[background-color,padding] bg-black/30 backdrop-blur-sm border-white/5"
         :class="[
-          activeSection === item.href.substring(1) 
+          activeSection === item.href.substring(1) && !isProjectPage
             ? 'text-white border-white/20 pl-10' 
             : 'text-white/50 pl-8 hover:text-white hover:bg-black/50 hover:border-white/10 hover:pl-10'
         ]"
         :style="{ 
-          transitionDelay: `${index * 50}ms`,
-          transform: isVisible ? 'none' : 'translateX(-1rem)'
+          transitionDelay: `${index * 100}ms`,
+          transform: isVisible && !isProjectPage ? 'none' : 'translateX(-1rem)'
         }"
         @click.prevent="scrollToSection(item.href)"
         data-umami-event="Navigation Click"
         :data-umami-event-section="item.label"
-        :data-umami-event-active="activeSection === item.href.substring(1)"
+        :data-umami-event-active="activeSection === item.href.substring(1) && !isProjectPage"
       >
         <!-- Active Section Indicator -->
         <div 
-          class="absolute inset-0 transition-opacity duration-300 opacity-0 pointer-events-none"
-          :class="{ 'opacity-10': activeSection === item.href.substring(1) }"
+          class="absolute inset-0 transition-opacity duration-500 opacity-0 pointer-events-none"
+          :class="{ 'opacity-10': activeSection === item.href.substring(1) && !isProjectPage }"
         >
           <div class="absolute inset-0 bg-gradient-to-r from-emerald-500/20 to-transparent" />
         </div>
 
         <!-- Hover Spotlight Effect -->
         <div 
-          class="absolute inset-0 transition-opacity duration-300 opacity-0 pointer-events-none group-hover:opacity-100"
+          class="absolute inset-0 transition-opacity duration-500 opacity-0 pointer-events-none group-hover:opacity-100"
           :style="spotlightStyles[index]"
           @mousemove="handleMouseMove($event, index)"
           @mouseleave="handleMouseLeave(index)"
@@ -49,9 +50,9 @@
 
         <!-- Dot Indicator -->
         <span 
-          class="absolute left-3 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full transition-all duration-300 ease-in-out"
+          class="absolute left-3 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full transition-all duration-500 ease-in-out"
           :class="[
-            activeSection === item.href.substring(1)
+            activeSection === item.href.substring(1) && !isProjectPage
               ? 'bg-emerald-400 scale-100'
               : 'bg-white/30 scale-75 group-hover:scale-100 group-hover:bg-emerald-400/50'
           ]"
@@ -60,6 +61,50 @@
         <!-- Label -->
         <span class="relative">{{ item.label }}</span>
       </a>
+    </div>
+  </nav>
+
+  <!-- Mobile Navbar (Bottom) -->
+  <nav 
+    v-if="!isProjectPage"
+    class="fixed left-0 z-50 w-full transition-all duration-700 ease-in-out bottom-6 md:hidden"
+    :class="[
+      isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4',
+      isVisible ? 'pointer-events-auto' : 'pointer-events-none'
+    ]"
+  >
+    <div class="flex justify-center">
+      <div class="px-3 py-2 mx-auto border rounded-full bg-black/40 backdrop-blur-md border-white/10">
+        <div class="flex items-center gap-2">
+          <a 
+            v-for="(item, index) in navItems" 
+            :key="item.label"
+            :href="item.href"
+            class="relative px-3 py-1.5 text-xs font-medium transition-all duration-500 ease-in-out rounded-full"
+            :class="[
+              activeSection === item.href.substring(1)
+                ? 'text-emerald-400 bg-white/5' 
+                : 'text-white/60 hover:text-white hover:bg-white/5'
+            ]"
+            :style="{ 
+              transitionDelay: `${index * 100}ms`
+            }"
+            @click.prevent="scrollToSection(item.href)"
+            data-umami-event="Mobile Navigation Click"
+            :data-umami-event-section="item.label"
+          >
+            <!-- Icon and Label in one row -->
+            <div class="flex items-center gap-1.5">
+              <Icon 
+                :name="getIconForSection(item.label)" 
+                class="w-3.5 h-3.5 transition-transform duration-500"
+                :class="{ 'text-emerald-400': activeSection === item.href.substring(1) }"
+              />
+              <span>{{ item.label }}</span>
+            </div>
+          </a>
+        </div>
+      </div>
     </div>
   </nav>
 </template>
@@ -78,6 +123,8 @@ interface NavItem {
 const isVisible = ref(false)
 const activeSection = ref('')
 const navRef = ref<HTMLElement | null>(null)
+const route = useRoute()
+const isProjectPage = computed(() => route.path.startsWith('/projects/'))
 
 const spotlightStyles = ref<SpotlightStyle[]>(
   Array(3).fill({
@@ -105,6 +152,20 @@ const handleMouseLeave = (index: number) => {
   }
 }
 
+// Get appropriate icon for each section
+const getIconForSection = (label: string): string => {
+  switch (label) {
+    case 'Projects':
+      return 'lucide:layout-grid'
+    case 'About':
+      return 'lucide:user'
+    case 'Tech Stack':
+      return 'lucide:code'
+    default:
+      return 'lucide:hash'
+  }
+}
+
 const navItems: NavItem[] = [
   { label: 'Projects', href: '#projects' },
   { label: 'About', href: '#about' },
@@ -115,28 +176,60 @@ const navItems: NavItem[] = [
 onMounted(() => {
   const sections = navItems.map(item => item.href.substring(1))
   
+  // Create an intersection observer to detect which section is in view
+  const observerOptions = {
+    root: null, // viewport
+    rootMargin: '0px',
+    threshold: 0.3 // 30% of the section needs to be visible
+  }
+  
+  const sectionObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        activeSection.value = entry.target.id
+      }
+    })
+  }, observerOptions)
+  
+  // Observe all sections
   sections.forEach(section => {
     const element = document.getElementById(section)
     if (element) {
-      const isElementVisible = useElementVisibility(element, { threshold: 0.5 })
-      watch(isElementVisible, (visible) => {
-        if (visible) {
-          activeSection.value = section
-        }
-      })
+      sectionObserver.observe(element)
     }
   })
-
+  
   const handleScroll = useThrottleFn(() => {
-    isVisible.value = window.scrollY > window.innerHeight * 0.5
+    if (typeof window !== 'undefined') {
+      isVisible.value = window.scrollY > window.innerHeight * 0.5
+      
+      // If no section is detected as active (e.g., at the very top of the page)
+      // and we're not on a project page, set the first visible section as active
+      if (!activeSection.value && !isProjectPage.value && window.scrollY > 0) {
+        for (const section of sections) {
+          const element = document.getElementById(section)
+          if (element) {
+            const rect = element.getBoundingClientRect()
+            if (rect.top <= window.innerHeight && rect.bottom >= 0) {
+              activeSection.value = section
+              break
+            }
+          }
+        }
+      }
+    }
   }, 100)
 
-  window.addEventListener('scroll', handleScroll, { passive: true })
-  handleScroll() // Initial check
-  
-  onUnmounted(() => {
-    window.removeEventListener('scroll', handleScroll)
-  })
+  if (typeof window !== 'undefined') {
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    handleScroll() // Initial check
+    
+    onUnmounted(() => {
+      window.removeEventListener('scroll', handleScroll)
+      // Disconnect the observer when component is unmounted
+      sectionObserver.disconnect()
+    })
+  }
 })
 
 // Smooth scroll to section using native smooth scroll behavior

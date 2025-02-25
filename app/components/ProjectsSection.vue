@@ -1,6 +1,6 @@
 <template>
   <section 
-    class="flex flex-col justify-center min-h-screen px-0 overflow-hidden sm:px-6 lg:px-8 relative" 
+    class="relative flex flex-col justify-center min-h-screen px-0 overflow-hidden sm:px-6 lg:px-8" 
     id="projects"
     ref="sectionRef"
     :class="{ 'section-visible': isVisible }"
@@ -39,13 +39,13 @@
     </div>
 
     <!-- Full Width Container for ProjectCard -->
-    <div class="w-full relative">
+    <div class="relative w-full">
       <!-- Scroll Indicators for Mobile -->
-      <div class="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-50 md:hidden">
+      <div class="absolute z-50 flex gap-2 -translate-x-1/2 bottom-4 left-1/2 md:hidden">
         <div 
           v-for="(project, index) in sortedProjects" 
           :key="project._id"
-          class="w-2 h-2 rounded-full transition-all duration-500"
+          class="w-2 h-2 transition-all duration-500 rounded-full"
           :class="[
             currentProjectIndex === index 
               ? 'bg-emerald-400/80 scale-125 shadow-[0_0_8px_rgba(52,211,153,0.5)]' 
@@ -57,8 +57,7 @@
       <!-- Scroll Hint Animation for Mobile -->
       <div 
         v-if="!hasScrolled && sortedProjects.length > 1" 
-        class="absolute inset-y-0 right-0 w-16 bg-gradient-to-l from-black/30 to-transparent 
-               md:hidden pointer-events-none z-40 flex items-center justify-end pr-3"
+        class="absolute inset-y-0 right-0 z-40 flex items-center justify-end w-16 pr-3 pointer-events-none bg-gradient-to-l from-black/30 to-transparent md:hidden"
       >
         <div class="p-2 rounded-full bg-emerald-500/10 animate-pulse">
           <Icon 
@@ -74,17 +73,9 @@
           :projects="sortedProjects" 
           :is-section-visible="isVisible"
           @scroll="handleProjectScroll"
-          @select="handleProjectSelect"
         />
       </div>
     </div>
-
-    <!-- Update the ProjectModal component -->
-    <ProjectModal 
-      :open="isModalOpen"
-      :project="selectedProject"
-      @update:open="isModalOpen = $event"
-    />
   </section>
 </template>
 
@@ -101,20 +92,12 @@ const sortedProjects = computed(() => projects.value ?? [])
 
 const currentProjectIndex = ref(0)
 const hasScrolled = ref(false)
-const isModalOpen = ref(false)
-const selectedProject = ref<Project | null>(null)
 
 const handleProjectScroll = (index: number) => {
   currentProjectIndex.value = index
   if (!hasScrolled.value) {
     hasScrolled.value = true
   }
-}
-
-// Add this function to handle project selection
-const handleProjectSelect = (project: Project) => {
-  selectedProject.value = project
-  isModalOpen.value = true
 }
 
 const sectionRef = ref<HTMLElement | null>(null)
