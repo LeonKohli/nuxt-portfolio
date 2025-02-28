@@ -12,151 +12,142 @@
         <div class="w-4 shrink-0 md:hidden" aria-hidden="true" />
         
         <ClientOnly>
-        <div 
-          v-for="(project, index) in projects" 
-          :key="project.id"
-          class="shrink-0 snap-center w-[min(85vw,380px)] md:w-[384px] md:snap-start 
-                 first:pl-0 last:pr-4 md:last:pr-0 project-transition"
-          :class="getCardClasses(index)"
-          :style="getCardStyles(index)"
-          @mouseenter="handleProjectHover(project.id, true)"
-          @mouseleave="handleProjectHover(project.id, false)"
-        >
-          <NuxtLink 
-            :to="`/projects/${project.id}`"
-            class="rounded-[24px] h-[24rem] sm:h-[26rem] md:h-[32rem] w-full md:w-[384px] group 
-                   overflow-hidden flex flex-col items-start justify-start relative z-10 
-                   cursor-pointer project-transition hover:shadow-[0_8px_30px_rgba(0,0,0,0.12)] 
-                   hover:shadow-emerald-500/10"
+          <article 
+            v-for="(project, index) in projects" 
+            :key="project.id"
+            class="shrink-0 snap-center w-[min(85vw,380px)] md:w-[384px] md:snap-start 
+                   first:pl-0 last:pr-4 md:last:pr-0 project-transition"
+            :class="getCardClasses(index)"
+            :style="getCardStyles(index)"
+            @mouseenter="handleProjectHover(project.id, true)"
+            @mouseleave="handleProjectHover(project.id, false)"
           >
-            <!-- Dark Gradient Overlay -->
-            <div 
-              class="absolute inset-0 z-20 bg-gradient-to-t from-black via-black/80 to-black/60 opacity-80 group-hover:opacity-90 project-transition"
-            />
-            
-            <!-- Hover Overlay -->
-            <div 
-              class="absolute inset-0 z-30 bg-[#000000] opacity-0 group-hover:opacity-75 project-transition"
-            />
-            
-            <!-- Content -->
-            <div class="relative z-40 flex flex-col h-full p-6 md:p-8">
-              <!-- Initial Content Container -->
-              <div class="flex flex-col flex-grow">
-                <!-- Title and Subtitle -->
-                <div class="transform project-transition group-hover:-translate-y-1">
-                  <h3 class="text-2xl md:text-3xl font-bold max-w-xs text-left [text-wrap:balance] 
-                           mb-2 leading-tight tracking-tight text-white font-exo">
-                    {{ project.title }}
-                  </h3>
-                  <p class="text-base md:text-lg max-w-xs text-left [text-wrap:balance] 
-                           tracking-tight leading-[1.6] text-white/80 project-transition 
-                           group-hover:opacity-0 line-clamp-2">
-                    {{ project.subtitle }}
-                  </p>
-                </div>
+            <NuxtLink 
+              :to="`/projects/${project.id}`"
+              class="rounded-[24px] h-[24rem] sm:h-[26rem] md:h-[32rem] w-full md:w-[384px] group 
+                     overflow-hidden flex flex-col items-start justify-start relative z-10 
+                     cursor-pointer project-transition hover:shadow-[0_8px_30px_rgba(0,0,0,0.12)] 
+                     hover:shadow-emerald-500/10"
+            >
+              <!-- Background layers -->
+              <div class="absolute inset-0 z-20 bg-gradient-to-t from-black via-black/80 to-black/60 opacity-80 group-hover:opacity-90 project-transition"></div>
+              <div class="absolute inset-0 z-30 bg-[#000000] opacity-0 group-hover:opacity-75 project-transition"></div>
+              
+              <!-- Content -->
+              <div class="relative z-40 flex flex-col h-full p-6 md:p-8">
+                <!-- Title and description area -->
+                <header class="flex flex-col flex-grow">
+                  <div class="transform project-transition group-hover:-translate-y-1">
+                    <h3 class="text-2xl md:text-3xl font-bold max-w-xs text-left [text-wrap:balance] 
+                             mb-2 leading-tight tracking-tight text-white font-exo">
+                      {{ project.title }}
+                    </h3>
+                    <p class="text-base md:text-lg max-w-xs text-left [text-wrap:balance] 
+                             tracking-tight leading-[1.6] text-white/80 project-transition 
+                             group-hover:opacity-0 line-clamp-2">
+                      {{ project.subtitle }}
+                    </p>
+                  </div>
 
-                <!-- Description -->
-                <div class="flex-grow mt-4 opacity-0 project-transition group-hover:opacity-100">
-                  <p class="text-base md:text-lg max-w-xs text-left [text-wrap:balance] 
+                  <p class="flex-grow mt-4 opacity-0 project-transition group-hover:opacity-100
+                           text-base md:text-lg max-w-xs text-left [text-wrap:balance] 
                            tracking-tight leading-[1.6] text-white/90">
                     {{ project.description }}
                   </p>
-                </div>
-              </div>
-              
-              <!-- Bottom Content -->
-              <div class="mt-auto transform translate-y-4 opacity-0 pointer-events-none project-transition group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto">
-                <!-- Tech Stack -->
-                <div class="flex flex-wrap gap-2 mb-6">
-                  <div 
-                    v-for="tech in project.tech" 
-                    :key="tech.name"
-                    class="px-3 py-1.5 text-sm rounded-full text-white/90 bg-white/10 backdrop-blur-xl 
-                           hover:bg-white/20 flex items-center gap-1.5 group/tech project-hover-transition"
-                  >
-                    <Icon 
-                      v-if="isVisible"
-                      :name="tech.icon" 
-                      class="w-3.5 h-3.5 project-hover-transition group-hover/tech:scale-110 group-hover/tech:rotate-[8deg]" 
-                      loading="lazy"
-                      width="14"
-                      height="14"
-                      aria-hidden="true"
-                    />
-                    <span class="text-sm">{{ tech.name }}</span>
+                </header>
+                
+                <!-- Footer content -->
+                <footer class="mt-auto transform translate-y-4 opacity-0 pointer-events-none project-transition group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto">
+                  <!-- Tech Stack -->
+                  <ul class="flex flex-wrap gap-2 mb-6">
+                    <li 
+                      v-for="tech in project.tech" 
+                      :key="tech.name"
+                      class="px-3 py-1.5 text-sm rounded-full text-white/90 bg-white/10 backdrop-blur-xl 
+                             hover:bg-white/20 flex items-center gap-1.5 group/tech project-hover-transition"
+                    >
+                      <Icon 
+                        v-if="isVisible"
+                        :name="tech.icon" 
+                        class="w-3.5 h-3.5 project-hover-transition group-hover/tech:scale-110 group-hover/tech:rotate-[8deg]" 
+                        loading="lazy"
+                        width="14"
+                        height="14"
+                        aria-hidden="true"
+                      />
+                      <span class="text-sm">{{ tech.name }}</span>
+                    </li>
+                  </ul>
+
+                  <!-- Links -->
+                  <div class="flex gap-3">
+                    <a 
+                      v-if="project.repo"
+                      :href="project.repo" 
+                      target="_blank"
+                      class="group/btn flex items-center px-4 py-2 text-sm font-medium rounded-full text-white 
+                             bg-white/10 hover:bg-white/20 hover:-translate-y-0.5 active:translate-y-0 
+                             project-hover-transition"
+                      @click.stop
+                      data-umami-event="View Project GitHub"
+                      :data-umami-event-project="project.title"
+                    >
+                      <Icon 
+                        name="ph:github-logo-fill" 
+                        class="w-4 h-4 mr-2 project-hover-transition group-hover/btn:scale-110 group-hover/btn:rotate-[8deg]" 
+                        loading="lazy"
+                        width="16"
+                        height="16"
+                        aria-hidden="true"
+                      />
+                      <span>GitHub</span>
+                    </a>
+                    <a 
+                      v-if="project.link"
+                      :href="project.link" 
+                      target="_blank"
+                      class="group/btn flex items-center px-4 py-2 text-sm font-medium rounded-full text-emerald-400 
+                             bg-emerald-500/20 hover:bg-emerald-500/30 hover:-translate-y-0.5 active:translate-y-0 
+                             project-hover-transition"
+                      @click.stop
+                      data-umami-event="View Project Live"
+                      :data-umami-event-project="project.title"
+                    >
+                      <Icon 
+                        name="lucide:external-link" 
+                        class="w-4 h-4 mr-2 project-hover-transition group-hover/btn:scale-110 group-hover/btn:rotate-[8deg]" 
+                        loading="lazy"
+                        width="16"
+                        height="16"
+                        aria-hidden="true"
+                      />
+                      <span>Live</span>
+                    </a>
                   </div>
-                </div>
-
-                <!-- Links -->
-                <div class="flex gap-3">
-                  <a 
-                    v-if="project.repo"
-                    :href="project.repo" 
-                    target="_blank"
-                    class="group/btn flex items-center px-4 py-2 text-sm font-medium rounded-full text-white 
-                           bg-white/10 hover:bg-white/20 hover:-translate-y-0.5 active:translate-y-0 
-                           relative overflow-hidden project-hover-transition"
-                    @click.stop
-                    data-umami-event="View Project GitHub"
-                    :data-umami-event-project="project.title"
-                  >
-                    <Icon 
-                      name="ph:github-logo-fill" 
-                      class="w-4 h-4 mr-2 project-hover-transition group-hover/btn:scale-110 group-hover/btn:rotate-[8deg]" 
-                      loading="lazy"
-                      width="16"
-                      height="16"
-                      aria-hidden="true"
-                    />
-                    <span class="relative z-10">GitHub</span>
-                  </a>
-                  <a 
-                    v-if="project.link"
-                    :href="project.link" 
-                    target="_blank"
-                    class="group/btn flex items-center px-4 py-2 text-sm font-medium rounded-full text-emerald-400 
-                           bg-emerald-500/20 hover:bg-emerald-500/30 hover:-translate-y-0.5 active:translate-y-0 
-                           relative overflow-hidden project-hover-transition"
-                    @click.stop
-                    data-umami-event="View Project Live"
-                    :data-umami-event-project="project.title"
-                  >
-                    <Icon 
-                      name="lucide:external-link" 
-                      class="w-4 h-4 mr-2 project-hover-transition group-hover/btn:scale-110 group-hover/btn:rotate-[8deg]" 
-                      loading="lazy"
-                      width="16"
-                      height="16"
-                      aria-hidden="true"
-                    />
-                    <span class="relative z-10">Live</span>
-                  </a>
-                </div>
+                </footer>
               </div>
-            </div>
 
-            <!-- Project Image -->
-            <NuxtImg 
-              :src="project.image"
-              :alt="project.title"
-              loading="lazy"
-              width="384"
-              height="512"
-              :placeholder="[100, 133, 75, 5]"
-              class="absolute inset-0 z-10 object-cover scale-[1.01] brightness-[0.7] group-hover:scale-[1.02] 
-                     group-hover:brightness-[0.8] group-hover:blur-[2px] project-transition project-card-image"
-              sizes="(max-width: 640px) 85vw, (max-width: 768px) 280px, 384px"
-              format="webp"
-              quality="80"
-              fit="cover"
-              :modifiers="{
-                blur: 0.3,
-                background: 'black'
-              }"
-            />
-          </NuxtLink>
-        </div>
+              <!-- Project Image -->
+              <NuxtImg 
+                :src="project.image"
+                :alt="project.title"
+                loading="lazy"
+                width="384"
+                height="512"
+                :placeholder="[100, 133, 75, 5]"
+                class="absolute inset-0 z-10 object-cover scale-[1.01] brightness-[0.7] group-hover:scale-[1.02] 
+                       group-hover:brightness-[0.8] group-hover:blur-[2px] project-transition project-card-image"
+                sizes="(max-width: 640px) 85vw, (max-width: 768px) 280px, 384px"
+                format="webp"
+                quality="80"
+                fit="cover"
+                :modifiers="{
+                  blur: 0.3,
+                  background: 'black'
+                }"
+              />
+            </NuxtLink>
+          </article>
         </ClientOnly>
 
         <!-- Final spacer for mobile -->
@@ -166,13 +157,13 @@
 
     <!-- Navigation Buttons -->
     <ClientOnly>
-      <div class="justify-start hidden gap-4 mt-8 md:flex">
+      <nav class="justify-start hidden gap-4 mt-8 md:flex" aria-label="Project navigation">
         <button 
           v-if="showNavigation"
           class="group/nav relative z-40 flex items-center justify-center w-12 h-12 rounded-full cursor-pointer 
                  disabled:opacity-30 bg-white/5 hover:bg-emerald-500/10 hover:-translate-y-1 active:translate-y-0 
                  disabled:hover:scale-100 disabled:hover:translate-y-0 project-hover-transition
-                 hover:shadow-[0_0_15px_rgba(16,185,129,0.15)] transition-all duration-300"
+                 hover:shadow-[0_0_15px_rgba(16,185,129,0.15)]"
           :disabled="isAtStart"
           @click="scrollLeft"
           aria-label="Scroll to previous projects"
@@ -190,7 +181,7 @@
           class="group/nav relative z-40 flex items-center justify-center w-12 h-12 rounded-full cursor-pointer 
                  disabled:opacity-30 bg-white/5 hover:bg-emerald-500/10 hover:-translate-y-1 active:translate-y-0 
                  disabled:hover:scale-100 disabled:hover:translate-y-0 project-hover-transition
-                 hover:shadow-[0_0_15px_rgba(16,185,129,0.15)] transition-all duration-300"
+                 hover:shadow-[0_0_15px_rgba(16,185,129,0.15)]"
           :disabled="isAtEnd"
           @click="scrollRight"
           aria-label="Scroll to next projects"
@@ -203,7 +194,7 @@
             aria-hidden="true"
           />
         </button>
-      </div>
+      </nav>
     </ClientOnly>
   </div>
 </template>

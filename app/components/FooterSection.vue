@@ -43,23 +43,26 @@
         data-umami-event="Copy Email"
         @mousemove="handleMouseMove($event)"
         @mouseleave="handleMouseLeave"
+        aria-label="Copy email address"
       >
         <span 
           class="absolute inset-[-1000%] animate-[spin_4s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#0A0A0A_0%,#0A0A0A_50%,#166534_100%)]" 
         />
         <span 
-          class="inline-flex items-center justify-center w-full h-full px-6 py-2 text-base font-medium text-white transition-all duration-500 bg-black rounded-lg cursor-pointer sm:px-8 sm:text-lg backdrop-blur-3xl group-hover:bg-black/80"
+          class="inline-flex items-center justify-center w-full h-full px-6 py-2 text-base font-medium text-white transition-all duration-300 bg-black rounded-lg cursor-pointer sm:px-8 sm:text-lg backdrop-blur-3xl group-hover:bg-black/80"
         >
           <div class="relative w-4 h-4 mr-2 sm:w-5 sm:h-5 sm:mr-3">
             <Icon 
               name="lucide:copy"
               class="absolute inset-0 w-4 h-4 transition-all duration-300 ease-in-out transform sm:w-5 sm:h-5"
               :class="copied ? 'opacity-0 scale-75' : 'opacity-100 group-hover:text-emerald-400'"
+              aria-hidden="true"
             />
             <Icon 
               name="lucide:check"
               class="absolute inset-0 w-4 h-4 transition-all duration-300 ease-in-out transform sm:w-5 sm:h-5 text-emerald-400"
               :class="copied ? 'opacity-100 scale-100' : 'opacity-0 scale-125'"
+              aria-hidden="true"
             />
           </div>
           <span class="transition-all duration-300 ease-in-out">
@@ -70,6 +73,7 @@
         <div 
           class="absolute transition-opacity duration-300 opacity-0 pointer-events-none -inset-px group-hover:opacity-100"
           :style="spotlightStyle"
+          aria-hidden="true"
         >
           <div class="absolute inset-0 rounded-lg bg-gradient-to-br from-emerald-500/20 to-transparent" />
         </div>
@@ -86,8 +90,9 @@
           class="flex items-center justify-center w-10 h-10 transition-all duration-300 rounded-full opacity-0 text-white/40 hover:text-white focus:outline-none focus:ring-2 focus:ring-emerald-400/50 animate-fade-in hover:-translate-y-1"
           :style="{ animationDelay: `${800 + (index * 100)}ms` }"
           :data-umami-event="`Visit ${link.name}`"
+          :aria-label="`Visit my ${link.name} profile`"
         >
-          <Icon :name="link.icon" class="w-5 h-5" />
+          <Icon :name="link.icon" class="w-5 h-5" aria-hidden="true" />
           <span class="sr-only">{{ link.name }}</span>
         </NuxtLink>
       </div>
@@ -95,7 +100,7 @@
       <!-- Copyright -->
       <div class="mt-12 text-sm opacity-0 text-white/40 animate-fade-in" style="animation-delay: 1200ms;">
         © {{ new Date().getFullYear() }} Built with 
-        <span class="text-red-400">❤️</span> by Leon Kohlhaussen
+        <span class="text-red-400" aria-hidden="true">❤️</span><span class="sr-only">love</span> by Leon Kohlhaussen
       </div>
     </div>
   </footer>

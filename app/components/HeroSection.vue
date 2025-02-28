@@ -15,7 +15,7 @@
         <div class="flex items-center justify-center flex-grow">
           <div class="z-10 tracking-wide">
             <!-- Greeting -->
-            <p class="w-full mb-2 text-sm font-bold tracking-widest text-center text-green-700 uppercase lg:text-3xl md:pr-4 md:text-left">
+            <p class="w-full mb-2 text-sm font-bold tracking-widest text-center text-green-700 uppercase lg:text-base md:pr-4 md:text-left">
               <span class="relative inline-block opacity-0 animate-fade-in group whitespace-nowrap"
                 style="animation-delay: 200ms;">
                 <span class="absolute top-0 left-0 right-0 bottom-[-0.2em] bg-gradient-to-r from-green-700 via-green-500 to-green-400 bg-clip-text text-transparent transition-all duration-300 group-hover:bg-[length:200%_100%] bg-[length:100%_100%] bg-[position:0%] hover:bg-[position:100%]">
@@ -25,7 +25,7 @@
               </span>
             </p>
 
-            <!-- Name -->
+            <!-- Name - Adjusted size for better visual hierarchy -->
             <h1 class="font-bold text-6xl md:text-[9vw] lg:text-[9.8vw] text-zinc-100 leading-none z-50 text-center md:text-left">
               <span class="block transition-colors duration-300 opacity-0 animate-fade-in font-exo" style="animation-delay: 400ms;">
                 LEON
@@ -38,15 +38,15 @@
             <!-- Location and Social Links -->
             <div class="flex flex-col items-center gap-4 mt-6 md:items-start md:flex-row md:justify-between">
               <!-- Location -->
-              <div class="flex items-center gap-2 text-base opacity-0 sm:text-lg animate-fade-in group"
+              <div class="flex items-center gap-3 text-base opacity-0 sm:text-lg animate-fade-in group"
                 style="animation-delay: 800ms;">
                 <Icon name="ph:map-pin-fill"
-                  class="w-5 h-5 text-emerald-400 transition-transform duration-300 group-hover:scale-125 group-hover:rotate-[15deg]"
+                  class="w-5 h-5 text-emerald-400 transition-transform duration-200 group-hover:scale-110 group-hover:rotate-[15deg]"
                   loading="lazy"
                   width="20"
                   height="20"
                   aria-hidden="true" />
-                <span class="transition-colors duration-300 text-white/70 group-hover:text-white/90">Potsdam, Germany</span>
+                <span class="transition-colors duration-200 text-white/70 group-hover:text-white/90">Potsdam, Germany</span>
               </div>
               
               <!-- Social links -->
@@ -93,7 +93,7 @@
       </div>
     </div>
   </section>
-</template><!-- End of Selection -->
+</template>
 
 <script setup lang="ts">
 const socialLinks = [

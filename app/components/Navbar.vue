@@ -10,58 +10,50 @@
     :style="{ top: '50%', transform: `translateY(-50%) ${isVisible && !isProjectPage ? '' : 'translateY(1rem)'}` }"
   >
     <!-- Navigation Links -->
-    <div class="flex flex-col items-start gap-3">
-      <a 
-        v-for="(item, index) in navItems" 
-        :key="item.label"
-        :href="item.href"
-        class="relative py-2 pr-4 overflow-hidden text-sm border rounded-full group transition-all duration-500 ease-in-out will-change-transform will-change-[background-color,padding] bg-black/30 backdrop-blur-sm border-white/5"
-        :class="[
-          activeSection === item.href.substring(1) && !isProjectPage
-            ? 'text-white border-white/20 pl-10' 
-            : 'text-white/50 pl-8 hover:text-white hover:bg-black/50 hover:border-white/10 hover:pl-10'
-        ]"
-        :style="{ 
-          transitionDelay: `${index * 100}ms`,
-          transform: isVisible && !isProjectPage ? 'none' : 'translateX(-1rem)'
-        }"
-        @click.prevent="scrollToSection(item.href)"
-        data-umami-event="Navigation Click"
-        :data-umami-event-section="item.label"
-        :data-umami-event-active="activeSection === item.href.substring(1) && !isProjectPage"
-      >
-        <!-- Active Section Indicator -->
-        <div 
-          class="absolute inset-0 transition-opacity duration-500 opacity-0 pointer-events-none"
-          :class="{ 'opacity-10': activeSection === item.href.substring(1) && !isProjectPage }"
-        >
-          <div class="absolute inset-0 bg-gradient-to-r from-emerald-500/20 to-transparent" />
-        </div>
-
-        <!-- Hover Spotlight Effect -->
-        <div 
-          class="absolute inset-0 transition-opacity duration-500 opacity-0 pointer-events-none group-hover:opacity-100"
-          :style="spotlightStyles[index]"
-          @mousemove="handleMouseMove($event, index)"
-          @mouseleave="handleMouseLeave(index)"
-        >
-          <div class="absolute inset-0 bg-gradient-to-r from-emerald-500/20 to-transparent" />
-        </div>
-
-        <!-- Dot Indicator -->
-        <span 
-          class="absolute left-3 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full transition-all duration-500 ease-in-out"
+    <ul class="flex flex-col items-start gap-3">
+      <li v-for="(item, index) in navItems" :key="item.label">
+        <a 
+          :href="item.href"
+          class="relative py-2 pr-4 overflow-hidden text-sm border rounded-full group transition-all duration-300 ease-in-out will-change-transform will-change-[background-color,padding] bg-black/30 backdrop-blur-sm border-white/5"
           :class="[
             activeSection === item.href.substring(1) && !isProjectPage
-              ? 'bg-emerald-400 scale-100'
-              : 'bg-white/30 scale-75 group-hover:scale-100 group-hover:bg-emerald-400/50'
+              ? 'text-white border-white/20 pl-10' 
+              : 'text-white/50 pl-8 hover:text-white hover:bg-black/50 hover:border-white/10 hover:pl-10'
           ]"
-        />
+          :style="{ 
+            transitionDelay: `${index * 100}ms`,
+            transform: isVisible && !isProjectPage ? 'none' : 'translateX(-1rem)'
+          }"
+          @click.prevent="scrollToSection(item.href)"
+          data-umami-event="Navigation Click"
+          :data-umami-event-section="item.label"
+          :data-umami-event-active="activeSection === item.href.substring(1) && !isProjectPage"
+        >
+          <span 
+            class="absolute inset-0 transition-opacity duration-300 opacity-0 pointer-events-none bg-gradient-to-r from-emerald-500/20 to-transparent"
+            :class="{ 'opacity-10': activeSection === item.href.substring(1) && !isProjectPage }"
+          ></span>
 
-        <!-- Label -->
-        <span class="relative">{{ item.label }}</span>
-      </a>
-    </div>
+          <span 
+            class="absolute inset-0 transition-opacity duration-300 opacity-0 pointer-events-none group-hover:opacity-100 bg-gradient-to-r from-emerald-500/20 to-transparent"
+            :style="spotlightStyles[index]"
+            @mousemove="handleMouseMove($event, index)"
+            @mouseleave="handleMouseLeave(index)"
+          ></span>
+
+          <span 
+            class="absolute left-3 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full transition-all duration-300 ease-in-out"
+            :class="[
+              activeSection === item.href.substring(1) && !isProjectPage
+                ? 'bg-emerald-400 scale-100'
+                : 'bg-white/30 scale-75 group-hover:scale-100 group-hover:bg-emerald-400/50'
+            ]"
+          ></span>
+
+          <span class="relative">{{ item.label }}</span>
+        </a>
+      </li>
+    </ul>
   </nav>
 
   <!-- Mobile Navbar (Bottom) -->
@@ -73,39 +65,34 @@
       isVisible ? 'pointer-events-auto' : 'pointer-events-none'
     ]"
   >
-    <div class="flex justify-center">
-      <div class="px-3 py-2 mx-auto border rounded-full bg-black/40 backdrop-blur-md border-white/10">
-        <div class="flex items-center gap-2">
-          <a 
-            v-for="(item, index) in navItems" 
-            :key="item.label"
-            :href="item.href"
-            class="relative px-3 py-1.5 text-xs font-medium transition-all duration-500 ease-in-out rounded-full"
-            :class="[
-              activeSection === item.href.substring(1)
-                ? 'text-emerald-400 bg-white/5' 
-                : 'text-white/60 hover:text-white hover:bg-white/5'
-            ]"
-            :style="{ 
-              transitionDelay: `${index * 100}ms`
-            }"
-            @click.prevent="scrollToSection(item.href)"
-            data-umami-event="Mobile Navigation Click"
-            :data-umami-event-section="item.label"
-          >
-            <!-- Icon and Label in one row -->
-            <div class="flex items-center gap-1.5">
+    <ul class="flex justify-center">
+      <li class="px-3 py-2 mx-auto border rounded-full bg-black/40 backdrop-blur-md border-white/10">
+        <ul class="flex items-center gap-2">
+          <li v-for="(item, index) in navItems" :key="item.label">
+            <a 
+              :href="item.href"
+              class="relative px-3 py-1.5 text-xs font-medium transition-all duration-300 ease-in-out rounded-full flex items-center gap-1.5"
+              :class="[
+                activeSection === item.href.substring(1)
+                  ? 'text-emerald-400 bg-white/5' 
+                  : 'text-white/60 hover:text-white hover:bg-white/5'
+              ]"
+              :style="{ transitionDelay: `${index * 100}ms` }"
+              @click.prevent="scrollToSection(item.href)"
+              data-umami-event="Mobile Navigation Click"
+              :data-umami-event-section="item.label"
+            >
               <Icon 
                 :name="getIconForSection(item.label)" 
-                class="w-3.5 h-3.5 transition-transform duration-500"
+                class="w-3.5 h-3.5 transition-transform duration-300"
                 :class="{ 'text-emerald-400': activeSection === item.href.substring(1) }"
               />
               <span>{{ item.label }}</span>
-            </div>
-          </a>
-        </div>
-      </div>
-    </div>
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
   </nav>
 </template>
 
@@ -199,8 +186,10 @@ onMounted(() => {
     }
   })
   
+  // Throttle scroll events for performance
   const handleScroll = useThrottleFn(() => {
     if (typeof window !== 'undefined') {
+      // Show navbar after scrolling past half of the first viewport
       isVisible.value = window.scrollY > window.innerHeight * 0.5
       
       // If no section is detected as active (e.g., at the very top of the page)
@@ -218,7 +207,7 @@ onMounted(() => {
         }
       }
     }
-  }, 100)
+  }, 100) // Throttle to 100ms for smooth performance
 
   if (typeof window !== 'undefined') {
     window.addEventListener('scroll', handleScroll, { passive: true })
@@ -236,16 +225,19 @@ onMounted(() => {
 const scrollToSection = (href: string) => {
   const element = document.querySelector(href)
   if (element) {
+    // Provide immediate feedback (<100ms) per design principles
+    activeSection.value = href.substring(1)
+    
     element.scrollIntoView({ 
       behavior: 'smooth',
       block: 'start'
     })
-    activeSection.value = href.substring(1)
   }
 }
 </script>
 
 <style scoped>
+/* Respect user preferences for reduced motion */
 @media (prefers-reduced-motion: reduce) {
   * {
     transition: none !important;

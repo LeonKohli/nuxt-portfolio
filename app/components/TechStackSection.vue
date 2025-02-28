@@ -1,73 +1,73 @@
 <template>
-    <section id="tech-stack" class="flex flex-col justify-center min-h-screen px-4 overflow-hidden sm:px-6 lg:px-8 pt-24 md:pt-0" ref="sectionRef" :class="{ 'section-visible': isVisible }">
+    <section id="tech-stack" class="flex flex-col justify-center min-h-screen px-4 pt-24 overflow-hidden sm:px-6 lg:px-8 md:pt-0" ref="sectionRef" :class="{ 'section-visible': isVisible }">
         <div class="w-10/12 md:w-8/12 mx-auto max-w-[110rem] px-4">
             <!-- Section Header -->
-            <div class="flex flex-col items-center mb-16 text-center md:items-start md:text-left">
-                <h2 class="font-bold tracking-tight">
-                    <span class="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-exo">
-                        <span class="opacity-0 text-zinc-100 animate-fade-in" style="animation-delay: 200ms;">My</span>
-                        <span class="relative inline-block ml-3 opacity-0 group animate-fade-in"
-                            style="animation-delay: 400ms;">
-                            <span
-                                class="bg-gradient-to-r from-green-700 via-green-500 to-green-400 bg-clip-text text-transparent transition-all duration-300 group-hover:bg-[length:200%_100%] bg-[length:100%_100%] bg-[position:0%] hover:bg-[position:100%]">
-                                Tech Stack
-                            </span>
+            <header class="flex flex-col items-center mb-16 text-center md:items-start md:text-left">
+                <h2 class="text-3xl font-bold tracking-tight sm:text-4xl md:text-6xl lg:text-7xl font-exo">
+                    <span class="opacity-0 text-zinc-100 animate-fade-in" style="animation-delay: 200ms;">My</span>
+                    <span class="relative inline-block ml-3 opacity-0 animate-fade-in" style="animation-delay: 400ms;">
+                        <span class="bg-gradient-to-r from-green-700 via-green-500 to-green-400 bg-clip-text text-transparent transition-all duration-300 hover:bg-[length:200%_100%] bg-[length:100%_100%] bg-[position:0%] hover:bg-[position:100%]">
+                            Tech Stack
                         </span>
                     </span>
                 </h2>
                 <p class="max-w-[680px] mt-6 text-lg opacity-0 text-white/70 animate-fade-in md:text-xl" style="animation-delay: 600ms;">
                     These are the technologies I have experience with.
                 </p>
-            </div>
+            </header>
 
             <!-- Tech Grid - Fixed 3 rows max -->
-            <div class="grid grid-cols-1 gap-3 xs:grid-cols-2 sm:grid-cols-3 md:grid-cols-4">
-                <a v-for="(tech, index) in techStack?.technologies" :key="tech.name" :href="tech.url" target="_blank"
-                    rel="noopener noreferrer" class="group relative p-4 transition-all duration-500 rounded-xl border border-white/10 
-                    hover:border-emerald-500/20 bg-white/[0.02] hover:bg-emerald-500/[0.02] hover:-translate-y-1.5
-                    focus:outline-none focus:ring-2 focus:ring-emerald-500/50 opacity-0 animate-slide-up"
-                    :style="{ animationDelay: `${800 + (index * 100)}ms` }">
-                    <!-- Hover Spotlight Effect -->
-                    <div class="absolute inset-0 transition-opacity duration-500 opacity-0 pointer-events-none group-hover:opacity-100"
-                        :style="spotlightStyles[index]" @mousemove="handleMouseMove($event, index)"
-                        @mouseleave="handleMouseLeave(index)">
-                        <div class="absolute inset-0 bg-gradient-to-br from-emerald-500/20 to-transparent rounded-xl backdrop-blur-[1px]" />
-                    </div>
+            <ul class="grid grid-cols-1 gap-3 xs:grid-cols-2 sm:grid-cols-3 md:grid-cols-4">
+                <li v-for="(tech, index) in techStack?.technologies" :key="tech.name">
+                    <a :href="tech.url" target="_blank" rel="noopener noreferrer" 
+                       class="group flex p-4 transition-all duration-500 rounded-xl border border-white/10 
+                              hover:border-emerald-500/20 bg-white/[0.02] hover:bg-emerald-500/[0.02] hover:-translate-y-1.5
+                              focus:outline-none focus:ring-2 focus:ring-emerald-500/50 opacity-0 animate-slide-up"
+                       :style="{ animationDelay: `${800 + (index * 100)}ms` }"
+                       @mousemove="handleMouseMove($event, index)"
+                       @mouseleave="handleMouseLeave(index)">
+                        
+                        <!-- Spotlight Effect (simplified) -->
+                        <span class="absolute inset-0 transition-opacity duration-500 opacity-0 pointer-events-none group-hover:opacity-100 rounded-xl bg-gradient-to-br from-emerald-500/20 to-transparent"
+                              :style="spotlightStyles[index]"></span>
 
-                    <div class="relative z-10 flex items-center gap-4">
-                        <div class="flex items-center justify-center w-12 h-12 rounded-lg shrink-0 transition-all duration-500
-                            shadow-[0_0_0_1px_rgba(255,255,255,0.1)] group-hover:shadow-[0_0_0_1.5px_rgba(16,185,129,0.2)]
-                            group-hover:scale-110" :class="getIconBackgroundClass(tech.color)">
+                        <!-- Icon Container -->
+                        <span class="flex items-center justify-center w-12 h-12 rounded-lg shrink-0 transition-all duration-500
+                                     shadow-[0_0_0_1px_rgba(255,255,255,0.1)] group-hover:shadow-[0_0_0_1.5px_rgba(16,185,129,0.2)]
+                                     group-hover:scale-110" 
+                              :class="getIconBackgroundClass(tech.color)">
                             <Icon v-if="isVisible" 
-                                :name="tech.icon"
-                                class="w-6 h-6 transition-all duration-500 group-hover:scale-110"
-                                :style="{ color: tech.color }" 
-                                loading="lazy"
-                                width="24"
-                                height="24"
-                                aria-hidden="true" />
-                        </div>
-                        <div class="flex-1 min-w-0">
-                            <h3
-                                class="text-sm font-medium truncate transition-colors duration-300 text-white/90 group-hover:text-white font-exo">
+                                  :name="tech.icon"
+                                  class="w-6 h-6 transition-all duration-500 group-hover:scale-110"
+                                  :style="{ color: tech.color }" 
+                                  loading="lazy"
+                                  width="24"
+                                  height="24"
+                                  aria-hidden="true" />
+                        </span>
+                        
+                        <!-- Text Content -->
+                        <span class="flex-1 min-w-0 ml-4">
+                            <h3 class="text-sm font-medium truncate transition-colors duration-300 text-white/90 group-hover:text-white font-exo">
                                 {{ tech.name }}
                             </h3>
-                            <p
-                                class="text-xs truncate transition-colors duration-300 text-white/60 group-hover:text-emerald-400/80">
+                            <p class="text-xs truncate transition-colors duration-300 text-white/60 group-hover:text-emerald-400/80">
                                 {{ tech.category }}
                             </p>
-                        </div>
+                        </span>
+                        
+                        <!-- External Link Icon -->
                         <Icon v-if="isVisible" 
-                            name="lucide:external-link" 
-                            class="w-4 h-4 ml-auto text-white/30 opacity-0 transition-all duration-300 
-                            group-hover:opacity-100 group-hover:translate-x-0.5 group-hover:text-emerald-400"
-                            loading="lazy"
-                            width="16"
-                            height="16"
-                            aria-hidden="true" />
-                    </div>
-                </a>
-            </div>
+                              name="lucide:external-link" 
+                              class="w-4 h-4 ml-auto text-white/30 opacity-0 transition-all duration-300 
+                                     group-hover:opacity-100 group-hover:translate-x-0.5 group-hover:text-emerald-400"
+                              loading="lazy"
+                              width="16"
+                              height="16"
+                              aria-hidden="true" />
+                    </a>
+                </li>
+            </ul>
         </div>
     </section>
 </template>
