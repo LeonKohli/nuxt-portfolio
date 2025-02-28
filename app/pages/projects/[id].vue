@@ -3,7 +3,7 @@
     <!-- Hide the main navbar on project pages -->
 
     <!-- Navigation with Back Button -->
-    <div class="fixed top-0 left-0 z-50 w-full border-b border-white/10 bg-black/80 backdrop-blur-lg">
+    <header class="fixed top-0 left-0 z-50 w-full border-b border-white/10 bg-black/80 backdrop-blur-lg">
       <div class="container flex items-center justify-between px-4 py-4 mx-auto max-w-7xl">
         <NuxtLink
           to="/#projects"
@@ -16,7 +16,7 @@
           <span class="text-sm font-medium">Back to Projects</span>
         </NuxtLink>
 
-        <div class="flex items-center gap-2">
+        <nav class="flex items-center gap-2">
           <NuxtLink
             v-if="project?.repo"
             :to="project.repo"
@@ -36,12 +36,12 @@
           >
             <Icon name="lucide:external-link" class="w-5 h-5" />
           </NuxtLink>
-        </div>
+        </nav>
       </div>
-    </div>
+    </header>
 
     <!-- Error State -->
-    <div v-if="!project && !pending" class="container px-4 py-16 mx-auto text-center max-w-7xl">
+    <section v-if="!project && !pending" class="container px-4 py-16 mx-auto text-center max-w-7xl">
       <Icon name="lucide:file-question" class="w-16 h-16 mx-auto mb-4 text-white/30" />
       <h1 class="mb-2 text-2xl font-bold text-white">Project Not Found</h1>
       <p class="mb-8 text-white/70">The project you're looking for doesn't exist or has been moved.</p>
@@ -52,20 +52,20 @@
         <Icon name="lucide:layout-grid" class="w-4 h-4" />
         <span>Browse All Projects</span>
       </NuxtLink>
-    </div>
+    </section>
 
     <!-- Loading State -->
-    <div v-else-if="pending" class="container px-4 py-16 mx-auto text-center max-w-7xl">
+    <section v-else-if="pending" class="container px-4 py-16 mx-auto text-center max-w-7xl">
       <div class="w-10 h-10 mx-auto border-4 rounded-full animate-spin border-white/10 border-t-white/60" />
       <p class="mt-4 text-white/70">Loading project details...</p>
-    </div>
+    </section>
 
     <!-- Project Content -->
-    <div v-else-if="project" class="container px-4 pb-24 mx-auto max-w-7xl">
+    <main v-else-if="project" class="container px-4 pb-24 mx-auto max-w-7xl">
       <!-- Hero Section -->
-      <div class="mb-16">
+      <section class="mb-16">
         <!-- Project Image -->
-        <div class="relative mb-8 h-[280px] w-full overflow-hidden rounded-2xl md:h-[400px] lg:h-[500px]">
+        <figure class="relative mb-8 h-[280px] w-full overflow-hidden rounded-2xl md:h-[400px] lg:h-[500px]">
           <NuxtImg
             :src="project.image"
             :alt="project.title"
@@ -102,7 +102,7 @@
               <span class="capitalize">{{ project.status.replace('-', ' ') }}</span>
             </div>
           </div>
-        </div>
+        </figure>
 
         <!-- Project Title -->
         <h1 class="mb-4 text-4xl font-bold font-exo md:text-5xl lg:text-6xl">
@@ -119,10 +119,10 @@
         <!-- Project Metadata Grid -->
         <div class="grid grid-cols-1 gap-4 mb-8 md:grid-cols-3">
           <!-- Technology Used -->
-          <div class="p-4 border rounded-xl border-white/10 bg-white/5">
+          <section class="p-4 border rounded-xl border-white/10 bg-white/5">
             <h3 class="mb-2 text-sm font-medium text-white/60">Tech Stack</h3>
-            <div class="flex flex-wrap gap-2">
-              <div
+            <ul class="flex flex-wrap gap-2">
+              <li
                 v-for="tech in project.tech"
                 :key="tech.name"
                 class="flex items-center gap-1.5 rounded-md bg-white/10 px-2.5 py-1 text-white/90"
@@ -133,29 +133,29 @@
                   aria-hidden="true"
                 />
                 <span class="text-sm">{{ tech.name }}</span>
-              </div>
-            </div>
-          </div>
+              </li>
+            </ul>
+          </section>
 
           <!-- Project Info -->
-          <div class="p-4 border rounded-xl border-white/10 bg-white/5">
+          <section class="p-4 border rounded-xl border-white/10 bg-white/5">
             <h3 class="mb-2 text-sm font-medium text-white/60">Project Info</h3>
-            <div class="space-y-2">
-              <div v-if="project.category" class="flex items-center gap-2 text-sm text-white/80">
+            <ul class="space-y-2">
+              <li v-if="project.category" class="flex items-center gap-2 text-sm text-white/80">
                 <Icon name="lucide:folder" class="w-4 h-4 text-emerald-400" aria-hidden="true" />
                 <span>{{ getCategoryLabel(project.category) }}</span>
-              </div>
+              </li>
 
-              <div v-if="project.startDate" class="flex items-center gap-2 text-sm text-white/80">
+              <li v-if="project.startDate" class="flex items-center gap-2 text-sm text-white/80">
                 <Icon name="lucide:calendar" class="w-4 h-4 text-emerald-400" aria-hidden="true" />
                 <span>
                   {{ project.startDate }}
                   <span v-if="project.endDate"> - {{ project.endDate }}</span>
                   <span v-else> - Present</span>
                 </span>
-              </div>
+              </li>
 
-              <div v-if="project.complexity" class="flex items-center gap-2 text-sm text-white/80">
+              <li v-if="project.complexity" class="flex items-center gap-2 text-sm text-white/80">
                 <Icon name="lucide:gauge" class="w-4 h-4 text-emerald-400" aria-hidden="true" />
                 <div class="flex gap-0.5">
                   <Icon
@@ -166,61 +166,61 @@
                     :class="n <= (project.complexity || 0) ? 'text-amber-400' : 'text-white/10'"
                   />
                 </div>
-              </div>
-            </div>
-          </div>
+              </li>
+            </ul>
+          </section>
 
           <!-- Tags -->
-          <div v-if="project.tags?.length" class="p-4 border rounded-xl border-white/10 bg-white/5">
+          <section v-if="project.tags?.length" class="p-4 border rounded-xl border-white/10 bg-white/5">
             <h3 class="mb-2 text-sm font-medium text-white/60">Tags</h3>
-            <div class="flex flex-wrap gap-1.5">
-              <div
+            <ul class="flex flex-wrap gap-1.5">
+              <li
                 v-for="tag in project.tags"
                 :key="tag"
                 class="px-2 py-1 text-xs rounded-full bg-white/10 text-white/80"
               >
                 {{ tag }}
-              </div>
-            </div>
-          </div>
+              </li>
+            </ul>
+          </section>
         </div>
-      </div>
+      </section>
 
       <!-- Content Sections -->
       <div class="grid grid-cols-1 gap-8 mb-16 md:grid-cols-3">
-        <div class="space-y-12 md:col-span-2">
+        <article class="space-y-12 md:col-span-2">
           <!-- Description -->
-          <div>
+          <section>
             <h2 class="mb-4 text-2xl font-bold font-exo text-white/90">About the Project</h2>
             <div class="prose prose-invert prose-emerald max-w-none">
               <p class="text-lg leading-relaxed text-white/80">
                 {{ project.description }}
               </p>
             </div>
-          </div>
+          </section>
 
           <!-- Problem Statement -->
-          <div v-if="project.problem">
+          <section v-if="project.problem">
             <h2 class="mb-4 text-2xl font-bold font-exo text-white/90">The Problem</h2>
             <div class="prose prose-invert prose-emerald max-w-none">
               <p class="text-lg leading-relaxed text-white/80">
                 {{ project.problem }}
               </p>
             </div>
-          </div>
+          </section>
 
           <!-- Solution -->
-          <div v-if="project.solution">
+          <section v-if="project.solution">
             <h2 class="mb-4 text-2xl font-bold font-exo text-white/90">The Solution</h2>
             <div class="prose prose-invert prose-emerald max-w-none">
               <p class="text-lg leading-relaxed text-white/80">
                 {{ project.solution }}
               </p>
             </div>
-          </div>
+          </section>
 
           <!-- Key Features -->
-          <div v-if="project.features?.length">
+          <section v-if="project.features?.length">
             <h2 class="mb-4 text-2xl font-bold font-exo text-white/90">Key Features</h2>
             <ul class="grid grid-cols-1 gap-3 sm:grid-cols-2">
               <li
@@ -238,11 +238,11 @@
                 </span>
               </li>
             </ul>
-          </div>
-        </div>
+          </section>
+        </article>
 
         <!-- Sidebar -->
-        <div>
+        <aside>
           <!-- Call to Action -->
           <div class="sticky space-y-4 top-24">
             <!-- View Demo -->
@@ -268,43 +268,45 @@
             </a>
 
             <!-- Related Projects -->
-            <div v-if="relatedProjects.length" class="mt-12 space-y-6">
+            <section v-if="relatedProjects.length" class="mt-12 space-y-6">
               <h3 class="text-lg font-bold text-white/90">Related Projects</h3>
 
-              <div
-                v-for="relatedProject in relatedProjects"
-                :key="relatedProject.id"
-                class="block group"
-              >
-                <NuxtLink
-                  :to="`/projects/${relatedProject.id}`"
-                  class="flex items-start gap-3 p-3 transition-colors rounded-lg hover:bg-white/5"
+              <ul>
+                <li
+                  v-for="relatedProject in relatedProjects"
+                  :key="relatedProject.id"
+                  class="block group"
                 >
-                  <div class="w-12 h-12 overflow-hidden rounded-lg shrink-0">
-                    <NuxtImg
-                      :src="relatedProject.image"
-                      :alt="relatedProject.title"
-                      width="48"
-                      height="48"
-                      class="object-cover w-full h-full"
-                      loading="lazy"
-                    />
-                  </div>
-                  <div>
-                    <h4 class="font-medium transition-colors text-white/90 group-hover:text-white">
-                      {{ relatedProject.title }}
-                    </h4>
-                    <p class="text-sm truncate text-white/60">{{ relatedProject.subtitle }}</p>
-                  </div>
-                </NuxtLink>
-              </div>
-            </div>
+                  <NuxtLink
+                    :to="`/projects/${relatedProject.id}`"
+                    class="flex items-start gap-3 p-3 transition-colors rounded-lg hover:bg-white/5"
+                  >
+                    <div class="w-12 h-12 overflow-hidden rounded-lg shrink-0">
+                      <NuxtImg
+                        :src="relatedProject.image"
+                        :alt="relatedProject.title"
+                        width="48"
+                        height="48"
+                        class="object-cover w-full h-full"
+                        loading="lazy"
+                      />
+                    </div>
+                    <div>
+                      <h4 class="font-medium transition-colors text-white/90 group-hover:text-white">
+                        {{ relatedProject.title }}
+                      </h4>
+                      <p class="text-sm truncate text-white/60">{{ relatedProject.subtitle }}</p>
+                    </div>
+                  </NuxtLink>
+                </li>
+              </ul>
+            </section>
           </div>
-        </div>
+        </aside>
       </div>
 
       <!-- Navigation Between Projects -->
-      <div v-if="previousProject || nextProject" class="grid grid-cols-1 gap-4 pt-8 border-t border-white/10 md:grid-cols-2">
+      <nav v-if="previousProject || nextProject" class="grid grid-cols-1 gap-4 pt-8 border-t border-white/10 md:grid-cols-2">
         <NuxtLink
           v-if="previousProject"
           :to="`/projects/${previousProject.id}`"
@@ -338,8 +340,8 @@
             class="w-5 h-5 transition-colors text-white/60 group-hover:text-white"
           />
         </NuxtLink>
-      </div>
-    </div>
+      </nav>
+    </main>
 
     <!-- Custom Footer - Simpler version than the main page -->
     <footer class="py-8 border-t border-white/10 bg-black/30">
