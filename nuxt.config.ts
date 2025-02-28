@@ -14,7 +14,8 @@ export default defineNuxtConfig({
     '@nuxt/image',
     'shadcn-nuxt',
     '@vueuse/nuxt',
-    '@nuxt/content'
+    '@nuxt/content',
+    '@nuxtjs/seo',
   ],
   shadcn: {
     prefix: '',
@@ -33,6 +34,28 @@ export default defineNuxtConfig({
           'data-website-id': process.env.NUXT_PUBLIC_UMAMI_WEBSITE_ID
         }
       ] : []
+    }
+  },
+  schemaOrg: {
+    identity: {
+      type: 'Person',
+      name: 'Leon',
+      image: '/profile.jpg',
+      description: 'Web Developer from Potsdam, Germany with a passion for creating intuitive, performant web experiences.',
+      url: 'https://leonkohli.dev',
+      jobTitle: 'Web Developer',
+      sameAs: [
+        'https://github.com/leonkohli',
+        'https://www.linkedin.com/in/leonkohlhaussen/',
+        'https://x.com/leonkohli',
+      ],
+      knowsAbout: [
+        'Web Development',
+        'Home Automation',
+        'IoT',
+        'Open Source',
+        'Bicycle Touring'
+      ]
     }
   }
 })
