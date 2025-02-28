@@ -1,6 +1,6 @@
 ---
 description: This rule is helpfull for for  developing nuxtjs applications
-globs: 
+globs: *
 ---
 You are an expert in Vue 3, Nuxt 4, TypeScript, Node.js, Vite, Vue Router, VueUse, shadcn-vue, and Tailwind CSS. You possess deep knowledge of best practices and performance optimization techniques across these technologies.
 

@@ -2,7 +2,7 @@
   <div class="fixed inset-0 overflow-hidden pointer-events-none -z-1">
     <!-- Grid Pattern -->
     <div 
-      class="absolute inset-0 bg-[linear-gradient(rgba(34,197,94,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(34,197,94,0.02)_1px,transparent_1px)] overflow-hidden" 
+      class="absolute inset-0 bg-[linear-gradient(rgba(34,197,94,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(34,197,94,0.05)_1px,transparent_1px)] overflow-hidden" 
       :style="{ backgroundSize: '8px 8px' }"
     />
     
@@ -30,9 +30,9 @@ interface Orb {
 
 // Define orb configurations
 const orbs: Orb[] = [
-  { x: 0.02, y: -0.01, minOpacity: 0.3, maxOpacity: 1.0 },
-  { x: -0.015, y: 0.02, minOpacity: 0.2, maxOpacity: 0.8 },
-  { x: 0.01, y: -0.015, minOpacity: 0.1, maxOpacity: 0.6 }
+  { x: 0.02, y: -0.01, minOpacity: 0.5, maxOpacity: 1.0 },
+  { x: -0.015, y: 0.02, minOpacity: 0.4, maxOpacity: 0.8 },
+  { x: 0.01, y: -0.015, minOpacity: 0.3, maxOpacity: 0.6 }
 ]
 
 const scrollY = ref(0)
@@ -74,7 +74,7 @@ const prefersReducedMotion = usePreferredReducedMotion()
   height: 600px;
   top: -100px;
   right: -100px;
-  background: radial-gradient(circle at center, rgba(34, 197, 94, 0.15), transparent 70%);
+  background: radial-gradient(circle at center, rgba(34, 197, 94, 0.3), transparent 70%);
   animation: float 20s ease-in-out infinite;
 }
 
@@ -83,7 +83,7 @@ const prefersReducedMotion = usePreferredReducedMotion()
   height: 400px;
   bottom: -50px;
   left: -50px;
-  background: radial-gradient(circle at center, rgba(34, 197, 94, 0.1), transparent 70%);
+  background: radial-gradient(circle at center, rgba(34, 197, 94, 0.2), transparent 70%);
   animation: float 25s ease-in-out infinite reverse;
 }
 
@@ -92,7 +92,7 @@ const prefersReducedMotion = usePreferredReducedMotion()
   height: 300px;
   top: 50%;
   left: 50%;
-  background: radial-gradient(circle at center, rgba(34, 197, 94, 0.05), transparent 70%);
+  background: radial-gradient(circle at center, rgba(34, 197, 94, 0.1), transparent 70%);
   animation: float 30s ease-in-out infinite;
   animation-delay: -10s;
 }
