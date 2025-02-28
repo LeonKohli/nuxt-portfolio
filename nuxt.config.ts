@@ -36,11 +36,14 @@ export default defineNuxtConfig({
       ] : []
     }
   },
+  site: {
+    url: 'https://leonkohli.dev',
+    description: 'Web Developer from Potsdam, Germany with a passion for creating intuitive, performant web experiences.',
+  },
   schemaOrg: {
     identity: {
       type: 'Person',
-      name: 'Leon',
-      image: '/profile.jpg',
+      name: 'Leon Kohlhaußen',
       description: 'Web Developer from Potsdam, Germany with a passion for creating intuitive, performant web experiences.',
       url: 'https://leonkohli.dev',
       jobTitle: 'Web Developer',

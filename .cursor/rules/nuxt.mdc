@@ -22,7 +22,7 @@ Nuxt 4 Specifics
 - Utilize VueUse functions for any functionality it provides to enhance reactivity, performance, and avoid writing unnecessary custom code.
 - Use the Server API (within the root `server/api` directory) to handle server-side operations like database interactions, authentication, or processing sensitive data.
 - Use `useRuntimeConfig().public` for client-side configuration and environment variables, and `useRuntimeConfig()` for the rest.
-- For SEO use `useHead` and `useSeoMeta`.
+- For SEO use `useSeoMeta`.
 - Use `app/app.config.ts` for app theme configuration.
 - Use `useState` for state management when needed across components.
 - Throw errors using the `createError` function:
