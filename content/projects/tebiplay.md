@@ -5,7 +5,7 @@ title: TebiPlay
 subtitle: LAN Party Management System
 description: Game Rating Management System for LAN Events
 tech: [{ name: 'NuxtJS', icon: 'logos:nuxt-icon' }, { name: 'JavaScript', icon: 'logos:javascript' }, { name: 'Flask', icon: 'simple-icons:flask' }, { name: 'Docker', icon: 'logos:docker-icon' }, { name: 'PostgreSQL', icon: 'logos:postgresql' }, { name: 'TailwindCSS', icon: 'logos:tailwindcss-icon' }]
-link: https://tebiplay.de
+link: https://tebiplay.zitau.de
 repo: https://github.com/ZIT-P22/TebiPlay
 image: /images/projects/tebiplay-preview.png
 --- 

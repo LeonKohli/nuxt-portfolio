@@ -6,7 +6,7 @@ subtitle: Python Wrapper for Training Report Management
 description: Python wrapper for azubiheft.de that automates the management of apprenticeship training reports
 tech: [{ name: 'Python', icon: 'logos:python' }, { name: 'BeautifulSoup', icon: 'simple-icons:python' }, { name: 'Requests', icon: 'simple-icons:python' }]
 repo: https://github.com/LeonKohli/azubiheft-api
-link: https://pypi.org/project/azubiheft
+link: https://pypi.org/project/azubiheftApi/
 image: /images/projects/azubiheft-preview.png
 tags: ['automation', 'api-wrapper', 'education', 'productivity', 'python', 'training-documentation']
 --- 
