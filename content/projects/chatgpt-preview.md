@@ -7,7 +7,7 @@ description: Browser extension that provides live previews of HTML, CSS, and Jav
 tech: [{ name: 'JavaScript', icon: 'logos:javascript' }, { name: 'HTML', icon: 'logos:html-5' }, { name: 'CSS', icon: 'logos:css-3' }]
 category: developer-tools
 tags: ['developer-tools', 'chatgpt', 'browser-extension', 'html', 'preview', 'productivity', 'code-rendering']
-link: https://chrome.google.com/webstore/detail/chatgpt-html-web-view/giegocmgbdoeidgkbmmlhneaocobdpnh
+link: https://gptview.leonkohli.dev/
 repo: https://github.com/LeonKohli/ChatGPT-HTML-Web-View
 image: /images/projects/chatgpt-preview.png
 browsers: ['Chrome', 'Firefox']
