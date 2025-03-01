@@ -1,9 +1,8 @@
 <template>
-  <div class="fixed inset-0 overflow-hidden pointer-events-none -z-1">
+  <div class="fixed inset-0 z-0 overflow-hidden pointer-events-none">
     <!-- Grid Pattern -->
     <div 
-      class="absolute inset-0 bg-[linear-gradient(rgba(34,197,94,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(34,197,94,0.05)_1px,transparent_1px)] overflow-hidden" 
-      :style="{ backgroundSize: '8px 8px' }"
+      class="absolute inset-0 overflow-hidden grid-pattern" 
     />
     
     <!-- Animated Orbs -->
@@ -45,9 +44,22 @@ watch(y, (newY) => {
 
 // Handle reduced motion preference
 const prefersReducedMotion = usePreferredReducedMotion()
+
+// Determine if mobile for responsive grid sizing
+const { width } = useWindowSize()
+const isMobile = computed(() => width.value < 768)
 </script>
 
 <style scoped>
+/* Grid Pattern with improved visibility */
+.grid-pattern {
+  background-image: 
+    linear-gradient(rgba(34, 197, 94, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(34, 197, 94, 0.08) 1px, transparent 1px);
+  background-size: v-bind('isMobile ? "6px 6px" : "10px 10px"');
+  transition: background-size 0.3s ease;
+}
+
 @keyframes float {
   0%, 100% {
     transform: translate(0, 0);
@@ -103,6 +115,10 @@ const prefersReducedMotion = usePreferredReducedMotion()
     animation: none;
     transition: none;
     transform: none !important;
+  }
+  
+  .grid-pattern {
+    transition: none;
   }
 }
 </style>
