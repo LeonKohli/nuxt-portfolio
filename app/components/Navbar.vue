@@ -1,3 +1,4 @@
+<!-- Improved Navbar.vue with better accessibility -->
 <template>
   <!-- Desktop Navbar (Left Side) -->
   <nav 
@@ -8,6 +9,7 @@
       isVisible && !isProjectPage ? 'pointer-events-auto' : 'pointer-events-none'
     ]"
     :style="{ top: '50%', transform: `translateY(-50%) ${isVisible && !isProjectPage ? '' : 'translateY(1rem)'}` }"
+    aria-label="Main navigation"
   >
     <!-- Navigation Links -->
     <ul class="flex flex-col items-start gap-3">
@@ -18,7 +20,7 @@
           :class="[
             activeSection === item.href.substring(1) && !isProjectPage
               ? 'text-white border-white/20 pl-10' 
-              : 'text-white/50 pl-8 hover:text-white hover:bg-black/50 hover:border-white/10 hover:pl-10'
+              : 'text-white/70 pl-8 hover:text-white hover:bg-black/50 hover:border-white/10 hover:pl-10'
           ]"
           :style="{ 
             transitionDelay: `${index * 100}ms`,
@@ -28,10 +30,12 @@
           data-umami-event="Navigation Click"
           :data-umami-event-section="item.label"
           :data-umami-event-active="activeSection === item.href.substring(1) && !isProjectPage"
+          :aria-current="activeSection === item.href.substring(1) && !isProjectPage ? 'page' : undefined"
         >
           <span 
             class="absolute inset-0 transition-opacity duration-300 opacity-0 pointer-events-none bg-gradient-to-r from-emerald-500/20 to-transparent"
             :class="{ 'opacity-10': activeSection === item.href.substring(1) && !isProjectPage }"
+            aria-hidden="true"
           ></span>
 
           <span 
@@ -39,6 +43,7 @@
             :style="spotlightStyles[index]"
             @mousemove="handleMouseMove($event, index)"
             @mouseleave="handleMouseLeave(index)"
+            aria-hidden="true"
           ></span>
 
           <span 
@@ -48,6 +53,7 @@
                 ? 'bg-emerald-400 scale-100'
                 : 'bg-white/30 scale-75 group-hover:scale-100 group-hover:bg-emerald-400/50'
             ]"
+            aria-hidden="true"
           ></span>
 
           <span class="relative">{{ item.label }}</span>
@@ -64,6 +70,7 @@
       isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4',
       isVisible ? 'pointer-events-auto' : 'pointer-events-none'
     ]"
+    aria-label="Mobile navigation"
   >
     <ul class="flex justify-center">
       <li class="px-3 py-2 mx-auto border rounded-full bg-black/40 backdrop-blur-md border-white/10">
@@ -75,17 +82,19 @@
               :class="[
                 activeSection === item.href.substring(1)
                   ? 'text-emerald-400 bg-white/5' 
-                  : 'text-white/60 hover:text-white hover:bg-white/5'
+                  : 'text-white/80 hover:text-white hover:bg-white/5'
               ]"
               :style="{ transitionDelay: `${index * 100}ms` }"
               @click.prevent="scrollToSection(item.href)"
               data-umami-event="Mobile Navigation Click"
               :data-umami-event-section="item.label"
+              :aria-current="activeSection === item.href.substring(1) ? 'page' : undefined"
             >
               <Icon 
                 :name="getIconForSection(item.label)" 
                 class="w-3.5 h-3.5 transition-transform duration-300"
                 :class="{ 'text-emerald-400': activeSection === item.href.substring(1) }"
+                aria-hidden="true"
               />
               <span>{{ item.label }}</span>
             </a>

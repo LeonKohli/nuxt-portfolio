@@ -1,13 +1,14 @@
-<!-- Start of Selection -->
 <template>
   <section 
     ref="sectionRef"
     class="relative flex items-center justify-center min-h-screen px-4 pb-16 overflow-hidden sm:px-6 lg:px-8 md:pb-0"
     :class="{ 'section-visible': isVisible }"
+    id="hero" 
+    aria-labelledby="hero-title"
   >
     <div class="w-10/12 md:w-8/12 mx-auto max-w-[110rem]">
       <!-- Tech icons background -->
-      <TechIcons :z-index="10" />
+      <TechIcons :z-index="10" aria-hidden="true" />
       
       <!-- Main content with simplified structure -->
       <div class="relative z-10 flex flex-col h-screen">
@@ -26,7 +27,7 @@
             </p>
 
             <!-- Name - Adjusted size for better visual hierarchy -->
-            <h1 class="font-bold text-6xl md:text-[9vw] lg:text-[9.8vw] text-zinc-100 leading-none z-50 text-center md:text-left">
+            <h1 id="hero-title" class="font-bold text-6xl md:text-[9vw] lg:text-[9.8vw] text-zinc-100 leading-none z-50 text-center md:text-left">
               <span class="block transition-colors duration-300 opacity-0 animate-fade-in font-exo" style="animation-delay: 400ms;">
                 LEON
               </span>
@@ -46,7 +47,7 @@
                   width="20"
                   height="20"
                   aria-hidden="true" />
-                <span class="transition-colors duration-200 text-white/70 group-hover:text-white/90">Potsdam, Germany</span>
+                <span class="transition-colors duration-200 text-white/90 group-hover:text-white">Potsdam, Germany</span>
               </div>
               
               <!-- Social links -->
@@ -57,8 +58,9 @@
                   :to="link.url"
                   external
                   target="_blank"
-                  class="flex items-center justify-center transition-all duration-300 text-white/40 hover:text-white focus:outline-none focus:ring-2 focus:ring-emerald-400/50 hover:-translate-y-1"
+                  class="flex items-center justify-center transition-all duration-300 text-white/70 hover:text-white focus:outline-none focus:ring-2 focus:ring-emerald-400/50 hover:-translate-y-1"
                   :data-umami-event="`Visit ${link.name}`"
+                  :aria-label="link.screenReaderText"
                 >
                   <Icon 
                     :name="link.playfulIcon"
@@ -68,7 +70,6 @@
                     height="20"
                     aria-hidden="true"
                   />
-                  <span class="sr-only">{{ link.screenReaderText }}</span>
                 </NuxtLink>
               </div>
             </div>
@@ -78,15 +79,16 @@
         <!-- Scroll Arrow -->
         <div class="absolute flex justify-center w-full -translate-x-1/2 bottom-8 left-1/2">
           <button 
-            class="transition-all duration-300 opacity-0 animate-fade-in hover:-translate-y-1"
+            class="transition-all duration-300 opacity-0 animate-fade-in hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-emerald-400/50"
             :class="{ 'opacity-0 translate-y-4': isScrolled }" 
             style="animation-delay: 1500ms;"
             @click="scrollToProjects"
             data-umami-event="Scroll to Projects"
+            aria-label="Scroll to projects section"
           >
-            <div class="flex flex-col items-center gap-2 transition-colors text-white/50 hover:text-white/80">
+            <div class="flex flex-col items-center gap-2 transition-colors text-white/70 hover:text-white">
               <span class="text-sm font-exo">Scroll</span>
-              <Icon name="lucide:chevrons-down" class="w-6 h-6 animate-bounce-soft" />
+              <Icon name="lucide:chevrons-down" class="w-6 h-6 animate-bounce-soft" aria-hidden="true" />
             </div>
           </button>
         </div>
