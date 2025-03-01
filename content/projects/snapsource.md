@@ -7,7 +7,7 @@ description: A Visual Studio Code extension for copying project context to AI mo
 tech: [{ name: 'JavaScript', icon: 'logos:javascript' }, { name: 'VS Code API', icon: 'logos:visual-studio-code' }, { name: 'Node.js', icon: 'logos:nodejs-icon' }]
 category: developer-tools
 tags: ['vscode-extension', 'ai-tools', 'productivity', 'code-sharing', 'llm', 'context-preservation']
-link: https://marketplace.visualstudio.com/items?itemName=LeonKohli.copy4ai
+link: https://copy4ai.dev
 repo: https://github.com/LeonKohli/copy4ai
 image: /images/projects/snapsource-preview.png
 downloads: 1000+
