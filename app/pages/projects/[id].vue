@@ -167,6 +167,12 @@
                   />
                 </div>
               </li>
+
+              <!-- Add downloads information -->
+              <li v-if="project.downloads" class="flex items-center gap-2 text-sm text-white/80">
+                <Icon name="lucide:download" class="w-4 h-4 text-emerald-400" aria-hidden="true" />
+                <span>{{ project.downloads }} Downloads</span>
+              </li>
             </ul>
           </section>
 
@@ -189,56 +195,17 @@
       <!-- Content Sections -->
       <div class="grid grid-cols-1 gap-8 mb-16 md:grid-cols-3">
         <article class="space-y-12 md:col-span-2">
-          <!-- Description -->
-          <section>
-            <h2 class="mb-4 text-2xl font-bold font-exo text-white/90">About the Project</h2>
-            <div class="prose prose-invert prose-emerald max-w-none">
-              <p class="text-lg leading-relaxed text-white/80">
-                {{ project.description }}
-              </p>
-            </div>
-          </section>
-
-          <!-- Problem Statement -->
-          <section v-if="project.problem">
-            <h2 class="mb-4 text-2xl font-bold font-exo text-white/90">The Problem</h2>
-            <div class="prose prose-invert prose-emerald max-w-none">
-              <p class="text-lg leading-relaxed text-white/80">
-                {{ project.problem }}
-              </p>
-            </div>
-          </section>
-
-          <!-- Solution -->
-          <section v-if="project.solution">
-            <h2 class="mb-4 text-2xl font-bold font-exo text-white/90">The Solution</h2>
-            <div class="prose prose-invert prose-emerald max-w-none">
-              <p class="text-lg leading-relaxed text-white/80">
-                {{ project.solution }}
-              </p>
-            </div>
-          </section>
-
-          <!-- Key Features -->
-          <section v-if="project.features?.length">
-            <h2 class="mb-4 text-2xl font-bold font-exo text-white/90">Key Features</h2>
-            <ul class="grid grid-cols-1 gap-3 sm:grid-cols-2">
-              <li
-                v-for="feature in project.features"
-                :key="feature"
-                class="flex items-start gap-3 p-3 border rounded-lg border-white/10 bg-white/5"
-              >
-                <Icon
-                  name="lucide:check-circle"
-                  class="mt-0.5 h-5 w-5 shrink-0 text-emerald-400"
-                  aria-hidden="true"
-                />
-                <span class="text-white/80">
-                  {{ feature }}
-                </span>
-              </li>
-            </ul>
-          </section>
+          <!-- Markdown Content -->
+          <ContentRenderer 
+            :value="project" 
+            class="project-content" 
+          >
+            <!-- Empty slot when no content is available -->
+            <template #empty>
+              <!-- Fallback for empty content -->
+              <p class="italic text-white/60">No content available for this project.</p>
+            </template>
+          </ContentRenderer>
         </article>
 
         <!-- Sidebar -->
@@ -411,7 +378,6 @@ const { data: project, pending } = await useAsyncData(
     try {
       // Get the ID directly from the route
       const projectId = route.params.id as string;
-      console.log('Fetching project:', projectId);
       
       // Use the content module to fetch the project
       const result = await queryContent<Project>('projects')
@@ -423,7 +389,6 @@ const { data: project, pending } = await useAsyncData(
         return null;
       }
       
-      console.log('Found project:', result.title);
       return result;
     } catch (err) {
       console.error('Error fetching project:', err);
@@ -465,7 +430,6 @@ const { data: allProjects } = await useAsyncData<Project[]>(
       .sort({ sort: 1 })
       .find();
     
-    console.log('Fetched all projects for navigation:', projects.length);
     return projects;
   },
   {

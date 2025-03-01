@@ -96,3 +96,64 @@
     @apply bg-background text-foreground;
   }
 }
+
+.project-content {
+  @apply prose prose-invert max-w-none text-white/80;
+  
+  /* Headings */
+  @apply prose-headings:text-white prose-headings:font-exo prose-headings:font-bold prose-headings:mb-4;
+  @apply prose-h1:text-4xl prose-h1:bg-clip-text prose-h1:text-transparent prose-h1:bg-gradient-to-r prose-h1:from-white prose-h1:via-white prose-h1:to-white/80;
+  @apply prose-h2:text-2xl prose-h2:mt-8 prose-h2:mb-4 prose-h2:text-white/90 prose-h2:border-b prose-h2:border-white/10 prose-h2:pb-2;
+  @apply prose-h3:text-xl prose-h3:mt-6 prose-h3:text-white/90 prose-h3:font-medium;
+  @apply prose-h4:text-lg prose-h4:mt-4 prose-h4:text-emerald-400 prose-h4:font-medium;
+  
+  /* Paragraphs and text */
+  @apply prose-p:text-white/80 prose-p:leading-relaxed prose-p:mb-4 prose-p:text-lg;
+  @apply prose-strong:text-white prose-strong:font-medium;
+  @apply prose-em:text-white/70 prose-em:italic;
+  
+  /* Links */
+  @apply prose-a:text-emerald-400 prose-a:no-underline prose-a:transition-colors hover:prose-a:text-emerald-300;
+  @apply hover:prose-a:translate-y-[-1px] prose-a:inline-block prose-a:transition-transform;
+  
+  /* Lists */
+  @apply prose-ul:list-disc prose-ul:pl-5 prose-ul:my-4 prose-ul:text-white/80;
+  @apply prose-ol:list-decimal prose-ol:pl-5 prose-ol:my-4 prose-ol:text-white/80;
+  @apply prose-li:my-1.5 prose-li:text-lg;
+  @apply prose-li:marker:text-emerald-400;
+  
+  /* Fix for numbered list alignment */
+  & ol {
+    @apply pl-5;
+    
+    & li {
+      @apply pl-1.5 ml-4; /* Added ml-4 to align the text with bulleted lists */
+      
+      &::marker {
+        @apply text-emerald-400;
+      }
+    }
+  }
+  
+  /* Code blocks */
+  @apply prose-pre:bg-black/50 prose-pre:border prose-pre:border-white/10 prose-pre:rounded-xl;
+  @apply prose-pre:p-4 prose-pre:my-6 prose-pre:overflow-x-auto prose-pre:text-sm;
+  /* Tables */
+  @apply prose-table:w-full prose-table:my-6 prose-table:border-collapse;
+  @apply prose-thead:bg-white/10 prose-thead:text-white/90;
+  @apply prose-th:p-2 prose-th:text-left prose-th:font-medium prose-th:border prose-th:border-white/10;
+  @apply prose-td:p-2 prose-td:border prose-td:border-white/10 prose-td:text-white/80;
+  
+  /* Blockquotes */
+  @apply prose-blockquote:border-l-4 prose-blockquote:border-emerald-500/50 prose-blockquote:pl-4;
+  @apply prose-blockquote:italic prose-blockquote:text-white/70 prose-blockquote:my-6;
+  @apply prose-blockquote:bg-white/5 prose-blockquote:py-2 prose-blockquote:pr-4 prose-blockquote:rounded-r-lg;
+  
+  /* Images */
+  @apply prose-img:rounded-xl prose-img:mx-auto prose-img:my-6 prose-img:max-w-full;
+  @apply prose-img:shadow-lg prose-img:transition-transform hover:prose-img:scale-[1.01];
+  @apply prose-img:border prose-img:border-white/10;
+  
+  /* Horizontal rule */
+  @apply prose-hr:border-white/10 prose-hr:my-8;
+}

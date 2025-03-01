@@ -27,6 +27,9 @@ export default defineNuxtConfig({
   },
   app: {
     head: {
+      htmlAttrs: {
+        lang: 'en'
+      },
       script: process.env.NODE_ENV === 'production' ? [
         {
           src: process.env.NUXT_PUBLIC_UMAMI_URL,
@@ -39,6 +42,17 @@ export default defineNuxtConfig({
   site: {
     url: 'https://leonkohli.dev',
     description: 'Web Developer from Potsdam, Germany with a passion for creating intuitive, performant web experiences.',
+  },
+  content: {
+    highlight: {
+      theme: 'github-dark',
+      langs: ['python', 'bash', 'json', 'xml'],
+    },
+    markdown: {
+      anchorLinks: false,
+    },
+    locales: ['en', 'de'],
+    defaultLocale: 'en',
   },
   schemaOrg: {
     identity: {
