@@ -44,6 +44,8 @@ export default defineNuxtConfig({
     description: 'Web Developer from Potsdam, Germany with a passion for creating intuitive, performant web experiences.',
   },
   content: {
+    contentHead: false
+    },
     highlight: {
       theme: 'github-dark',
       langs: ['python', 'bash', 'json', 'xml'],
