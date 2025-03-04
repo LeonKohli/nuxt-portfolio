@@ -1,4 +1,3 @@
-// https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   future: {
     compatibilityVersion: 4,
@@ -45,17 +44,18 @@ export default defineNuxtConfig({
   },
   content: {
     contentHead: false
-    },
-    highlight: {
-      theme: 'github-dark',
-      langs: ['python', 'bash', 'json', 'xml'],
-    },
-    markdown: {
-      anchorLinks: false,
-    },
-    locales: ['en', 'de'],
-    defaultLocale: 'en',
   },
+
+  highlight: {
+    theme: 'github-dark',
+    langs: ['python', 'bash', 'json', 'xml'],
+  },
+  markdown: {
+    anchorLinks: false,
+  },
+  locales: ['en', 'de'],
+  defaultLocale: 'en',
+
   schemaOrg: {
     identity: {
       type: 'Person',
@@ -77,4 +77,4 @@ export default defineNuxtConfig({
       ]
     }
   }
-})
+});
