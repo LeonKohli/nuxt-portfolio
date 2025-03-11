@@ -23,6 +23,12 @@
 </template>
 
 <script setup lang="ts">
+useHead({
+  titleTemplate: '%s',
+})
+
+
+defineOgImageComponent('Frame')
 </script>
 
 <style>

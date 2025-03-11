@@ -38,24 +38,18 @@ export default defineNuxtConfig({
       ] : []
     }
   },
+  content: {
+    highlight: {
+      theme: 'github-dark',
+      langs: ['python', 'bash', 'json', 'xml'],
+    }
+  },
   site: {
     url: 'https://leonkohli.dev',
     description: 'Web Developer from Potsdam, Germany with a passion for creating intuitive, performant web experiences.',
+    title: 'Leon Kohlhaußen - Full Stack Developer',
+    name: 'Leon Kohlhaußen - Full Stack Developer',
   },
-  content: {
-    contentHead: false
-  },
-
-  highlight: {
-    theme: 'github-dark',
-    langs: ['python', 'bash', 'json', 'xml'],
-  },
-  markdown: {
-    anchorLinks: false,
-  },
-  locales: ['en', 'de'],
-  defaultLocale: 'en',
-
   schemaOrg: {
     identity: {
       type: 'Person',

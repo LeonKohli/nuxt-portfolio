@@ -22,6 +22,4 @@ useSeoMeta({
   author: 'Leon Kohlhaußen',
   keywords: 'LeonKohli, Full Stack Developer, Web Development, Potsdam, Germany, Software Engineer',
 })
-
-defineOgImageComponent('Frame')
 </script>
