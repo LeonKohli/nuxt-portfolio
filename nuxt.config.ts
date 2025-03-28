@@ -15,6 +15,7 @@ export default defineNuxtConfig({
     '@vueuse/nuxt',
     '@nuxt/content',
     '@nuxtjs/seo',
+    'nuxt-security'
   ],
   shadcn: {
     prefix: '',
