@@ -106,11 +106,6 @@
 </template>
 
 <script setup lang="ts">
-interface SpotlightStyle {
-  background: string
-  transform: string
-}
-
 interface NavItem {
   label: string
   href: string
@@ -122,31 +117,8 @@ const navRef = ref<HTMLElement | null>(null)
 const route = useRoute()
 const isProjectPage = computed(() => route.path.startsWith('/projects/'))
 
-const spotlightStyles = ref<SpotlightStyle[]>(
-  Array(3).fill({
-    background: 'radial-gradient(circle at 50% 50%, rgba(16, 185, 129, 0) 0%, transparent 60%)',
-    transform: 'translate(0%, 0%)'
-  })
-)
-
-const handleMouseMove = (event: MouseEvent, index: number) => {
-  const target = event.currentTarget as HTMLElement
-  const rect = target.getBoundingClientRect()
-  const relativeX = ((event.clientX - rect.left) / rect.width) * 100
-  const relativeY = ((event.clientY - rect.top) / rect.height) * 100
-
-  spotlightStyles.value[index] = {
-    background: `radial-gradient(circle at ${relativeX}% ${relativeY}%, rgba(16, 185, 129, 0.15) 0%, transparent 60%)`,
-    transform: 'translate(0%, 0%)'
-  }
-}
-
-const handleMouseLeave = (index: number) => {
-  spotlightStyles.value[index] = {
-    background: 'radial-gradient(circle at 50% 50%, rgba(16, 185, 129, 0) 0%, transparent 60%)',
-    transform: 'translate(0%, 0%)'
-  }
-}
+// Use the spotlight effect composable for nav items
+const { spotlightStyles, handleMouseMove, handleMouseLeave } = useSpotlightEffect(3)
 
 // Get appropriate icon for each section
 const getIconForSection = (label: string): string => {

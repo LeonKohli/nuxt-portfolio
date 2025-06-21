@@ -41,7 +41,7 @@
         style="animation-delay: 600ms;"
         @click="copyEmail"
         data-umami-event="Copy Email"
-        @mousemove="handleMouseMove($event)"
+        @mousemove="handleMouseMove"
         @mouseleave="handleMouseLeave"
         aria-label="Copy email address"
       >
@@ -87,6 +87,7 @@
           :to="link.url"
           external
           target="_blank"
+          rel="noopener noreferrer"
           class="flex items-center justify-center w-10 h-10 transition-all duration-300 rounded-full opacity-0 text-white/40 hover:text-white focus:outline-none focus:ring-2 focus:ring-emerald-400/50 animate-fade-in hover:-translate-y-1"
           :style="{ animationDelay: `${800 + (index * 100)}ms` }"
           :data-umami-event="`Visit ${link.name}`"
@@ -110,29 +111,8 @@
 const copied = ref(false)
 const email = 'contact@leonkohli.dev'
 
-const spotlightStyle = ref({
-  background: 'radial-gradient(circle at 50% 50%, rgba(16, 185, 129, 0) 0%, transparent 60%)',
-  transform: 'translate(0%, 0%)'
-})
-
-const handleMouseMove = (event: MouseEvent) => {
-  const target = event.currentTarget as HTMLElement
-  const rect = target.getBoundingClientRect()
-  const relativeX = ((event.clientX - rect.left) / rect.width) * 100
-  const relativeY = ((event.clientY - rect.top) / rect.height) * 100
-
-  spotlightStyle.value = {
-    background: `radial-gradient(circle at ${relativeX}% ${relativeY}%, rgba(16, 185, 129, 0.15) 0%, transparent 60%)`,
-    transform: 'translate(0%, 0%)'
-  }
-}
-
-const handleMouseLeave = () => {
-  spotlightStyle.value = {
-    background: 'radial-gradient(circle at 50% 50%, rgba(16, 185, 129, 0) 0%, transparent 60%)',
-    transform: 'translate(0%, 0%)'
-  }
-}
+// Use the spotlight effect composable
+const { spotlightStyles: spotlightStyle, handleMouseMove, handleMouseLeave } = useSpotlightEffect()
 
 const backgroundIcons = [
   { name: 'simple-icons:vuedotjs', position: 'left-10 top-10' },

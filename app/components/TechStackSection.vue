@@ -73,36 +73,8 @@
 </template>
 
 <script setup lang="ts">
-interface SpotlightStyle {
-    background: string;
-    transform: string;
-}
-
-const spotlightStyles = ref<SpotlightStyle[]>(
-    Array(12).fill({
-        background: 'radial-gradient(circle at 50% 50%, rgba(16, 185, 129, 0) 0%, transparent 60%)',
-        transform: 'translate(0%, 0%)'
-    })
-)
-
-const handleMouseMove = (event: MouseEvent, index: number) => {
-    const target = event.currentTarget as HTMLElement
-    const rect = target.getBoundingClientRect()
-    const relativeX = ((event.clientX - rect.left) / rect.width) * 100
-    const relativeY = ((event.clientY - rect.top) / rect.height) * 100
-
-    spotlightStyles.value[index] = {
-        background: `radial-gradient(circle at ${relativeX}% ${relativeY}%, rgba(16, 185, 129, 0.15) 0%, transparent 60%)`,
-        transform: 'translate(0%, 0%)'
-    }
-}
-
-const handleMouseLeave = (index: number) => {
-    spotlightStyles.value[index] = {
-        background: 'radial-gradient(circle at 50% 50%, rgba(16, 185, 129, 0) 0%, transparent 60%)',
-        transform: 'translate(0%, 0%)'
-    }
-}
+// Use the spotlight effect composable - allocate enough for tech stack items
+const { spotlightStyles, handleMouseMove, handleMouseLeave } = useSpotlightEffect(20)
 
 const { data: techStack } = await useAsyncData('tech-stack', () => queryContent('tech-stack').findOne())
 

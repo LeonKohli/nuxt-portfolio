@@ -21,6 +21,7 @@
             v-if="project?.repo"
             :to="project.repo"
             target="_blank"
+            rel="noopener noreferrer"
             class="p-2 transition-colors text-white/60 hover:text-white"
             aria-label="View GitHub Repository"
           >
@@ -31,6 +32,7 @@
             v-if="project?.link"
             :to="project.link"
             target="_blank"
+            rel="noopener noreferrer"
             class="p-2 transition-colors text-emerald-400/80 hover:text-emerald-400"
             aria-label="Visit Live Site"
           >
@@ -217,6 +219,7 @@
               v-if="project.link"
               :href="project.link"
               target="_blank"
+              rel="noopener noreferrer"
               class="flex items-center justify-center w-full gap-2 px-4 py-3 transition-colors rounded-xl bg-emerald-500/10 text-emerald-400 hover:bg-emerald-500/20"
             >
               <Icon name="lucide:external-link" class="w-5 h-5" />
@@ -228,6 +231,7 @@
               v-if="project.repo"
               :href="project.repo"
               target="_blank"
+              rel="noopener noreferrer"
               class="flex items-center justify-center w-full gap-2 px-4 py-3 transition-colors rounded-xl bg-white/10 text-white/90 hover:bg-white/15"
             >
               <Icon name="ph:github-logo-fill" class="w-5 h-5" />

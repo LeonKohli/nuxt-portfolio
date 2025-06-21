@@ -85,6 +85,7 @@
                       v-if="project.repo"
                       :href="project.repo" 
                       target="_blank"
+                      rel="noopener noreferrer"
                       class="group/btn flex items-center px-4 py-2 text-sm font-medium rounded-full text-white 
                              bg-white/10 hover:bg-white/20 hover:-translate-y-0.5 active:translate-y-0 
                              project-hover-transition"
@@ -106,6 +107,7 @@
                       v-if="project.link"
                       :href="project.link" 
                       target="_blank"
+                      rel="noopener noreferrer"
                       class="group/btn flex items-center px-4 py-2 text-sm font-medium rounded-full text-emerald-400 
                              bg-emerald-500/20 hover:bg-emerald-500/30 hover:-translate-y-0.5 active:translate-y-0 
                              project-hover-transition"
