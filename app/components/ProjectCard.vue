@@ -233,7 +233,7 @@ const handleProjectHover = (projectId: string, isHovering: boolean) => {
 }
 
 // Handle scroll events and emit current index
-const handleScroll = () => {
+const handleScroll = useThrottleFn(() => {
   if (!scrollContainer.value) return
   const container = scrollContainer.value
   const scrollLeft = container.scrollLeft
@@ -244,7 +244,7 @@ const handleScroll = () => {
   emit('scroll', currentIndex)
   
   updateScrollState()
-}
+}, 50) // Throttle to 20fps for scroll events
 
 // Initialize visibility and scroll state
 onMounted(() => {
