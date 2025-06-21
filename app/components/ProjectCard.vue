@@ -1,5 +1,6 @@
 <template>
   <div class="relative w-full touch-pan-x" ref="cardRef">
+    
     <div 
       class="flex w-full overflow-x-scroll overscroll-x-contain py-8 scroll-smooth 
              [scrollbar-width:none] snap-x snap-mandatory touch-pan-x" 
@@ -30,8 +31,8 @@
                      hover:shadow-emerald-500/10"
             >
               <!-- Background layers -->
-              <div class="absolute inset-0 z-20 bg-gradient-to-t from-black via-black/80 to-black/60 opacity-80 group-hover:opacity-90 project-transition"></div>
-              <div class="absolute inset-0 z-30 bg-[#000000] opacity-0 group-hover:opacity-75 project-transition"></div>
+              <div class="absolute inset-0 z-20 bg-gradient-to-t from-black via-black/80 to-black/60 opacity-80 group-hover:opacity-85 project-transition"></div>
+              <div class="absolute inset-0 z-30 bg-[#000000] opacity-0 group-hover:opacity-40 project-transition"></div>
               
               <!-- Content -->
               <div class="relative z-40 flex flex-col h-full p-6 md:p-8">
@@ -138,7 +139,7 @@
                 height="512"
                 :placeholder="[100, 133, 75, 5]"
                 class="absolute inset-0 z-10 object-cover scale-[1.01] brightness-[0.7] group-hover:scale-[1.02] 
-                       group-hover:brightness-[0.8] group-hover:blur-[2px] project-transition project-card-image"
+                       group-hover:brightness-[0.85] group-hover:blur-[2px] project-transition project-card-image"
                 sizes="(max-width: 640px) 85vw, (max-width: 768px) 280px, 384px"
                 format="webp"
                 quality="80"
@@ -159,9 +160,10 @@
 
     <!-- Navigation Buttons -->
     <ClientOnly>
-      <nav class="justify-start hidden gap-4 mt-8 md:flex" aria-label="Project navigation">
-        <button 
-          v-if="showNavigation"
+      <div class="hidden md:flex items-center justify-between mt-8">
+        <nav class="flex gap-4" aria-label="Project navigation">
+          <button 
+            v-if="showNavigation"
           class="group/nav relative z-40 flex items-center justify-center w-12 h-12 rounded-full cursor-pointer 
                  disabled:opacity-30 bg-white/5 hover:bg-emerald-500/10 hover:-translate-y-1 active:translate-y-0 
                  disabled:hover:scale-100 disabled:hover:translate-y-0 project-hover-transition
@@ -196,7 +198,17 @@
             aria-hidden="true"
           />
         </button>
-      </nav>
+        </nav>
+        
+        <!-- More Projects Indicator -->
+        <div 
+          v-if="showNavigation && !isAtEnd" 
+          class="flex items-center gap-2 text-white/60"
+        >
+          <span class="text-sm">More projects</span>
+          <Icon name="lucide:arrow-right" class="w-4 h-4" />
+        </div>
+      </div>
     </ClientOnly>
   </div>
 </template>

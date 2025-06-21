@@ -32,6 +32,20 @@ defineOgImageComponent('Frame')
 </script>
 
 <style>
+/* Prevent overscroll */
+html {
+  overflow: hidden;
+  height: 100%;
+}
+
+body {
+  height: 100%;
+  overflow: auto;
+  overscroll-behavior: none;
+  overscroll-behavior-y: none;
+  overscroll-behavior-x: none;
+}
+
 .bg-gradient-radial {
   background: radial-gradient(circle at center, var(--tw-gradient-from) 0%, var(--tw-gradient-via) 40%, var(--tw-gradient-to) 100%);
   background-image: radial-gradient(circle at 50% 50%, rgba(34, 197, 94, 0.1), transparent 50%);
