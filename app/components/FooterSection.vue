@@ -108,8 +108,11 @@
 </template>
 
 <script setup lang="ts">
-const copied = ref(false)
 const email = 'contact@leonkohli.dev'
+
+// Use VueUse clipboard composable
+const { copy, copied } = useClipboard({ legacy: true, copiedDuring: 2000 })
+const copyEmail = () => copy(email)
 
 // Use the spotlight effect composable
 const { spotlightStyles: spotlightStyle, handleMouseMove, handleMouseLeave } = useSpotlightEffect()
@@ -125,18 +128,6 @@ const socialLinks = [
   { name: 'GitLab', url: 'https://gitlab.com/opendata-apps/mantis', icon: 'simple-icons:gitlab' },
   { name: 'LinkedIn', url: 'https://www.linkedin.com/in/leon-kohlhau%C3%9Fen/', icon: 'simple-icons:linkedin' },
 ]
-
-const copyEmail = async () => {
-  try {
-    await navigator.clipboard.writeText(email)
-    copied.value = true
-    setTimeout(() => {
-      copied.value = false
-    }, 2000)
-  } catch (err) {
-    console.error('Failed to copy email:', err)
-  }
-}
 
 const sectionRef = ref<HTMLElement | null>(null)
 const isVisible = useElementVisibility(sectionRef, { threshold: 0.2 })

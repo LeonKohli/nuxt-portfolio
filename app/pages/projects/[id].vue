@@ -354,11 +354,6 @@
 // Get the route and project ID directly - no computed property to avoid reactivity issues
 const route = useRoute();
 
-// Add route change handler for page transitions when navigating between projects
-onBeforeRouteUpdate(() => {
-  // Force the page to scroll to top when navigating between projects
-  window.scrollTo(0, 0);
-});
 
 // Category display labels mapping
 const categoryLabels = {

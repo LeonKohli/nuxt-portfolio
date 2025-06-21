@@ -125,19 +125,12 @@ const socialLinks = [
   }
 ]
 
-const isScrolled = ref(false)
 const sectionRef = ref<HTMLElement | null>(null)
 const isVisible = useElementVisibility(sectionRef, { threshold: 0.2 })
 
-// Update scroll state
-onMounted(() => {
-  const handleScroll = () => {
-    isScrolled.value = window.scrollY > 100
-  }
-
-  window.addEventListener('scroll', handleScroll, { passive: true })
-  onUnmounted(() => window.removeEventListener('scroll', handleScroll))
-})
+// Use VueUse for scroll handling
+const { y } = useWindowScroll()
+const isScrolled = computed(() => y.value > 100)
 
 // Smooth scroll to projects section
 const scrollToProjects = () => {

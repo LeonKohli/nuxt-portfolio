@@ -66,11 +66,8 @@ const props = withDefaults(defineProps<Props>(), {
   iconColorClass: 'text-[#22c55e]'
 })
 
-const isMounted = ref(false)
-
-onMounted(() => {
-  isMounted.value = true
-})
+// Use VueUse for mounted state
+const isMounted = useMounted()
 </script>
 
 <style scoped>
