@@ -78,7 +78,7 @@ export default defineNuxtConfig({
     nonce: true,
     headers: {
       contentSecurityPolicy: {
-        'img-src': ["'self'"],
+        'img-src': ["'self'", 'data:', 'blob:', 'https:'],
         'script-src': ["'self'", "'nonce-{{nonce}}'", 'https://*.cloudflare.com', process.env.NUXT_PUBLIC_UMAMI_URL || ''],
       },
     },
