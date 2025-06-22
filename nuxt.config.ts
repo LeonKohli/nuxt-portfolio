@@ -79,7 +79,14 @@ export default defineNuxtConfig({
     headers: {
       contentSecurityPolicy: {
         'img-src': ["'self'", 'data:', 'blob:', 'https:'],
-        'script-src': ["'self'", "'nonce-{{nonce}}'", 'https://*.cloudflare.com', process.env.NUXT_PUBLIC_UMAMI_URL || ''],
+        'script-src': [
+          "'self'",
+          "'nonce-{{nonce}}'",
+          "'strict-dynamic'",
+          'https://*.cloudflare.com',
+          'https://static.cloudflareinsights.com',
+          process.env.NUXT_PUBLIC_UMAMI_URL || ''
+        ],
       },
     },
   },
