@@ -3,15 +3,17 @@
     class="flex flex-col justify-center min-h-screen px-4 pt-24 overflow-hidden sm:px-6 lg:px-8 md:pt-0" 
     id="about"
     ref="sectionRef"
-    :class="{ 'section-visible': isVisible }"
+    :class="{ 'section-visible': shouldAnimate }"
   >
     <div class="w-10/12 md:w-8/12 mx-auto max-w-[110rem] px-4">
       <!-- Section Header -->
       <div class="flex flex-col items-center mb-10 text-center md:items-start md:text-left">
         <h2 class="font-bold tracking-tight">
           <span class="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-exo">
-            <span class="opacity-0 text-zinc-100 animate-fade-in" style="animation-delay: 200ms;">About</span>
-            <span class="relative inline-block ml-3 opacity-0 group animate-fade-in" style="animation-delay: 400ms;">
+            <span class="text-zinc-100 transition-opacity duration-500"
+              :class="shouldAnimate ? 'opacity-100' : 'opacity-0'">About</span>
+            <span class="relative inline-block ml-3 group transition-all duration-500 delay-100"
+              :class="shouldAnimate ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2'">
               <span class="bg-gradient-to-r from-green-700 via-green-500 to-green-400 bg-clip-text text-transparent transition-all duration-300 group-hover:bg-[length:200%_100%] bg-[length:100%_100%] bg-[position:0%] hover:bg-[position:100%]">
                 Me
               </span>
@@ -25,7 +27,8 @@
         <!-- Main Content Grid -->
         <div class="grid grid-cols-1 gap-8 lg:grid-cols-2 lg:gap-12">
           <!-- Left Column: Bio -->
-          <div class="opacity-0 animate-fade-in" style="animation-delay: 600ms;">
+          <div class="transition-all duration-700 delay-200"
+            :class="shouldAnimate ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'">
             <p class="mb-6 text-xl md:text-2xl text-white/90 leading-relaxed [text-wrap:balance]">
               Hi, I'm 
               <span class="relative inline-block font-medium text-emerald-400">Leon</span>, 
@@ -39,7 +42,8 @@
           </div>
 
           <!-- Right Column: Beyond Coding -->
-          <div class="opacity-0 animate-fade-in" style="animation-delay: 700ms;">
+          <div class="transition-all duration-700 delay-300"
+            :class="shouldAnimate ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'">
             <BeyondCoding />
           </div>
         </div>
@@ -53,38 +57,16 @@
 </template>
 
 <script setup lang="ts">
-// Use VueUse's useElementVisibility for intersection observer functionality
-const sectionRef = ref<HTMLElement | null>(null)
-const isVisible = useElementVisibility(sectionRef, { threshold: 0.2 })
+// Use one-time animation composable
+const { target: sectionRef, shouldAnimate } = useAnimateOnce({ threshold: 0.2 })
 </script>
 
 <style scoped>
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.animate-fade-in {
-  animation: fadeIn 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
-  will-change: transform, opacity;
-  animation-play-state: paused;
-}
-
-.section-visible .animate-fade-in {
-  animation-play-state: running;
-}
-
 @media (prefers-reduced-motion: reduce) {
-  .animate-fade-in {
-    animation: none;
-    opacity: 1;
-    transform: none;
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }
 </style>

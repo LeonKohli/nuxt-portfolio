@@ -1,17 +1,20 @@
 <template>
-    <section id="tech-stack" class="flex flex-col justify-center min-h-screen px-4 pt-24 overflow-hidden sm:px-6 lg:px-8 md:pt-0" ref="sectionRef" :class="{ 'section-visible': isVisible }">
+    <section id="tech-stack" class="flex flex-col justify-center min-h-screen px-4 pt-24 overflow-hidden sm:px-6 lg:px-8 md:pt-0" ref="sectionRef" :class="{ 'section-visible': shouldAnimate }">
         <div class="w-10/12 md:w-8/12 mx-auto max-w-[110rem] px-4">
             <!-- Section Header -->
             <header class="flex flex-col items-center mb-16 text-center md:items-start md:text-left">
                 <h2 class="text-3xl font-bold tracking-tight sm:text-4xl md:text-6xl lg:text-7xl font-exo">
-                    <span class="opacity-0 text-zinc-100 animate-fade-in" style="animation-delay: 200ms;">My</span>
-                    <span class="relative inline-block ml-3 opacity-0 animate-fade-in" style="animation-delay: 400ms;">
+                    <span class="text-zinc-100 transition-opacity duration-500"
+                      :class="shouldAnimate ? 'opacity-100' : 'opacity-0'">My</span>
+                    <span class="relative inline-block ml-3 transition-all duration-500 delay-100"
+                      :class="shouldAnimate ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2'">
                         <span class="bg-gradient-to-r from-green-700 via-green-500 to-green-400 bg-clip-text text-transparent transition-all duration-300 hover:bg-[length:200%_100%] bg-[length:100%_100%] bg-[position:0%] hover:bg-[position:100%]">
                             Tech Stack
                         </span>
                     </span>
                 </h2>
-                <p class="max-w-[680px] mt-6 text-lg opacity-0 text-white/70 animate-fade-in md:text-xl" style="animation-delay: 600ms;">
+                <p class="max-w-[680px] mt-6 text-lg text-white/70 md:text-xl transition-all duration-700 delay-200"
+                  :class="shouldAnimate ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'">
                     These are the technologies I have experience with.
                 </p>
             </header>
@@ -22,8 +25,9 @@
                     <a :href="tech.url" target="_blank" rel="noopener noreferrer" 
                        class="group flex p-4 transition-all duration-500 rounded-xl border border-white/10 
                               hover:border-emerald-500/20 bg-white/[0.02] hover:bg-emerald-500/[0.02] hover:-translate-y-1.5
-                              focus:outline-none focus:ring-2 focus:ring-emerald-500/50 opacity-0 animate-slide-up"
-                       :style="{ animationDelay: `${800 + (index * 100)}ms` }"
+                              focus:outline-none focus:ring-2 focus:ring-emerald-500/50"
+                       :class="shouldAnimate ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'"
+                       :style="{ transitionDelay: hasAnimated ? '0ms' : `${100 + (index * 50)}ms` }"
                        @mousemove="handleMouseMove($event, index)"
                        @mouseleave="handleMouseLeave(index)">
                         
@@ -36,7 +40,7 @@
                                      shadow-[0_0_0_1px_rgba(255,255,255,0.1)] group-hover:shadow-[0_0_0_1.5px_rgba(16,185,129,0.2)]
                                      group-hover:scale-110" 
                               :class="getIconBackgroundClass(tech.color)">
-                            <Icon v-if="isVisible" 
+                            <Icon v-if="shouldAnimate" 
                                   :name="tech.icon"
                                   class="w-6 h-6 transition-all duration-500 group-hover:scale-110"
                                   :style="{ color: tech.color }" 
@@ -85,8 +89,8 @@ if (!techStack.value) {
     })
 }
 
-const sectionRef = ref<HTMLElement | null>(null)
-const isVisible = useElementVisibility(sectionRef, { threshold: 0.2 })
+// Use one-time animation composable
+const { target: sectionRef, shouldAnimate, hasAnimated } = useAnimateOnce({ threshold: 0.2 })
 
 // Convert hex color to tailwind-compatible background classes to avoid hydration mismatch
 function getIconBackgroundClass(hexColor: string): string {
@@ -112,55 +116,12 @@ function getIconBackgroundClass(hexColor: string): string {
 </script>
 
 <style scoped>
-@keyframes fadeIn {
-    0% {
-        opacity: 0.001;
-        transform: translateY(10px);
-    }
-
-    100% {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-@keyframes slideUp {
-    0% {
-        opacity: 0.001;
-        transform: translateY(20px);
-    }
-
-    100% {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-.animate-fade-in {
-    animation: fadeIn 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
-    will-change: transform, opacity;
-    animation-play-state: paused;
-}
-
-.animate-slide-up {
-    animation: slideUp 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
-    will-change: transform, opacity;
-    animation-play-state: paused;
-}
-
-/* Control animations when section is visible */
-.section-visible .animate-fade-in,
-.section-visible .animate-slide-up {
-    animation-play-state: running;
-}
-
 /* Prevent animation on reduced motion preference */
 @media (prefers-reduced-motion: reduce) {
-    .animate-fade-in,
-    .animate-slide-up {
-        animation: none;
-        opacity: 1;
-        transform: none;
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
     }
 }
 </style>

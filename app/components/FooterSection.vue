@@ -2,7 +2,7 @@
   <footer 
     class="relative px-4 py-12 overflow-hidden sm:px-6 lg:px-8"
     ref="sectionRef"
-    :class="{ 'section-visible': isVisible }"
+    :class="{ 'section-visible': shouldAnimate }"
   >
     <!-- Background Elements -->
     <div class="absolute inset-0 opacity-15">
@@ -11,17 +11,19 @@
         :key="index"
         :name="icon.name"
         :class="[
-          'absolute text-green-400 w-14 h-14 opacity-0 animate-fade-in',
-          icon.position
+          'absolute text-green-400 w-14 h-14 transition-opacity duration-700',
+          icon.position,
+          shouldAnimate ? 'opacity-100' : 'opacity-0'
         ]"
-        :style="{ animationDelay: `${200 + (index * 150)}ms` }"
+        :style="{ transitionDelay: hasAnimated ? '0ms' : `${100 + (index * 50)}ms` }"
       />
     </div>
 
     <!-- Content -->
     <div class="relative w-10/12 md:w-8/12 mx-auto max-w-[110rem] text-center">
       <!-- Main Content -->
-      <h2 class="mb-12 text-3xl font-bold tracking-wide opacity-0 sm:text-4xl md:text-6xl lg:text-7xl font-exo animate-fade-in" style="animation-delay: 200ms;">
+      <h2 class="mb-12 text-3xl font-bold tracking-wide sm:text-4xl md:text-6xl lg:text-7xl font-exo transition-opacity duration-500"
+        :class="shouldAnimate ? 'opacity-100' : 'opacity-0'">
         Let's
         <span class="relative inline-block group">
           <span class="bg-gradient-to-r from-green-700 via-green-500 to-green-400 bg-clip-text text-transparent transition-all duration-300 group-hover:bg-[length:200%_100%] bg-[length:100%_100%] bg-[position:0%] hover:bg-[position:100%]">
@@ -30,15 +32,16 @@
         </span>
       </h2>
 
-      <p class="mb-12 text-white/70 max-w-[75ch] mx-auto tracking-wide text-lg opacity-0 animate-fade-in" style="animation-delay: 400ms;">
+      <p class="mb-12 text-white/70 max-w-[75ch] mx-auto tracking-wide text-lg transition-all duration-700 delay-100"
+        :class="shouldAnimate ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'">
         I am always open to new opportunities and collaborations. Whether you have a question, 
         a project proposal, or just want to say hello, feel free to get in touch.
       </p>
 
       <!-- Contact Button -->
       <button 
-        class="relative inline-flex h-10 sm:h-12 w-[180px] sm:w-[210px] overflow-hidden rounded-lg p-[1px] focus:outline-none focus:ring-2 focus:ring-emerald-400/50 focus:ring-offset-2 focus:ring-offset-black group opacity-0 animate-fade-in"
-        style="animation-delay: 600ms;"
+        class="relative inline-flex h-10 sm:h-12 w-[180px] sm:w-[210px] overflow-hidden rounded-lg p-[1px] focus:outline-none focus:ring-2 focus:ring-emerald-400/50 focus:ring-offset-2 focus:ring-offset-black group transition-all duration-700 delay-200"
+        :class="isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'"
         @click="copyEmail"
         data-umami-event="Copy Email"
         @mousemove="handleMouseMove"
@@ -88,8 +91,9 @@
           external
           target="_blank"
           rel="noopener noreferrer"
-          class="flex items-center justify-center w-10 h-10 transition-all duration-300 rounded-full opacity-0 text-white/40 hover:text-white focus:outline-none focus:ring-2 focus:ring-emerald-400/50 animate-fade-in hover:-translate-y-1"
-          :style="{ animationDelay: `${800 + (index * 100)}ms` }"
+          class="flex items-center justify-center w-10 h-10 transition-all duration-300 rounded-full text-white/40 hover:text-white focus:outline-none focus:ring-2 focus:ring-emerald-400/50 hover:-translate-y-1"
+          :class="shouldAnimate ? 'opacity-100' : 'opacity-0'"
+          :style="{ transitionDelay: hasAnimated ? '0ms' : `${300 + (index * 50)}ms` }"
           :data-umami-event="`Visit ${link.name}`"
           :aria-label="`Visit my ${link.name} profile`"
         >
@@ -99,7 +103,8 @@
       </div>
 
       <!-- Copyright -->
-      <div class="mt-12 text-sm opacity-0 text-white/40 animate-fade-in" style="animation-delay: 1200ms;">
+      <div class="mt-12 text-sm text-white/40 transition-opacity duration-700 delay-500"
+        :class="shouldAnimate ? 'opacity-100' : 'opacity-0'">
         © {{ new Date().getFullYear() }} Built with 
         <span class="text-red-400" aria-hidden="true">❤️</span><span class="sr-only">love</span> by Leon Kohlhaussen
       </div>
@@ -129,36 +134,16 @@ const socialLinks = [
   { name: 'LinkedIn', url: 'https://www.linkedin.com/in/leon-kohlhau%C3%9Fen/', icon: 'simple-icons:linkedin' },
 ]
 
-const sectionRef = ref<HTMLElement | null>(null)
-const isVisible = useElementVisibility(sectionRef, { threshold: 0.2 })
+// Use one-time animation composable
+const { target: sectionRef, shouldAnimate, hasAnimated } = useAnimateOnce({ threshold: 0.2 })
 </script>
 
 <style scoped>
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.animate-fade-in {
-  animation: fadeIn 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) forwards paused;
-  will-change: transform, opacity;
-}
-
-.section-visible .animate-fade-in {
-  animation-play-state: running;
-}
-
 @media (prefers-reduced-motion: reduce) {
-  .animate-fade-in {
-    animation: none;
-    opacity: 1;
-    transform: none;
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }
 </style>
