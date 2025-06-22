@@ -85,8 +85,6 @@ export default defineNuxtConfig({
           "https://*.cloudflare.com",
           "https://static.cloudflareinsights.com",
           process.env.NUXT_PUBLIC_UMAMI_URL || '',
-          "'unsafe-inline'",
-          "'unsafe-eval'",
         ],
         "connect-src": [
           "'self'",
