@@ -78,16 +78,23 @@ export default defineNuxtConfig({
     nonce: true,
     headers: {
       contentSecurityPolicy: {
-        'img-src': ["'self'", 'data:', 'blob:', 'https:'],
-        'script-src': [
+        // ‼ no 'strict-dynamic'
+        "script-src": [
           "'self'",
           "'nonce-{{nonce}}'",
-          "'strict-dynamic'",
-          'https://*.cloudflare.com',
-          'https://static.cloudflareinsights.com',
-          process.env.NUXT_PUBLIC_UMAMI_URL || ''
+          "https://*.cloudflare.com",
+          "https://static.cloudflareinsights.com",
+          process.env.NUXT_PUBLIC_UMAMI_URL || '',
+          "'unsafe-inline'",
+          "'unsafe-eval'",
         ],
-      },
-    },
-  },
+        "connect-src": [
+          "'self'",
+          "https://cloudflareinsights.com",
+          process.env.NUXT_PUBLIC_UMAMI_URL || '',
+        ],
+      }
+    }
+  }
+
 });
