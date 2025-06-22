@@ -61,7 +61,7 @@
                         </span>
                         
                         <!-- External Link Icon -->
-                        <Icon v-if="isVisible" 
+                        <Icon v-if="shouldAnimate" 
                               name="lucide:external-link" 
                               class="w-4 h-4 ml-auto text-white/30 opacity-0 transition-all duration-300 
                                      group-hover:opacity-100 group-hover:translate-x-0.5 group-hover:text-emerald-400"

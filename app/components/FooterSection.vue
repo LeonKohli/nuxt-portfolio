@@ -41,7 +41,7 @@
       <!-- Contact Button -->
       <button 
         class="relative inline-flex h-10 sm:h-12 w-[180px] sm:w-[210px] overflow-hidden rounded-lg p-[1px] focus:outline-none focus:ring-2 focus:ring-emerald-400/50 focus:ring-offset-2 focus:ring-offset-black group transition-all duration-700 delay-200"
-        :class="isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'"
+        :class="shouldAnimate ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'"
         @click="copyEmail"
         data-umami-event="Copy Email"
         @mousemove="handleMouseMove"
