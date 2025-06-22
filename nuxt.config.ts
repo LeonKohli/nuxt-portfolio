@@ -71,5 +71,16 @@ export default defineNuxtConfig({
         'Bicycle Touring'
       ]
     }
+  },
+  
+  // Basic security configuration
+  security: {
+    headers: {
+      contentSecurityPolicy: {
+        'img-src': ["'self'", "data:", "https:"],
+        'script-src': ["'self'", "'unsafe-inline'", "'unsafe-eval'"], // Simplified for compatibility
+        'connect-src': ["'self'", "https:"] // Allow all HTTPS connections
+      }
+    }
   }
 });
