@@ -73,13 +73,15 @@ export default defineNuxtConfig({
     }
   },
   
-  // Basic security configuration
+  // Basic security configuration - permissive for compatibility
   security: {
     headers: {
       contentSecurityPolicy: {
-        'img-src': ["'self'", "data:", "https:"],
-        'script-src': ["'self'", "'unsafe-inline'", "'unsafe-eval'"], // Simplified for compatibility
-        'connect-src': ["'self'", "https:"] // Allow all HTTPS connections
+        'img-src': ["'self'", "data:", "blob:", "https:"], // Added blob: for dynamic images
+        'script-src': ["'self'", "https:", "'unsafe-inline'", "'unsafe-eval'"], // Allow all HTTPS scripts
+        'connect-src': ["'self'", "https:"], // Allow all HTTPS connections
+        'font-src': ["'self'", "https:", "data:"],
+        'style-src': ["'self'", "https:", "'unsafe-inline'"]
       }
     }
   }
