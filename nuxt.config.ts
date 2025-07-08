@@ -73,49 +73,10 @@ export default defineNuxtConfig({
     }
   },
   
-  // Basic security configuration - permissive for compatibility
+  // Security configuration with CSP disabled
   security: {
-    nonce: true,
     headers: {
-      contentSecurityPolicy: {
-        "script-src": [
-          "'self'",
-          "'nonce-{{nonce}}'",
-          "https://*.cloudflare.com",
-          "https://static.cloudflareinsights.com",
-          "https://um.web.leonkohli.de",
-          process.env.NUXT_PUBLIC_UMAMI_URL || '',
-        ],
-        "connect-src": [
-          "'self'",
-          "https://cloudflareinsights.com",
-          "https://um.web.leonkohli.de",
-          process.env.NUXT_PUBLIC_UMAMI_URL || '',
-        ],
-        "img-src": [
-          "'self'",
-          "data:",
-          "https:",
-        ],
-        "font-src": [
-          "'self'",
-          "https:",
-          "data:",
-        ],
-        "style-src": [
-          "'self'",
-          "'unsafe-inline'",
-        ],
-        "frame-ancestors": [
-          "'self'",
-        ],
-        "base-uri": [
-          "'self'",
-        ],
-        "form-action": [
-          "'self'",
-        ],
-      }
+      contentSecurityPolicy: false
     }
   }
 
