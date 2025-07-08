@@ -104,7 +104,6 @@ export default defineNuxtConfig({
         ],
         "style-src": [
           "'self'",
-          "'nonce-{{nonce}}'",
           "'unsafe-inline'",
         ],
         "frame-ancestors": [
