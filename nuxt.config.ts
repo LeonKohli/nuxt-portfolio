@@ -78,18 +78,43 @@ export default defineNuxtConfig({
     nonce: true,
     headers: {
       contentSecurityPolicy: {
-        // ‼ no 'strict-dynamic'
         "script-src": [
           "'self'",
           "'nonce-{{nonce}}'",
           "https://*.cloudflare.com",
           "https://static.cloudflareinsights.com",
+          "https://um.web.leonkohli.de",
           process.env.NUXT_PUBLIC_UMAMI_URL || '',
         ],
         "connect-src": [
           "'self'",
           "https://cloudflareinsights.com",
+          "https://um.web.leonkohli.de",
           process.env.NUXT_PUBLIC_UMAMI_URL || '',
+        ],
+        "img-src": [
+          "'self'",
+          "data:",
+          "https:",
+        ],
+        "font-src": [
+          "'self'",
+          "https:",
+          "data:",
+        ],
+        "style-src": [
+          "'self'",
+          "'nonce-{{nonce}}'",
+          "'unsafe-inline'",
+        ],
+        "frame-ancestors": [
+          "'self'",
+        ],
+        "base-uri": [
+          "'self'",
+        ],
+        "form-action": [
+          "'self'",
         ],
       }
     }
