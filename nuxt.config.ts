@@ -30,13 +30,22 @@ export default defineNuxtConfig({
       htmlAttrs: {
         lang: 'en'
       },
-      script: process.env.NODE_ENV === 'production' ? [
+      script: [
         {
-          src: process.env.NUXT_PUBLIC_UMAMI_URL,
-          defer: true,
-          'data-website-id': process.env.NUXT_PUBLIC_UMAMI_WEBSITE_ID
-        }
-      ] : []
+          src: 'https://webry.leonkohli.de/api/script.js',
+          'data-site-id': '3',
+          defer: true
+        },
+        ...(process.env.NODE_ENV === 'production'
+          ? [
+              {
+                src: process.env.NUXT_PUBLIC_UMAMI_URL,
+                defer: true,
+                'data-website-id': process.env.NUXT_PUBLIC_UMAMI_WEBSITE_ID
+              }
+            ]
+          : [])
+      ]
     }
   },
   content: {
