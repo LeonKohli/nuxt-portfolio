@@ -1,0 +1,24 @@
+# VCS
+.git
+.gitignore
+
+# Local dev/build artifacts
+node_modules
+.nuxt
+.output
+.data
+build.log
+
+# OS/editor
+.DS_Store
+.cursor
+
+# Env files (provide at runtime via --env-file or -e)
+.env
+.env.*
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+bun-debug.log*
