@@ -11,7 +11,10 @@ RUN bun install --frozen-lockfile --ignore-scripts
 # Copy the entire project
 COPY . .
 
-# Build without --bun flag to avoid potential memory issues
+# use bun preset for nitro
+ENV NITRO_PRESET=bun
+
+# Build with optimizations for limited resources
 RUN bun run build
 
 # copy production dependencies and source code into final image
@@ -23,4 +26,4 @@ COPY --from=build /app/.output /app
 
 # run the app
 EXPOSE 3000/tcp
-ENTRYPOINT [ "bun", "--bun", "run", "/app/server/index.mjs" ]
+ENTRYPOINT [ "bun", "run", "/app/server/index.mjs" ]
