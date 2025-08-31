@@ -5,13 +5,14 @@ WORKDIR /app
 
 COPY package.json bun.lock ./
 
-# use ignore-scripts to avoid builting node modules like better-sqlite3
+# use ignore-scripts to avoid building node modules like better-sqlite3
 RUN bun install --frozen-lockfile --ignore-scripts
 
 # Copy the entire project
 COPY . .
 
-RUN bun --bun run build
+# Build without --bun flag to avoid potential memory issues
+RUN bun run build
 
 # copy production dependencies and source code into final image
 FROM oven/bun:1 AS production
