@@ -1,0 +1,54 @@
+name: Create Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      packages: write
+      
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Generate changelog
+        id: changelog
+        run: |
+          echo "## What's Changed" > CHANGELOG.md
+          git log --pretty=format:"* %s (%h)" $(git describe --tags --abbrev=0 HEAD^)..HEAD >> CHANGELOG.md
+          echo "" >> CHANGELOG.md
+          echo "## Docker Image" >> CHANGELOG.md
+          echo "Pull the Docker image for this release:" >> CHANGELOG.md
+          echo '```bash' >> CHANGELOG.md
+          echo "docker pull ghcr.io/${{ github.repository }}:${GITHUB_REF#refs/tags/}" >> CHANGELOG.md
+          echo '```' >> CHANGELOG.md
+          echo "" >> CHANGELOG.md
+          echo "Or use Docker Compose:" >> CHANGELOG.md
+          echo '```yaml' >> CHANGELOG.md
+          echo "services:" >> CHANGELOG.md
+          echo "  app:" >> CHANGELOG.md
+          echo "    image: ghcr.io/${{ github.repository }}:${GITHUB_REF#refs/tags/}" >> CHANGELOG.md
+          echo "    ports:" >> CHANGELOG.md
+          echo "      - '3000:3000'" >> CHANGELOG.md
+          echo '```' >> CHANGELOG.md
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          body_path: CHANGELOG.md
+          draft: false
+          prerelease: false
+          generate_release_notes: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
