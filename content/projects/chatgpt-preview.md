@@ -1,5 +1,5 @@
 ---
-id: chatgpt-preview
+slug: chatgpt-preview
 sort: 4
 title: ChatGPT HTML Web View
 subtitle: ChatGPT Browser Extension

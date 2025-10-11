@@ -1,5 +1,5 @@
 ---
-id: markdown-editor
+slug: markdown-editor
 sort: 10
 title: Markdown Editor
 subtitle: Modern Markdown Editor with Live Preview

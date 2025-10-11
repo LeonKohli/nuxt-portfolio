@@ -198,9 +198,9 @@
       <div class="grid grid-cols-1 gap-8 mb-16 md:grid-cols-3">
         <article class="space-y-12 md:col-span-2">
           <!-- Markdown Content -->
-          <ContentRenderer 
-            :value="project" 
-            class="project-content" 
+          <ContentRenderer
+            :value="project"
+            class="prose prose-lg prose-invert max-w-none"
           >
             <!-- Empty slot when no content is available -->
             <template #empty>
@@ -245,11 +245,11 @@
               <ul>
                 <li
                   v-for="relatedProject in relatedProjects"
-                  :key="relatedProject.id"
+                  :key="relatedProject.slug"
                   class="block group"
                 >
                   <NuxtLink
-                    :to="`/projects/${relatedProject.id}`"
+                    :to="`/projects/${relatedProject.slug}`"
                     class="flex items-start gap-3 p-3 transition-colors rounded-lg hover:bg-white/5"
                   >
                     <div class="w-12 h-12 overflow-hidden rounded-lg shrink-0">
@@ -280,7 +280,7 @@
       <nav v-if="previousProject || nextProject" class="grid grid-cols-1 gap-4 pt-8 border-t border-white/10 md:grid-cols-2">
         <NuxtLink
           v-if="previousProject"
-          :to="`/projects/${previousProject.id}`"
+          :to="`/projects/${previousProject.slug}`"
           class="flex items-center gap-4 p-4 transition-colors group rounded-xl bg-white/5 hover:bg-white/10 project-nav-link"
         >
           <Icon
@@ -297,7 +297,7 @@
 
         <NuxtLink
           v-if="nextProject"
-          :to="`/projects/${nextProject.id}`"
+          :to="`/projects/${nextProject.slug}`"
           class="flex items-center justify-end gap-4 p-4 transition-colors group rounded-xl bg-white/5 hover:bg-white/10 project-nav-link"
         >
           <div class="text-right">
@@ -375,19 +375,18 @@ const { data: project, pending } = await useAsyncData(
   `project-${route.params.id}`,
   async () => {
     try {
-      // Get the ID directly from the route
-      const projectId = route.params.id as string;
-      
-      // Use the content module to fetch the project
-      const result = await queryContent<Project>('projects')
-        .where({ id: projectId })
-        .findOne();
-      
+      // Get the slug from the route parameter
+      const projectSlug = route.params.id as string;
+
+      // Query the project by slug
+      const result = await queryCollection<Project>('projects')
+        .where('slug', '=', projectSlug)
+        .first();
+
       if (!result) {
-        console.error(`Project not found: ${projectId}`);
         return null;
       }
-      
+
       return result;
     } catch (err) {
       console.error('Error fetching project:', err);
@@ -425,10 +424,10 @@ watchEffect(() => {
 const { data: allProjects } = await useAsyncData<Project[]>(
   'all-projects',
   async () => {
-    const projects = await queryContent<Project>('projects')
-      .sort({ sort: 1 })
-      .find();
-    
+    const projects = await queryCollection<Project>('projects')
+      .order('sort', 'ASC')
+      .all();
+
     return projects;
   },
   {
@@ -440,7 +439,7 @@ const { data: allProjects } = await useAsyncData<Project[]>(
 const projectIndex = computed(() => {
   if (!project.value || !allProjects.value)
     return -1;
-  return allProjects.value.findIndex((p) => p.id === project.value?.id);
+  return allProjects.value.findIndex((p) => p.slug === project.value?.slug);
 });
 
 const previousProject = computed(() => {
@@ -461,7 +460,7 @@ const relatedProjects = computed(() => {
     return [];
 
   // Filter out the current project
-  const otherProjects = allProjects.value.filter((p) => p.id !== project.value?.id);
+  const otherProjects = allProjects.value.filter((p) => p.slug !== project.value?.slug);
 
   // Calculate a score for each project based on similarities
   const projectsWithScores = otherProjects.map((p) => {
@@ -529,12 +528,39 @@ nav.main-navbar {
   transform: translateY(-2px);
 }
 
+/* Prose customizations for dark theme */
+.prose-invert {
+  --tw-prose-body: rgb(255 255 255 / 0.8);
+  --tw-prose-headings: rgb(255 255 255 / 0.95);
+  --tw-prose-links: rgb(52 211 153);
+  --tw-prose-bold: rgb(255 255 255 / 0.9);
+  --tw-prose-code: rgb(52 211 153);
+  --tw-prose-pre-bg: rgb(0 0 0 / 0.5);
+}
+
+.prose-invert :where(a):not(:where([class~="not-prose"] *)) {
+  text-decoration: underline;
+  text-decoration-color: rgb(52 211 153 / 0.3);
+  transition: all 0.2s ease;
+}
+
+.prose-invert :where(a):not(:where([class~="not-prose"] *)):hover {
+  text-decoration-color: rgb(52 211 153);
+  color: rgb(16 185 129);
+}
+
+.prose-invert :where(img):not(:where([class~="not-prose"] *)) {
+  border-radius: 0.75rem;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+
 /* Responsive adjustments */
 @media (prefers-reduced-motion: reduce) {
   .page-transition {
     animation: none;
   }
-  
+
   .project-nav-link:hover {
     transform: none;
   }

@@ -1,5 +1,5 @@
 ---
-id: moses
+slug: moses
 sort: 5
 title: MOSES
 subtitle: Outlook VBA Module

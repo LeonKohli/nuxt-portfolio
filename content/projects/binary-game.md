@@ -1,5 +1,5 @@
 ---
-id: binary-game
+slug: binary-game
 sort: 8
 title: Binary Game
 subtitle: Interactive Binary Learning Tool

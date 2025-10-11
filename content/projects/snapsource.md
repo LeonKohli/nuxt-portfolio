@@ -1,5 +1,5 @@
 ---
-id: copy4ai
+slug: copy4ai
 sort: 3
 title: Copy4AI
 subtitle: Code Extension for LLM Integration

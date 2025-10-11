@@ -1,5 +1,5 @@
 ---
-id: azubiheft
+slug: azubiheft
 sort: 7
 title: Azubiheft API
 subtitle: Python Wrapper for Training Report Management

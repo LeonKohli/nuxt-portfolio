@@ -67,11 +67,11 @@
 </template>
 
 <script setup lang="ts">
-// Fetch projects using Nuxt Content with proper typing
+// Fetch projects using Nuxt Content v3 API with proper schema
 const { data: projects } = await useAsyncData<Project[]>('projects', () =>
-  queryContent<Project>('projects')
-    .sort({ sort: 1 })
-    .find()
+  queryCollection<Project>('projects')
+    .order('sort', 'ASC')
+    .all()
 )
 
 // Computed property for sorted projects with fallback to empty array

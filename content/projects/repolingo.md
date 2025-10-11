@@ -1,5 +1,5 @@
 ---
-id: repolingo
+slug: repolingo
 sort: 4
 title: RepoLingo
 subtitle: GitHub to LLM Data Converter

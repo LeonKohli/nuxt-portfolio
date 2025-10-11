@@ -80,12 +80,15 @@
 // Use the spotlight effect composable - allocate enough for tech stack items
 const { spotlightStyles, handleMouseMove, handleMouseLeave } = useSpotlightEffect(20)
 
-const { data: techStack } = await useAsyncData('tech-stack', () => queryContent('tech-stack').findOne())
+const { data: techStack, error } = await useAsyncData('tech-stack', () =>
+  queryCollection('techStack').first()
+)
 
-if (!techStack.value) {
+if (error.value || !techStack.value?.technologies) {
     throw createError({
         statusCode: 500,
-        statusMessage: 'Failed to load tech stack data'
+        statusMessage: 'Failed to load tech stack data',
+        cause: error.value
     })
 }
 

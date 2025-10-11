@@ -13,18 +13,18 @@
         <div class="w-4 shrink-0 md:hidden" aria-hidden="true" />
         
         <ClientOnly>
-          <article 
-            v-for="(project, index) in projects" 
-            :key="project.id"
-            class="shrink-0 snap-center w-[min(85vw,380px)] md:w-[384px] md:snap-start 
+          <article
+            v-for="(project, index) in projects"
+            :key="project.slug"
+            class="shrink-0 snap-center w-[min(85vw,380px)] md:w-[384px] md:snap-start
                    first:pl-0 last:pr-4 md:last:pr-0 project-transition"
             :class="getCardClasses(index)"
             :style="getCardStyles(index)"
-            @mouseenter="handleProjectHover(project.id, true)"
-            @mouseleave="handleProjectHover(project.id, false)"
+            @mouseenter="handleProjectHover(project.slug, true)"
+            @mouseleave="handleProjectHover(project.slug, false)"
           >
-            <NuxtLink 
-              :to="`/projects/${project.id}`"
+            <NuxtLink
+              :to="`/projects/${project.slug}`"
               class="rounded-[24px] h-[24rem] sm:h-[26rem] md:h-[32rem] w-full md:w-[384px] group 
                      overflow-hidden flex flex-col items-start justify-start relative z-10 
                      cursor-pointer project-transition hover:shadow-[0_8px_30px_rgba(0,0,0,0.12)] 
@@ -262,7 +262,7 @@ const handleScroll = useThrottleFn(() => {
 onMounted(() => {
   // Set initial visibility
   props.projects.forEach(project => {
-    elementVisibility[project.id] = true
+    elementVisibility[project.slug] = true
   })
   
   // Initialize scroll container and state

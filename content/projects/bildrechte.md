@@ -1,5 +1,5 @@
 ---
-id: bildrechte
+slug: bildrechte
 sort: 6
 title: Bildrechte
 subtitle: Image Rights Education

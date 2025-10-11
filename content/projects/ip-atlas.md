@@ -1,5 +1,5 @@
 ---
-id: ip-atlas
+slug: ip-atlas
 sort: 9
 title: IP-Atlas
 subtitle: IP Address Management Tool 

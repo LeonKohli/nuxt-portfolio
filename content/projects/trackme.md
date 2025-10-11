@@ -1,5 +1,5 @@
 ---
-id: trackme
+slug: trackme
 sort: 2
 status: active
 title: TrackMe

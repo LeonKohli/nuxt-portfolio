@@ -1,5 +1,5 @@
 ---
-id: tebiplay
+slug: tebiplay
 sort: 6
 title: TebiPlay
 subtitle: LAN Party Management System

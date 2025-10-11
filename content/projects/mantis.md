@@ -1,5 +1,5 @@
 ---
-id: mantis
+slug: mantis
 sort: 1
 status: in-progress
 title: Gottesanbeterin gesucht
