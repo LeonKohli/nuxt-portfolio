@@ -1,3 +1,5 @@
+import tailwindcss from '@tailwindcss/vite'
+
 export default defineNuxtConfig({
   future: {
     compatibilityVersion: 4,
@@ -8,7 +10,6 @@ export default defineNuxtConfig({
   modules: [
     '@nuxt/icon',
     '@nuxt/fonts',
-    '@nuxtjs/tailwindcss',
     '@nuxtjs/color-mode',
     '@nuxt/image',
     'shadcn-nuxt',
@@ -17,6 +18,13 @@ export default defineNuxtConfig({
     '@nuxtjs/seo',
     'nuxt-security'
   ],
+
+  vite: {
+    plugins: [tailwindcss()],
+  },
+
+  css: ['@/assets/css/tailwind.css'],
+
   shadcn: {
     prefix: '',
     componentDir: './app/components/ui'

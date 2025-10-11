@@ -1,6 +1,77 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+@plugin "tailwindcss-animate";
+
+@theme {
+  --font-family-exo: "Exo";
+
+  --color-border: hsl(var(--border));
+  --color-input: hsl(var(--input));
+  --color-ring: hsl(var(--ring));
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+
+  --color-destructive: hsl(var(--destructive));
+  --color-destructive-foreground: hsl(var(--destructive-foreground));
+
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+
+  --color-popover: hsl(var(--popover));
+  --color-popover-foreground: hsl(var(--popover-foreground));
+
+  --color-card: hsl(var(--card));
+  --color-card-foreground: hsl(var(--card-foreground));
+
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-lg: var(--radius);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-sm: calc(var(--radius) - 4px);
+
+  --animate-accordion-down: accordion-down 0.2s ease-out;
+  --animate-accordion-up: accordion-up 0.2s ease-out;
+  --animate-collapsible-down: collapsible-down 0.2s ease-in-out;
+  --animate-collapsible-up: collapsible-up 0.2s ease-in-out;
+}
+
+@keyframes accordion-down {
+  from { height: 0; }
+  to { height: var(--radix-accordion-content-height); }
+}
+
+@keyframes accordion-up {
+  from { height: var(--radix-accordion-content-height); }
+  to { height: 0; }
+}
+
+@keyframes collapsible-down {
+  from { height: 0; }
+  to { height: var(--radix-collapsible-content-height); }
+}
+
+@keyframes collapsible-up {
+  from { height: var(--radix-collapsible-content-height); }
+  to { height: 0; }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slide-in-from-bottom {
+  from { transform: translateY(16px); }
+  to { transform: translateY(0); }
+}
 
 @layer base {
   :root {
@@ -90,70 +161,190 @@
 
 @layer base {
   * {
-    @apply border-border;
+    border-color: hsl(var(--border));
   }
   body {
-    @apply bg-background text-foreground;
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
   }
 }
 
+/* Component-specific styling for project content - uses prose plugin */
+/* NOTE: Tailwind v4 is stricter about @apply with typography modifiers,
+   so we'll apply the prose classes directly in the HTML instead */
 .project-content {
-  @apply prose prose-invert max-w-none text-white/80;
-  
+  /* Base prose styles applied via HTML classes: prose prose-invert max-w-none */
+
+  /* Custom styling that extends prose */
+  color: rgba(255, 255, 255, 0.8);
+
   /* Headings */
-  @apply prose-headings:text-white prose-headings:font-exo prose-headings:font-bold prose-headings:mb-4;
-  @apply prose-h1:text-4xl prose-h1:bg-clip-text prose-h1:text-transparent prose-h1:bg-gradient-to-r prose-h1:from-white prose-h1:via-white prose-h1:to-white/80;
-  @apply prose-h2:text-2xl prose-h2:mt-8 prose-h2:mb-4 prose-h2:text-white/90 prose-h2:border-b prose-h2:border-white/10 prose-h2:pb-2;
-  @apply prose-h3:text-xl prose-h3:mt-6 prose-h3:text-white/90 prose-h3:font-medium;
-  @apply prose-h4:text-lg prose-h4:mt-4 prose-h4:text-emerald-400 prose-h4:font-medium;
-  
-  /* Paragraphs and text */
-  @apply prose-p:text-white/80 prose-p:leading-relaxed prose-p:mb-4 prose-p:text-lg;
-  @apply prose-strong:text-white prose-strong:font-medium;
-  @apply prose-em:text-white/70 prose-em:italic;
-  
-  /* Links */
-  @apply prose-a:text-emerald-400 prose-a:no-underline prose-a:transition-colors hover:prose-a:text-emerald-300;
-  @apply hover:prose-a:translate-y-[-1px] prose-a:inline-block prose-a:transition-transform;
-  
-  /* Lists */
-  @apply prose-ul:list-disc prose-ul:pl-5 prose-ul:my-4 prose-ul:text-white/80;
-  @apply prose-ol:list-decimal prose-ol:pl-5 prose-ol:my-4 prose-ol:text-white/80;
-  @apply prose-li:my-1.5 prose-li:text-lg;
-  @apply prose-li:marker:text-emerald-400;
-  
-  /* Fix for numbered list alignment */
-  & ol {
-    @apply pl-5;
-    
-    & li {
-      @apply pl-1.5 ml-4; /* Added ml-4 to align the text with bulleted lists */
-      
-      &::marker {
-        @apply text-emerald-400;
-      }
-    }
+  & :is(h1, h2, h3, h4, h5, h6) {
+    color: white;
+    font-family: 'Exo', sans-serif;
+    font-weight: bold;
+    margin-bottom: 1rem;
   }
-  
+
+  & h1 {
+    font-size: 2.25rem;
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    background-image: linear-gradient(to right, white, white, rgba(255, 255, 255, 0.8));
+  }
+
+  & h2 {
+    font-size: 1.5rem;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    color: rgba(255, 255, 255, 0.9);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 0.5rem;
+  }
+
+  & h3 {
+    font-size: 1.25rem;
+    margin-top: 1.5rem;
+    color: rgba(255, 255, 255, 0.9);
+    font-weight: 500;
+  }
+
+  & h4 {
+    font-size: 1.125rem;
+    margin-top: 1rem;
+    color: rgb(52, 211, 153);
+    font-weight: 500;
+  }
+
+  /* Paragraphs and text */
+  & p {
+    color: rgba(255, 255, 255, 0.8);
+    line-height: 1.625;
+    margin-bottom: 1rem;
+    font-size: 1.125rem;
+  }
+
+  & strong {
+    color: white;
+    font-weight: 500;
+  }
+
+  & em {
+    color: rgba(255, 255, 255, 0.7);
+    font-style: italic;
+  }
+
+  /* Links */
+  & a {
+    color: rgb(52, 211, 153);
+    text-decoration: none;
+    transition: color 0.2s, transform 0.2s;
+    display: inline-block;
+  }
+
+  & a:hover {
+    color: rgb(110, 231, 183);
+    transform: translateY(-1px);
+  }
+
+  /* Lists */
+  & ul {
+    list-style-type: disc;
+    padding-left: 1.25rem;
+    margin: 1rem 0;
+    color: rgba(255, 255, 255, 0.8);
+  }
+
+  & ol {
+    list-style-type: decimal;
+    padding-left: 1.25rem;
+    margin: 1rem 0;
+    color: rgba(255, 255, 255, 0.8);
+  }
+
+  & li {
+    margin: 0.375rem 0;
+    font-size: 1.125rem;
+  }
+
+  & li::marker {
+    color: rgb(52, 211, 153);
+  }
+
+  /* Fix for numbered list alignment */
+  & ol li {
+    padding-left: 0.375rem;
+    margin-left: 1rem;
+  }
+
   /* Code blocks */
-  @apply prose-pre:bg-black/50 prose-pre:border prose-pre:border-white/10 prose-pre:rounded-xl;
-  @apply prose-pre:p-4 prose-pre:my-6 prose-pre:overflow-x-auto prose-pre:text-sm;
+  & pre {
+    background-color: rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 0.75rem;
+    padding: 1rem;
+    margin: 1.5rem 0;
+    overflow-x: auto;
+    font-size: 0.875rem;
+  }
+
   /* Tables */
-  @apply prose-table:w-full prose-table:my-6 prose-table:border-collapse;
-  @apply prose-thead:bg-white/10 prose-thead:text-white/90;
-  @apply prose-th:p-2 prose-th:text-left prose-th:font-medium prose-th:border prose-th:border-white/10;
-  @apply prose-td:p-2 prose-td:border prose-td:border-white/10 prose-td:text-white/80;
-  
+  & table {
+    width: 100%;
+    margin: 1.5rem 0;
+    border-collapse: collapse;
+  }
+
+  & thead {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.9);
+  }
+
+  & th {
+    padding: 0.5rem;
+    text-align: left;
+    font-weight: 500;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  & td {
+    padding: 0.5rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.8);
+  }
+
   /* Blockquotes */
-  @apply prose-blockquote:border-l-4 prose-blockquote:border-emerald-500/50 prose-blockquote:pl-4;
-  @apply prose-blockquote:italic prose-blockquote:text-white/70 prose-blockquote:my-6;
-  @apply prose-blockquote:bg-white/5 prose-blockquote:py-2 prose-blockquote:pr-4 prose-blockquote:rounded-r-lg;
-  
+  & blockquote {
+    border-left: 4px solid rgba(16, 185, 129, 0.5);
+    padding-left: 1rem;
+    font-style: italic;
+    color: rgba(255, 255, 255, 0.7);
+    margin: 1.5rem 0;
+    background-color: rgba(255, 255, 255, 0.05);
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    padding-right: 1rem;
+    border-radius: 0 0.5rem 0.5rem 0;
+  }
+
   /* Images */
-  @apply prose-img:rounded-xl prose-img:mx-auto prose-img:my-6 prose-img:max-w-full;
-  @apply prose-img:shadow-lg prose-img:transition-transform hover:prose-img:scale-[1.01];
-  @apply prose-img:border prose-img:border-white/10;
-  
+  & img {
+    border-radius: 0.75rem;
+    margin: 1.5rem auto;
+    max-width: 100%;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  & img:hover {
+    transform: scale(1.01);
+  }
+
   /* Horizontal rule */
-  @apply prose-hr:border-white/10 prose-hr:my-8;
+  & hr {
+    border-color: rgba(255, 255, 255, 0.1);
+    margin: 2rem 0;
+  }
 }
