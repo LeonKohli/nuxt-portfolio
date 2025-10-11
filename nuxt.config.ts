@@ -3,15 +3,9 @@ import tailwindcss from '@tailwindcss/vite'
 export default defineNuxtConfig({
   compatibilityDate: '2025-10-11',
   devtools: { enabled: true },
-
-  // Disable prerendering crawler for SSR app (prevents OOM and build hangs)
-  nitro: {
-    prerender: {
-      crawlLinks: false,
-      routes: []
-    }
-  },
-
+    nitro: {
+      preset: 'bun',
+    },
   modules: [
     '@nuxt/icon',
     '@nuxt/fonts',
@@ -62,9 +56,13 @@ export default defineNuxtConfig({
     }
   },
   content: {
-    highlight: {
-      theme: 'github-dark',
-      langs: ['python', 'bash', 'json', 'xml'],
+    build: {
+      markdown: {
+        highlight: {
+          theme: 'github-dark',
+          langs: ['python', 'bash', 'json', 'xml'],
+        }
+      }
     }
   },
   site: {
