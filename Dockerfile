@@ -1,43 +1,27 @@
-ARG BUN_IMAGE=oven/bun:1-alpine
+# use the official Bun image (debian variant for better memory management)
+FROM oven/bun:1-debian AS build
+WORKDIR /app
 
-# Base stage
-FROM $BUN_IMAGE AS base
-WORKDIR /usr/src/app
-RUN apk --no-cache add openssh g++ make python3 git wget
+COPY package.json bun.lock ./
 
-# Install dependencies
-FROM base AS install
-RUN mkdir -p /temp
-COPY package.json bun.lock /temp/
-RUN cd /temp && bun install --frozen-lockfile
+# use ignore-scripts to avoid building node modules like better-sqlite3
+RUN bun install --frozen-lockfile --ignore-scripts
 
-# Build stage
-FROM base AS prerelease
-WORKDIR /usr/src/app
-
-# Copy dependencies
-COPY --from=install /temp/node_modules node_modules
-
-# Copy source
+# Copy the entire project
 COPY . .
 
-# Build Nuxt
-ENV NODE_ENV=production
-ENV NITRO_PRESET=bun
-RUN bun run build
+# Increase Node memory limit for build (common fix for Nuxt prerenderer OOM)
+ENV NODE_OPTIONS="--max-old-space-size=4096"
 
-# Production stage
-FROM base AS release
+RUN bun --bun run build
 
-# Copy dependencies
-COPY --chown=bun:bun --from=install /temp/node_modules node_modules
+# copy production dependencies and source code into final image
+FROM oven/bun:1-debian AS production
+WORKDIR /app
 
-# Copy built output
-COPY --chown=bun:bun --from=prerelease /usr/src/app/.output .output
+# Only `.output` folder is needed from the build stage
+COPY --from=build /app/.output /app
 
-USER bun
-
-EXPOSE 3000
-
-# Start server
-ENTRYPOINT ["bun", "run", ".output/server/index.mjs"]
+# run the app
+EXPOSE 3000/tcp
+ENTRYPOINT [ "bun", "--bun", "run", "/app/server/index.mjs" ]
