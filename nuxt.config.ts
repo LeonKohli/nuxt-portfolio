@@ -93,9 +93,10 @@ export default defineNuxtConfig({
     }
   },
   
-  // Security configuration with CSP disabled and SRI enabled
+  // Security configuration with CSP and SRI disabled
+  // SRI is incompatible with external scripts (Cloudflare, Umami) that change independently
   security: {
-    sri: true,
+    sri: false,
     headers: {
       contentSecurityPolicy: false
     }
