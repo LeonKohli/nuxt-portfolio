@@ -93,8 +93,9 @@ export default defineNuxtConfig({
     }
   },
   
-  // Security configuration with CSP disabled
+  // Security configuration with CSP disabled and SRI enabled
   security: {
+    sri: true,
     headers: {
       contentSecurityPolicy: false
     }
