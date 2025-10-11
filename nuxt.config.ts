@@ -1,11 +1,7 @@
 import tailwindcss from '@tailwindcss/vite'
 
 export default defineNuxtConfig({
-  future: {
-    compatibilityVersion: 4,
-  },
-
-  compatibilityDate: '2024-12-09',
+  compatibilityDate: '2025-10-11',
   devtools: { enabled: true },
   modules: [
     '@nuxt/icon',
