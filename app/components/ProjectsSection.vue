@@ -67,11 +67,9 @@
 </template>
 
 <script setup lang="ts">
-// Fetch projects using Nuxt Content v3 API with proper schema
-const { data: projects } = await useAsyncData('projects', () =>
-  queryCollection('projects')
-    .order('sort', 'ASC')
-    .all()
+const { data: projects } = await useAsyncData(
+  'projects',
+  () => queryCollection('projects').order('sort', 'ASC').all()
 )
 
 const sortedProjects = computed(() => projects.value || [])

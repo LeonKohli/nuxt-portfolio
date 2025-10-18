@@ -138,67 +138,23 @@ const navItems: NavItem[] = [
   { label: 'Tech Stack', href: '#tech-stack' },
 ]
 
-// Show/hide navbar and update active section based on scroll
-onMounted(() => {
-  const sections = navItems.map(item => item.href.substring(1))
-  
-  // Create an intersection observer to detect which section is in view
-  const observerOptions = {
-    root: null, // viewport
-    rootMargin: '0px',
-    threshold: 0.3 // 30% of the section needs to be visible
-  }
-  
-  const sectionObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        activeSection.value = entry.target.id
-      }
-    })
-  }, observerOptions)
-  
-  // Observe all sections
-  sections.forEach(section => {
-    const element = document.getElementById(section)
-    if (element) {
-      sectionObserver.observe(element)
-    }
-  })
-  
-  // Throttle scroll events for performance
-  const handleScroll = useThrottleFn(() => {
-    if (typeof window !== 'undefined') {
-      // Show navbar after scrolling past half of the first viewport
-      isVisible.value = window.scrollY > window.innerHeight * 0.5
-      
-      // If no section is detected as active (e.g., at the very top of the page)
-      // and we're not on a project page, set the first visible section as active
-      if (!activeSection.value && !isProjectPage.value && window.scrollY > 0) {
-        for (const section of sections) {
-          const element = document.getElementById(section)
-          if (element) {
-            const rect = element.getBoundingClientRect()
-            if (rect.top <= window.innerHeight && rect.bottom >= 0) {
-              activeSection.value = section
-              break
-            }
-          }
-        }
-      }
-    }
-  }, 100) // Throttle to 100ms for smooth performance
+const sections = navItems.map(item => item.href.substring(1))
 
-  if (typeof window !== 'undefined') {
-    window.addEventListener('scroll', handleScroll, { passive: true })
-    handleScroll() // Initial check
-    
-    onUnmounted(() => {
-      window.removeEventListener('scroll', handleScroll)
-      // Disconnect the observer when component is unmounted
-      sectionObserver.disconnect()
-    })
-  }
+sections.forEach(sectionId => {
+  const el = ref(import.meta.client ? document.getElementById(sectionId) : null)
+  useIntersectionObserver(el, ([entry]) => {
+    if (entry?.isIntersecting) activeSection.value = sectionId
+  }, { threshold: 0.3 })
 })
+
+if (import.meta.client) {
+  const { height } = useWindowSize()
+  const { y } = useScroll(window)
+  const updateNavVisibility = useThrottleFn(() => {
+    isVisible.value = y.value > height.value * 0.5
+  }, 100)
+  watch(y, updateNavVisibility, { immediate: true })
+}
 
 // Smooth scroll to section using native smooth scroll behavior
 const scrollToSection = (href: string) => {

@@ -221,7 +221,6 @@ const props = defineProps<{
   isSectionVisible: boolean
 }>()
 
-// Define emits
 const emit = defineEmits<{
   scroll: [index: number]
 }>()
@@ -230,163 +229,104 @@ const cardRef = ref<HTMLElement | null>(null)
 const isVisible = useElementVisibility(cardRef)
 
 const scrollContainer = ref<HTMLElement | null>(null)
-const elementVisibility = reactive<Record<string, boolean>>({})
 const hoveredProjectId = ref<string | null>(null)
 
-// Initialize scroll state with default values
 const isAtStart = ref(true)
 const isAtEnd = ref(false)
 const showNavigation = ref(false)
 
-// Add this near the top of the script section
-const hasAnimated = ref(process.server ? true : false)
+const hasAnimated = ref(import.meta.server)
 
-// Track hover state for each project
 const handleProjectHover = (projectId: string, isHovering: boolean) => {
   hoveredProjectId.value = isHovering ? projectId : null
 }
 
-// Handle scroll events and emit current index
 const handleScroll = useThrottleFn(() => {
   if (!scrollContainer.value) return
   const container = scrollContainer.value
   const scrollLeft = container.scrollLeft
-  const itemWidth = container.clientWidth * 0.85 // 85vw for mobile
+  const itemWidth = container.clientWidth * 0.85
   const currentIndex = Math.round(scrollLeft / itemWidth)
-  
-  // Emit the current index
+
   emit('scroll', currentIndex)
-  
+
   updateScrollState()
-}, 50) // Throttle to 20fps for scroll events
+}, 50)
 
-// Initialize visibility and scroll state
+useEventListener(scrollContainer, 'scroll', handleScroll, { passive: true })
+
 onMounted(() => {
-  // Set initial visibility
-  props.projects.forEach(project => {
-    elementVisibility[project.slug] = true
+  nextTick(() => {
+    updateScrollState()
+    const el = scrollContainer.value
+    if (el) showNavigation.value = el.scrollWidth > el.clientWidth
   })
-  
-  // Initialize scroll container and state
-  if (scrollContainer.value) {
-    scrollContainer.value.addEventListener('scroll', handleScroll, { passive: true })
-    
-    // Wait for next tick to ensure DOM is ready
-    nextTick(() => {
-      updateScrollState()
-      const el = scrollContainer.value
-      if (el) showNavigation.value = el.scrollWidth > el.clientWidth
-    })
-  }
 })
 
-onUnmounted(() => {
-  if (scrollContainer.value) {
-    scrollContainer.value.removeEventListener('scroll', handleScroll)
-  }
-})
-
-// Watch for changes in projects array
 watch(() => props.projects, () => {
   nextTick(() => {
     if (scrollContainer.value) {
       updateScrollState()
-      showNavigation.value = 
+      showNavigation.value =
         scrollContainer.value.scrollWidth > scrollContainer.value.clientWidth
-      
-      // Reset scroll position when projects array changes
+
       scrollContainer.value.scrollLeft = 0
       handleScroll()
     }
   })
 }, { deep: true })
 
-// Update scroll buttons state with debounce
+const { width } = useWindowSize()
+
+const cardScrollDistance = computed(() => {
+  const cardWidth = width.value >= 768 ? 384 : Math.min(width.value * 0.85, 380)
+  const cardGap = width.value >= 768 ? 24 : 16
+  return cardWidth + cardGap
+})
+
 const updateScrollState = useDebounceFn(() => {
   if (!scrollContainer.value) return
-  
-  const container = scrollContainer.value
-  const atStart = container.scrollLeft <= 0
-  const atEnd = 
-    Math.abs(
-      container.scrollLeft + container.clientWidth - 
-      container.scrollWidth
-    ) <= 1 // Account for rounding errors
 
-  isAtStart.value = atStart
-  isAtEnd.value = atEnd
+  const container = scrollContainer.value
+  isAtStart.value = container.scrollLeft <= 0
+  isAtEnd.value = Math.abs(container.scrollLeft + container.clientWidth - container.scrollWidth) <= 1
 }, 100)
 
-// Scroll functions with enhanced smooth easing
 const scrollLeft = () => {
-  if (!scrollContainer.value) return
-  
-  // Calculate the card width plus gap for precise scrolling by exact card positions
-  const cardWidth = window.innerWidth >= 768 ? 384 : Math.min(window.innerWidth * 0.85, 380)
-  const cardGap = window.innerWidth >= 768 ? 24 : 16 // md:gap-6 (24px) or gap-4 (16px)
-  
-  // Move by exactly one card position
-  scrollContainer.value.scrollBy({
-    left: -(cardWidth + cardGap),
+  scrollContainer.value?.scrollBy({
+    left: -cardScrollDistance.value,
     behavior: 'smooth'
   })
 }
 
 const scrollRight = () => {
-  if (!scrollContainer.value) return
-  
-  // Calculate the card width plus gap for precise scrolling by exact card positions
-  const cardWidth = window.innerWidth >= 768 ? 384 : Math.min(window.innerWidth * 0.85, 380)
-  const cardGap = window.innerWidth >= 768 ? 24 : 16 // md:gap-6 (24px) or gap-4 (16px)
-  
-  // Move by exactly one card position
-  scrollContainer.value.scrollBy({
-    left: cardWidth + cardGap,
+  scrollContainer.value?.scrollBy({
+    left: cardScrollDistance.value,
     behavior: 'smooth'
   })
 }
 
-// Update the getCardClasses function
-const getCardClasses = (index: number) => {
-  // Only apply animations on client-side
-  if (process.client && !hasAnimated.value) {
-    return {
-      'opacity-0': !props.isSectionVisible,
-      'opacity-100 translate-y-0': props.isSectionVisible,
-      'translate-y-8': !props.isSectionVisible,
-      'transition-all duration-700': true,
-    }
-  }
-  // Return default visible state for server-side rendering or if already animated
-  return {
-    'opacity-100 translate-y-0': true,
-  }
-}
+const getCardClasses = (index: number) =>
+  import.meta.client && !hasAnimated.value
+    ? {
+        'opacity-0': !props.isSectionVisible,
+        'opacity-100 translate-y-0': props.isSectionVisible,
+        'translate-y-8': !props.isSectionVisible,
+        'transition-all duration-700': true,
+      }
+    : { 'opacity-100 translate-y-0': true }
 
-// Update the getCardStyles function
-const getCardStyles = (index: number) => {
-  // Only apply transition delay on client-side
-  if (process.client && !hasAnimated.value) {
-    // Calculate a staggered delay based on position
-    // Cards animate in from left to right with a slight stagger
-    const delay = `${(index * 120) + 600}ms`;
-    return {
-      transitionDelay: delay,
-      transitionTimingFunction: 'cubic-bezier(0.25, 0.1, 0.25, 1.0)' // Improved easing
-    }
-  }
-  // Return empty styles for server-side rendering or if already animated
-  return {}
-}
+const getCardStyles = (index: number) =>
+  import.meta.client && !hasAnimated.value
+    ? {
+        transitionDelay: `${(index * 120) + 600}ms`,
+        transitionTimingFunction: 'cubic-bezier(0.25, 0.1, 0.25, 1.0)'
+      }
+    : {}
 
-// Add a watcher for isSectionVisible
 watch(() => props.isSectionVisible, (newValue) => {
-  if (process.client && newValue && !hasAnimated.value) {
-    // Set hasAnimated to true after the animation duration + maximum delay
-    const maxDelay = (props.projects.length * 200) + 800 + 500 // animation delays + duration
-    setTimeout(() => {
-      hasAnimated.value = true
-    }, maxDelay)
+  if (import.meta.client && newValue && !hasAnimated.value) {
+    setTimeout(() => hasAnimated.value = true, (props.projects.length * 200) + 1300)
   }
 }, { immediate: true })
 </script>

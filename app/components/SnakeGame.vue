@@ -123,15 +123,12 @@
 </template>
 
 <script setup lang="ts">
-// Game configuration constants
 const GRID_SIZE_X = 30
 const GRID_SIZE_Y = 14
 const INITIAL_SNAKE_LENGTH = 3
-const GAME_SPEED = 150 // ms between game ticks
+const GAME_SPEED = 150
 
 const { spotlightStyle, handleMouseMove, handleMouseLeave } = useSpotlightEffect()
-
-// Game state management
 const gameCanvas = ref<HTMLElement | null>(null)
 const gameActive = ref(false)
 const gameOver = ref(false)
@@ -140,27 +137,24 @@ const score = ref(0)
 const gameGrid = ref<number[][]>(Array(GRID_SIZE_Y).fill(0).map(() => Array(GRID_SIZE_X).fill(0)))
 const snake = ref<{x: number, y: number}[]>([{ x: Math.floor(GRID_SIZE_X / 2), y: Math.floor(GRID_SIZE_Y / 2) }])
 const food = ref<{x: number, y: number}>({ x: 0, y: 0 })
-const direction = ref<string>('right')
-const nextDirection = ref<string>('right')
-const gameInterval = ref<number | null>(null)
+const direction = ref('right')
+const nextDirection = ref('right')
+let gameInterval: number | null = null
 
-// Initialize game state
+const gridSizeX = computed(() => gameGrid.value[0]?.length || GRID_SIZE_X)
+const gridSizeY = computed(() => gameGrid.value.length || GRID_SIZE_Y)
+
 const initGame = () => {
-  const currentGridSizeX = gameGrid.value[0]?.length || GRID_SIZE_X
-  const currentGridSizeY = gameGrid.value.length || GRID_SIZE_Y
-  
-  // Create initial snake in the middle of the grid
-  const startX = Math.floor(currentGridSizeX / 2)
-  const startY = Math.floor(currentGridSizeY / 2)
-  
-  snake.value = []
-  for (let i = 0; i < INITIAL_SNAKE_LENGTH; i++) {
-    snake.value.push({ x: startX - i, y: startY })
-  }
-  
+  const startX = Math.floor(gridSizeX.value / 2)
+  const startY = Math.floor(gridSizeY.value / 2)
+
+  snake.value = Array.from({ length: INITIAL_SNAKE_LENGTH }, (_, i) => ({
+    x: startX - i,
+    y: startY
+  }))
+
   placeFood()
-  
-  // Reset game state
+
   gameActive.value = false
   gameOver.value = false
   score.value = 0
@@ -168,39 +162,27 @@ const initGame = () => {
   nextDirection.value = 'right'
 }
 
-// Place food at random position avoiding snake segments
 const placeFood = () => {
   let newFoodPosition: {x: number, y: number}
-  const currentGridSizeX = gameGrid.value[0]?.length || GRID_SIZE_X
-  const currentGridSizeY = gameGrid.value.length || GRID_SIZE_Y
-  
-  // Ensure food doesn't spawn on snake
+
   do {
     newFoodPosition = {
-      x: Math.floor(Math.random() * currentGridSizeX),
-      y: Math.floor(Math.random() * currentGridSizeY)
+      x: Math.floor(Math.random() * gridSizeX.value),
+      y: Math.floor(Math.random() * gridSizeY.value)
     }
   } while (snake.value.some(segment => segment.x === newFoodPosition.x && segment.y === newFoodPosition.y))
-  
+
   food.value = newFoodPosition
 }
 
-// Check if a grid cell contains part of the snake
-const isSnake = (row: number, col: number) => {
-  return snake.value.some(segment => segment.y === row && segment.x === col)
-}
+const isSnake = (row: number, col: number) =>
+  snake.value.some(segment => segment.y === row && segment.x === col)
 
-// Check if a grid cell contains food
-const isFood = (row: number, col: number) => {
-  return food.value.x === col && food.value.y === row
-}
+const isFood = (row: number, col: number) =>
+  food.value.x === col && food.value.y === row
 
-// Handle keyboard input for game controls
 const handleKeyDown = (e: KeyboardEvent) => {
   if (!gameActive.value) return
-  
-  // Update direction based on arrow key input
-  // Prevent 180-degree turns (can't go directly backward)
   switch (e.key) {
     case 'ArrowUp':
       if (direction.value !== 'down') nextDirection.value = 'up'
@@ -215,26 +197,19 @@ const handleKeyDown = (e: KeyboardEvent) => {
       if (direction.value !== 'left') nextDirection.value = 'right'
       break
   }
-  
-  // Prevent default scrolling behavior for arrow keys
+
   if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
     e.preventDefault()
   }
 }
 
-// Main game loop - executes every GAME_SPEED milliseconds
 const gameLoop = () => {
-  if (!gameActive.value || snake.value.length === 0) return
+  if (!gameActive.value) return
 
-  // Apply queued direction change
   direction.value = nextDirection.value
 
-  // Get the current head position
-  const currentHead = snake.value[0]
-  if (!currentHead) return
-
-  // Calculate new head position based on current direction
-  const head = { x: currentHead.x, y: currentHead.y }
+  const { x, y } = snake.value[0]!
+  const head = { x, y }
 
   switch (direction.value) {
     case 'up':
@@ -251,80 +226,60 @@ const gameLoop = () => {
       break
   }
 
-  const currentGridSizeX = gameGrid.value[0]?.length || GRID_SIZE_X
-  const currentGridSizeY = gameGrid.value.length || GRID_SIZE_Y
-
-  // Check for collisions with walls or self
   if (
     head.x < 0 ||
-    head.x >= currentGridSizeX ||
+    head.x >= gridSizeX.value ||
     head.y < 0 ||
-    head.y >= currentGridSizeY ||
+    head.y >= gridSizeY.value ||
     snake.value.some(segment => segment.x === head.x && segment.y === head.y)
   ) {
     endGame()
     return
   }
 
-  // Add new head to snake
   snake.value.unshift(head)
-  
-  // Check if snake ate food
+
   if (head.x === food.value.x && head.y === food.value.y) {
     score.value++
     placeFood()
   } else {
-    // Remove tail if no food was eaten (maintains snake length)
     snake.value.pop()
   }
 }
 
-// Start a new game
 const startGame = () => {
   if (gameActive.value) return
-  
+
   gameActive.value = true
   gameOver.value = false
-  
-  // Focus the game canvas for keyboard input
-  if (gameCanvas.value) {
-    gameCanvas.value.focus()
-  }
-  
-  // Start the game loop interval
-  gameInterval.value = window.setInterval(gameLoop, GAME_SPEED)
+
+  gameCanvas.value?.focus()
+
+  gameInterval = window.setInterval(gameLoop, GAME_SPEED)
 }
 
-// End the current game
 const endGame = () => {
   gameActive.value = false
   gameOver.value = true
-  
-  if (gameInterval.value !== null) {
-    clearInterval(gameInterval.value)
-    gameInterval.value = null
+
+  if (gameInterval) {
+    clearInterval(gameInterval)
+    gameInterval = null
   }
 }
 
-// Reset game to initial state
 const resetGame = () => {
   initGame()
   gameOver.value = false
 }
 
-// Lifecycle hooks
 onMounted(() => {
   initGame()
-  
-  // Recalculate grid dimensions based on actual canvas size
+
   if (gameCanvas.value) {
-    const canvasWidth = gameCanvas.value.clientWidth
-    const canvasHeight = gameCanvas.value.clientHeight
-    
-    // Each cell is approximately 10px
-    const actualGridSizeX = Math.floor(canvasWidth / 10)
-    const actualGridSizeY = Math.floor(canvasHeight / 10)
-    
+    const actualGridSizeX = Math.floor(gameCanvas.value.clientWidth / 10)
+    const actualGridSizeY = Math.floor(gameCanvas.value.clientHeight / 10)
+
     if (actualGridSizeX > 0 && actualGridSizeY > 0) {
       gameGrid.value = Array(actualGridSizeY).fill(0).map(() => Array(actualGridSizeX).fill(0))
       resetGame()
@@ -332,11 +287,8 @@ onMounted(() => {
   }
 })
 
-// Cleanup on component unmount
 onUnmounted(() => {
-  if (gameInterval.value !== null) {
-    clearInterval(gameInterval.value)
-  }
+  if (gameInterval) clearInterval(gameInterval)
 })
 </script>
 

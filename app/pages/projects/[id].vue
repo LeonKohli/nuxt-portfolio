@@ -370,7 +370,6 @@ const getCategoryLabel = (category: string): string => {
   return categoryLabels[category as keyof typeof categoryLabels] || category;
 };
 
-// Fetch the current project with a straightforward approach
 const { data: project, pending } = await useAsyncData(
   `project-${route.params.id}`,
   () => queryCollection('projects')
