@@ -16,10 +16,9 @@
           <article
             v-for="(project, index) in projects"
             :key="project.slug"
+            v-motion="cardMotion(index)"
             class="shrink-0 snap-center w-[min(85vw,380px)] md:w-[384px] md:snap-start
                    first:pl-0 last:pr-4 md:last:pr-0 project-transition"
-            :class="getCardClasses(index)"
-            :style="getCardStyles(index)"
             @mouseenter="handleProjectHover(project.slug, true)"
             @mouseleave="handleProjectHover(project.slug, false)"
           >
@@ -218,7 +217,6 @@ import type { ProjectsCollectionItem } from '@nuxt/content'
 
 const props = defineProps<{
   projects: ProjectsCollectionItem[]
-  isSectionVisible: boolean
 }>()
 
 const emit = defineEmits<{
@@ -234,8 +232,6 @@ const hoveredProjectId = ref<string | null>(null)
 const isAtStart = ref(true)
 const isAtEnd = ref(false)
 const showNavigation = ref(false)
-
-const hasAnimated = ref(import.meta.server)
 
 const handleProjectHover = (projectId: string, isHovering: boolean) => {
   hoveredProjectId.value = isHovering ? projectId : null
@@ -306,29 +302,21 @@ const scrollRight = () => {
   })
 }
 
-const getCardClasses = (index: number) =>
-  import.meta.client && !hasAnimated.value
-    ? {
-        'opacity-0': !props.isSectionVisible,
-        'opacity-100 translate-y-0': props.isSectionVisible,
-        'translate-y-8': !props.isSectionVisible,
-        'transition-all duration-700': true,
-      }
-    : { 'opacity-100 translate-y-0': true }
-
-const getCardStyles = (index: number) =>
-  import.meta.client && !hasAnimated.value
-    ? {
-        transitionDelay: `${(index * 120) + 600}ms`,
-        transitionTimingFunction: 'cubic-bezier(0.25, 0.1, 0.25, 1.0)'
-      }
-    : {}
-
-watch(() => props.isSectionVisible, (newValue) => {
-  if (import.meta.client && newValue && !hasAnimated.value) {
-    setTimeout(() => hasAnimated.value = true, (props.projects.length * 200) + 1300)
+const cardMotion = (index: number) => ({
+  initial: {
+    opacity: 0,
+    y: 32
+  },
+  visibleOnce: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      delay: 0.2 + (index * 0.12),
+      duration: 0.6,
+      ease: [0.22, 1, 0.36, 1]
+    }
   }
-}, { immediate: true })
+})
 </script>
 
 <style scoped>

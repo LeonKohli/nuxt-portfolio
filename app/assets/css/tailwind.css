@@ -178,6 +178,17 @@
   }
 }
 
+@layer base {
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
 /* Component-specific styling for project content - uses prose plugin */
 /* NOTE: Tailwind v4 is stricter about @apply with typography modifiers,
    so we'll apply the prose classes directly in the HTML instead */

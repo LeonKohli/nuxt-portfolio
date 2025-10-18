@@ -1,18 +1,21 @@
 <template>
   <section 
+    v-motion="'section-fade'"
     class="relative flex flex-col justify-center min-h-screen px-0 overflow-hidden sm:px-6 lg:px-8" 
     id="projects"
-    ref="sectionRef" 
-    :class="{ 'section-visible': shouldAnimate }"
   >
     <!-- Header Container -->
     <header class="w-10/12 md:w-8/12 mx-auto max-w-[110rem] px-4 mb-16">
       <h2 class="font-bold tracking-tight text-center md:text-left">
         <span class="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-exo">
-          <span class="text-zinc-100 transition-opacity duration-500"
-            :class="shouldAnimate ? 'opacity-100' : 'opacity-0'">My</span>
-          <span class="relative inline-block ml-3 group transition-all duration-500 delay-100"
-            :class="shouldAnimate ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2'">
+          <span
+            v-motion="'section-fade'"
+            class="text-zinc-100"
+          >My</span>
+          <span 
+            v-motion="'section-fade-up'"
+            class="relative inline-block ml-3 group"
+          >
             <span class="bg-gradient-to-r from-green-700 via-green-500 to-green-400 
                      bg-clip-text text-transparent transition-all duration-300 
                      group-hover:bg-[length:200%_100%] bg-[length:100%_100%] 
@@ -22,8 +25,10 @@
           </span>
         </span>
       </h2>
-      <p class="max-w-[680px] mt-8 text-lg text-white/70 md:text-xl transition-all duration-700 delay-200"
-        :class="shouldAnimate ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'">
+      <p 
+        v-motion="'section-fade-up-delay-sm'"
+        class="max-w-[680px] mt-8 text-lg text-white/70 md:text-xl"
+      >
         Some of my most interesting projects, showcasing my skills and experience in web development.
       </p>
     </header>
@@ -58,7 +63,6 @@
       <div class="md:w-8/12 md:mx-auto md:max-w-[110rem] pb-16 md:pb-0">
         <ProjectCard 
           :projects="sortedProjects" 
-          :is-section-visible="shouldAnimate" 
           @scroll="handleProjectScroll" 
         />
       </div>
@@ -83,10 +87,6 @@ const handleProjectScroll = (index: number) => {
     hasScrolled.value = true
   }
 }
-
-// Use one-time animation composable
-const { target: sectionRef, shouldAnimate } = useAnimateOnce({ threshold: 0.2 })
-
 </script>
 
 <style scoped>
@@ -113,12 +113,6 @@ const { target: sectionRef, shouldAnimate } = useAnimateOnce({ threshold: 0.2 })
 
 /* Prevent animation on reduced motion preference */
 @media (prefers-reduced-motion: reduce) {
-  * {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-  }
-  
   .animate-scroll-hint {
     animation: none;
   }

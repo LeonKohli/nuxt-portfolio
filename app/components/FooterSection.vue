@@ -1,8 +1,7 @@
 <template>
   <footer 
+    v-motion="'section-fade'"
     class="relative px-4 py-12 overflow-hidden sm:px-6 lg:px-8"
-    ref="sectionRef"
-    :class="{ 'section-visible': shouldAnimate }"
   >
     <!-- Background Elements -->
     <div class="absolute inset-0 opacity-15">
@@ -10,20 +9,21 @@
         v-for="(icon, index) in backgroundIcons" 
         :key="index"
         :name="icon.name"
+        v-motion="iconMotion(index)"
         :class="[
           'absolute text-green-400 w-14 h-14 transition-opacity duration-700',
-          icon.position,
-          shouldAnimate ? 'opacity-100' : 'opacity-0'
+          icon.position
         ]"
-        :style="{ transitionDelay: hasAnimated ? '0ms' : `${100 + (index * 50)}ms` }"
       />
     </div>
 
     <!-- Content -->
     <div class="relative w-10/12 md:w-8/12 mx-auto max-w-[110rem] text-center">
       <!-- Main Content -->
-      <h2 class="mb-12 text-3xl font-bold tracking-wide sm:text-4xl md:text-6xl lg:text-7xl font-exo transition-opacity duration-500"
-        :class="shouldAnimate ? 'opacity-100' : 'opacity-0'">
+      <h2
+        v-motion="'section-fade'"
+        class="mb-12 text-3xl font-bold tracking-wide sm:text-4xl md:text-6xl lg:text-7xl font-exo"
+      >
         Let's
         <span class="relative inline-block group">
           <span class="bg-gradient-to-r from-green-700 via-green-500 to-green-400 bg-clip-text text-transparent transition-all duration-300 group-hover:bg-[length:200%_100%] bg-[length:100%_100%] bg-[position:0%] hover:bg-[position:100%]">
@@ -32,16 +32,18 @@
         </span>
       </h2>
 
-      <p class="mb-12 text-white/70 max-w-[75ch] mx-auto tracking-wide text-lg transition-all duration-700 delay-100"
-        :class="shouldAnimate ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'">
+      <p
+        v-motion="'section-fade-up'"
+        class="mb-12 text-white/70 max-w-[75ch] mx-auto tracking-wide text-lg"
+      >
         I am always open to new opportunities and collaborations. Whether you have a question, 
         a project proposal, or just want to say hello, feel free to get in touch.
       </p>
 
       <!-- Contact Button -->
       <button
+        v-motion="'section-fade-up-delay-sm'"
         class="relative inline-flex h-10 sm:h-12 w-[180px] sm:w-[210px] overflow-hidden rounded-lg p-[1px] focus:outline-none focus:ring-2 focus:ring-emerald-400/50 focus:ring-offset-2 focus:ring-offset-black group transition-all duration-700 delay-200"
-        :class="shouldAnimate ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'"
         @click="copyEmail"
         data-umami-event="Copy Email"
         @mousemove="handleMouseMove"
@@ -91,9 +93,8 @@
           external
           target="_blank"
           rel="noopener noreferrer"
+          v-motion="linkMotion(index)"
           class="flex items-center justify-center w-10 h-10 transition-all duration-300 rounded-full text-white/40 hover:text-white focus:outline-none focus:ring-2 focus:ring-emerald-400/50 hover:-translate-y-1"
-          :class="shouldAnimate ? 'opacity-100' : 'opacity-0'"
-          :style="{ transitionDelay: hasAnimated ? '0ms' : `${300 + (index * 50)}ms` }"
           :data-umami-event="`Visit ${link.name}`"
           :aria-label="`Visit my ${link.name} profile`"
         >
@@ -103,8 +104,10 @@
       </div>
 
       <!-- Copyright -->
-      <div class="mt-12 text-sm text-white/40 transition-opacity duration-700 delay-500"
-        :class="shouldAnimate ? 'opacity-100' : 'opacity-0'">
+      <div
+        v-motion="'section-fade-up-delay-md'"
+        class="mt-12 text-sm text-white/40"
+      >
         © {{ new Date().getFullYear() }} Built with 
         <span class="text-red-400" aria-hidden="true">❤️</span><span class="sr-only">love</span> by Leon Kohlhaussen
       </div>
@@ -133,16 +136,32 @@ const socialLinks = [
   { name: 'LinkedIn', url: 'https://www.linkedin.com/in/leon-kohlhau%C3%9Fen/', icon: 'simple-icons:linkedin' },
 ]
 
-// Use one-time animation composable
-const { target: sectionRef, shouldAnimate, hasAnimated } = useAnimateOnce({ threshold: 0.2 })
-</script>
-
-<style scoped>
-@media (prefers-reduced-motion: reduce) {
-  * {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
+const iconMotion = (index: number) => ({
+  initial: {
+    opacity: 0
+  },
+  visibleOnce: {
+    opacity: 1,
+    transition: {
+      delay: 0.1 + (index * 0.05),
+      duration: 0.4
+    }
   }
-}
-</style>
+})
+
+const linkMotion = (index: number) => ({
+  initial: {
+    opacity: 0,
+    y: 12
+  },
+  visibleOnce: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      delay: 0.3 + (index * 0.08),
+      duration: 0.45,
+      ease: [0.22, 1, 0.36, 1]
+    }
+  }
+})
+</script>

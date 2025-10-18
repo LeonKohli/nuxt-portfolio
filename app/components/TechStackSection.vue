@@ -1,20 +1,30 @@
 <template>
-    <section id="tech-stack" class="flex flex-col justify-center min-h-screen px-4 pt-24 overflow-hidden sm:px-6 lg:px-8 md:pt-0" ref="sectionRef" :class="{ 'section-visible': shouldAnimate }">
+    <section
+        id="tech-stack"
+        v-motion="'section-fade'"
+        class="flex flex-col justify-center min-h-screen px-4 pt-24 overflow-hidden sm:px-6 lg:px-8 md:pt-0"
+    >
         <div class="w-10/12 md:w-8/12 mx-auto max-w-[110rem] px-4">
             <!-- Section Header -->
             <header class="flex flex-col items-center mb-16 text-center md:items-start md:text-left">
                 <h2 class="text-3xl font-bold tracking-tight sm:text-4xl md:text-6xl lg:text-7xl font-exo">
-                    <span class="text-zinc-100 transition-opacity duration-500"
-                      :class="shouldAnimate ? 'opacity-100' : 'opacity-0'">My</span>
-                    <span class="relative inline-block ml-3 transition-all duration-500 delay-100"
-                      :class="shouldAnimate ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2'">
+                    <span
+                      v-motion="'section-fade'"
+                      class="text-zinc-100"
+                    >My</span>
+                    <span
+                      v-motion="'section-fade-up'"
+                      class="relative inline-block ml-3"
+                    >
                         <span class="bg-gradient-to-r from-green-700 via-green-500 to-green-400 bg-clip-text text-transparent transition-all duration-300 hover:bg-[length:200%_100%] bg-[length:100%_100%] bg-[position:0%] hover:bg-[position:100%]">
                             Tech Stack
                         </span>
                     </span>
                 </h2>
-                <p class="max-w-[680px] mt-6 text-lg text-white/70 md:text-xl transition-all duration-700 delay-200"
-                  :class="shouldAnimate ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'">
+                <p
+                  v-motion="'section-fade-up-delay-sm'"
+                  class="max-w-[680px] mt-6 text-lg text-white/70 md:text-xl"
+                >
                     These are the technologies I have experience with.
                 </p>
             </header>
@@ -23,11 +33,10 @@
             <ul class="grid grid-cols-1 gap-3 xs:grid-cols-2 sm:grid-cols-3 md:grid-cols-4">
                 <li v-for="(tech, index) in techStack?.technologies" :key="tech.name">
                     <a :href="tech.url" target="_blank" rel="noopener noreferrer" 
+                       v-motion="chipMotion(index)"
                        class="group flex p-4 transition-all duration-500 rounded-xl border border-white/10 
                               hover:border-emerald-500/20 bg-white/[0.02] hover:bg-emerald-500/[0.02] hover:-translate-y-1.5
                               focus:outline-none focus:ring-2 focus:ring-emerald-500/50"
-                       :class="shouldAnimate ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'"
-                       :style="{ transitionDelay: hasAnimated ? '0ms' : `${100 + (index * 50)}ms` }"
                        v-bind="createHandlers(index)">
                         
                         <!-- Spotlight Effect (simplified) -->
@@ -39,8 +48,7 @@
                                      shadow-[0_0_0_1px_rgba(255,255,255,0.1)] group-hover:shadow-[0_0_0_1.5px_rgba(16,185,129,0.2)]
                                      group-hover:scale-110" 
                               :class="getIconBackgroundClass(tech.color)">
-                            <Icon v-if="shouldAnimate" 
-                                  :name="tech.icon"
+                            <Icon :name="tech.icon"
                                   class="w-6 h-6 transition-all duration-500 group-hover:scale-110"
                                   :style="{ color: tech.color }" 
                                   loading="lazy"
@@ -60,7 +68,7 @@
                         </span>
                         
                         <!-- External Link Icon -->
-                        <Icon v-if="shouldAnimate" 
+                        <Icon 
                               name="lucide:external-link" 
                               class="w-4 h-4 ml-auto text-white/30 opacity-0 transition-all duration-300 
                                      group-hover:opacity-100 group-hover:translate-x-0.5 group-hover:text-emerald-400"
@@ -90,8 +98,21 @@ if (error.value || !techStack.value?.technologies) {
     })
 }
 
-// Use one-time animation composable
-const { target: sectionRef, shouldAnimate, hasAnimated } = useAnimateOnce({ threshold: 0.2 })
+const chipMotion = (index: number) => ({
+  initial: {
+    opacity: 0,
+    y: 24
+  },
+  visibleOnce: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      delay: 0.12 + (index * 0.05),
+      duration: 0.5,
+      ease: [0.22, 1, 0.36, 1]
+    }
+  }
+})
 
 // Convert hex color to tailwind-compatible background classes to avoid hydration mismatch
 function getIconBackgroundClass(hexColor: string): string {
@@ -115,14 +136,3 @@ function getIconBackgroundClass(hexColor: string): string {
 }
 
 </script>
-
-<style scoped>
-/* Prevent animation on reduced motion preference */
-@media (prefers-reduced-motion: reduce) {
-    * {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.01ms !important;
-    }
-}
-</style>

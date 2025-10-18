@@ -13,6 +13,7 @@ export default defineNuxtConfig({
     '@nuxt/image',
     'shadcn-nuxt',
     '@vueuse/nuxt',
+    '@vueuse/motion/nuxt',
     '@nuxt/content',
     '@nuxtjs/seo',
     'nuxt-security'
@@ -27,6 +28,98 @@ export default defineNuxtConfig({
   shadcn: {
     prefix: '',
     componentDir: './app/components/ui'
+  },
+  runtimeConfig: {
+    public: {
+      motion: {
+        directives: {
+          'section-fade': {
+            initial: {
+              opacity: 0,
+            },
+            visibleOnce: {
+              opacity: 1,
+              transition: {
+                duration: 0.45
+              }
+            }
+          },
+          'section-fade-up': {
+            initial: {
+              opacity: 0,
+              y: 24
+            },
+            visibleOnce: {
+              opacity: 1,
+              y: 0,
+              transition: {
+                duration: 0.6,
+                ease: [0.22, 1, 0.36, 1]
+              }
+            }
+          },
+          'section-fade-up-delay-sm': {
+            initial: {
+              opacity: 0,
+              y: 24
+            },
+            visibleOnce: {
+              opacity: 1,
+              y: 0,
+              transition: {
+                delay: 0.15,
+                duration: 0.6,
+                ease: [0.22, 1, 0.36, 1]
+              }
+            }
+          },
+          'section-fade-up-delay-md': {
+            initial: {
+              opacity: 0,
+              y: 24
+            },
+            visibleOnce: {
+              opacity: 1,
+              y: 0,
+              transition: {
+                delay: 0.3,
+                duration: 0.6,
+                ease: [0.22, 1, 0.36, 1]
+              }
+            }
+          },
+          'section-fade-up-delay-lg': {
+            initial: {
+              opacity: 0,
+              y: 24
+            },
+            visibleOnce: {
+              opacity: 1,
+              y: 0,
+              transition: {
+                delay: 0.45,
+                duration: 0.6,
+                ease: [0.22, 1, 0.36, 1]
+              }
+            }
+          },
+          'section-fade-pop': {
+            initial: {
+              opacity: 0,
+              scale: 0.96
+            },
+            visibleOnce: {
+              opacity: 1,
+              scale: 1,
+              transition: {
+                duration: 0.45,
+                ease: [0.22, 1, 0.36, 1]
+              }
+            }
+          }
+        }
+      }
+    }
   },
   colorMode: {
     classPrefix: '',

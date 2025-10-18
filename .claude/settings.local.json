@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(bun run typecheck)",
+      "mcp__context7__resolve-library-id",
+      "mcp__exa__get_code_context_exa",
+      "mcp__context7__get-library-docs",
+      "Bash(bun run build)",
+      "Bash(jobs)",
+      "Read(//tmp/**)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
