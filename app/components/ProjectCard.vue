@@ -16,7 +16,7 @@
           <article
             v-for="(project, index) in projects"
             :key="project.slug"
-            v-motion="cardMotion(index)"
+            v-motion="[project.slug, cardMotion(index)]"
             class="shrink-0 snap-center w-[min(85vw,380px)] md:w-[384px] md:snap-start
                    first:pl-0 last:pr-4 md:last:pr-0"
           >
@@ -306,14 +306,6 @@ watch(() => props.projects, () => {
   })
 }, { deep: true })
 
-const { width } = useWindowSize()
-
-const cardScrollDistance = computed(() => {
-  const cardWidth = width.value >= 768 ? 384 : Math.min(width.value * 0.85, 380)
-  const cardGap = width.value >= 768 ? 24 : 16
-  return cardWidth + cardGap
-})
-
 const updateScrollState = useDebounceFn(() => {
   if (!scrollContainer.value) return
 
@@ -322,19 +314,40 @@ const updateScrollState = useDebounceFn(() => {
   isAtEnd.value = Math.abs(container.scrollLeft + container.clientWidth - container.scrollWidth) <= 1
 }, 100)
 
-const scrollLeft = () => {
-  scrollContainer.value?.scrollBy({
-    left: -cardScrollDistance.value,
-    behavior: 'smooth'
-  })
+// Animation callback for card entrance
+const animateCardEntrance = (index: number) => {
+  const slug = props.projects[index]?.slug
+  if (!slug) return
+
+  const motion = motions[slug]
+  if (motion?.apply) {
+    // Apply scale down animation
+    motion.apply({
+      scale: 0.92,
+      opacity: 0.6,
+    })
+
+    // Spring back to normal with spring physics
+    setTimeout(() => {
+      motion.apply({
+        scale: 1,
+        opacity: 1,
+        transition: {
+          type: 'spring',
+          stiffness: 300,
+          damping: 25,
+        },
+      })
+    }, 100)
+  }
 }
 
-const scrollRight = () => {
-  scrollContainer.value?.scrollBy({
-    left: cardScrollDistance.value,
-    behavior: 'smooth'
-  })
-}
+// Use scroll animation composable for card visibility tracking
+const { scrollLeft, scrollRight, cardScrollDistance } = useCardScrollAnimation({
+  scrollContainer,
+  projects: computed(() => props.projects),
+  onAnimate: animateCardEntrance,
+})
 
 const { staggered } = useAnimationPresets()
 const { animation } = useAppConfig()
