@@ -1,5 +1,6 @@
 ---
 slug: particle-network
+sort: 99
 title: Interactive Particle Network
 subtitle: Dynamic Starfield Background
 description: An immersive, dynamic starfield experience for web projects using pure JavaScript with no external dependencies
