@@ -32,9 +32,9 @@
     <div class="relative w-full">
       <!-- Scroll Indicators for Mobile -->
       <ul class="absolute z-50 flex gap-2 -translate-x-1/2 bottom-4 left-1/2 md:hidden">
-        <li 
-          v-for="(project, index) in sortedProjects" 
-          :key="project._id"
+        <li
+          v-for="(project, index) in sortedProjects"
+          :key="project.slug"
           class="w-2 h-2 transition-all duration-500 rounded-full" 
           :class="[
             currentProjectIndex === index
@@ -68,8 +68,8 @@
 
 <script setup lang="ts">
 // Fetch projects using Nuxt Content v3 API with proper schema
-const { data: projects } = await useAsyncData<Project[]>('projects', () =>
-  queryCollection<Project>('projects')
+const { data: projects } = await useAsyncData('projects', () =>
+  queryCollection('projects')
     .order('sort', 'ASC')
     .all()
 )

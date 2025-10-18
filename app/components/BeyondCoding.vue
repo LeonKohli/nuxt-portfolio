@@ -14,8 +14,7 @@
         class="group relative overflow-hidden rounded-xl border border-white/10 bg-white/[0.03] backdrop-blur-xl 
                transition-all duration-300 hover:bg-white/[0.07] hover:border-emerald-500/20 
                hover:shadow-[0_0_25px_-5px_rgba(16,185,129,0.15)] hover:-translate-y-1"
-        @mousemove="handleMouseMove($event, index)"
-        @mouseleave="handleMouseLeave(index)"
+        v-bind="createHandlers(index)"
       >
         <div class="relative z-10 p-4">
           <div class="flex items-start">
@@ -77,6 +76,5 @@ const hobbies: Hobby[] = [
   }
 ]
 
-// Use the spotlight effect composable
-const { spotlightStyles, handleMouseMove, handleMouseLeave } = useSpotlightEffect(hobbies.length)
+const { spotlightStyles, createHandlers } = useSpotlightEffect(hobbies.length)
 </script>

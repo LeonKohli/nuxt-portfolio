@@ -214,8 +214,10 @@
 </template>
 
 <script setup lang="ts">
+import type { ProjectsCollectionItem } from '@nuxt/content'
+
 const props = defineProps<{
-  projects: Project[]
+  projects: ProjectsCollectionItem[]
   isSectionVisible: boolean
 }>()
 

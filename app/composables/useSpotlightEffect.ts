@@ -1,43 +1,58 @@
 import { useThrottleFn } from '@vueuse/core'
 
-interface SpotlightStyle {
-  background: string;
-  transform: string;
+export function useSpotlightEffect(): {
+  spotlightStyle: ComputedRef<{ background: string; transform: string }>
+  handleMouseMove: (event: MouseEvent) => void
+  handleMouseLeave: () => void
 }
 
-export const useSpotlightEffect = (count: number = 1, throttleMs: number = 16) => {
-  const spotlightStyles = ref<SpotlightStyle[]>(
-    Array(count).fill({
+export function useSpotlightEffect(count: number): {
+  spotlightStyles: Ref<Array<{ background: string; transform: string }>>
+  createHandlers: (index: number) => {
+    onMousemove: (event: MouseEvent) => void
+    onMouseleave: () => void
+  }
+}
+
+export function useSpotlightEffect(count: number = 1): any {
+  const spotlightStyles = ref(
+    Array.from({ length: count }, () => ({
       background: 'radial-gradient(circle at 50% 50%, rgba(16, 185, 129, 0) 0%, transparent 60%)',
       transform: 'translate(0%, 0%)'
-    })
+    }))
   )
 
-  const updateSpotlight = (event: MouseEvent, index: number = 0) => {
-    const target = event.currentTarget as HTMLElement
-    const rect = target.getBoundingClientRect()
-    const relativeX = ((event.clientX - rect.left) / rect.width) * 100
-    const relativeY = ((event.clientY - rect.top) / rect.height) * 100
+  const createHandlers = (index: number) => {
+    const onMousemove = useThrottleFn((event: MouseEvent) => {
+      const target = event.currentTarget as HTMLElement
+      const rect = target.getBoundingClientRect()
+      const x = ((event.clientX - rect.left) / rect.width) * 100
+      const y = ((event.clientY - rect.top) / rect.height) * 100
 
-    spotlightStyles.value[index] = {
-      background: `radial-gradient(circle at ${relativeX}% ${relativeY}%, rgba(16, 185, 129, 0.15) 0%, transparent 60%)`,
-      transform: 'translate(0%, 0%)'
+      spotlightStyles.value[index] = {
+        background: `radial-gradient(circle at ${x}% ${y}%, rgba(16, 185, 129, 0.15) 0%, transparent 60%)`,
+        transform: 'translate(0%, 0%)'
+      }
+    }, 16)
+
+    const onMouseleave = () => {
+      spotlightStyles.value[index] = {
+        background: 'radial-gradient(circle at 50% 50%, rgba(16, 185, 129, 0) 0%, transparent 60%)',
+        transform: 'translate(0%, 0%)'
+      }
+    }
+
+    return { onMousemove, onMouseleave }
+  }
+
+  if (count === 1) {
+    const { onMousemove, onMouseleave } = createHandlers(0)
+    return {
+      spotlightStyle: computed(() => spotlightStyles.value[0]),
+      handleMouseMove: onMousemove,
+      handleMouseLeave: onMouseleave
     }
   }
 
-  // Throttle to 60fps (16ms) by default for smooth performance
-  const handleMouseMove = useThrottleFn(updateSpotlight, throttleMs)
-
-  const handleMouseLeave = (index: number = 0) => {
-    spotlightStyles.value[index] = {
-      background: 'radial-gradient(circle at 50% 50%, rgba(16, 185, 129, 0) 0%, transparent 60%)',
-      transform: 'translate(0%, 0%)'
-    }
-  }
-
-  return {
-    spotlightStyles: count === 1 ? computed(() => spotlightStyles.value[0]) : spotlightStyles,
-    handleMouseMove,
-    handleMouseLeave
-  }
+  return { spotlightStyles, createHandlers }
 }

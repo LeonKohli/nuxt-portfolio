@@ -1,7 +1,7 @@
 <template>
-  <div 
-    class="group relative overflow-hidden rounded-xl border border-white/10 bg-white/[0.03] backdrop-blur-xl 
-           transition-all duration-300 hover:bg-white/[0.07] hover:border-emerald-500/20 
+  <div
+    class="group relative overflow-hidden rounded-xl border border-white/10 bg-white/[0.03] backdrop-blur-xl
+           transition-all duration-300 hover:bg-white/[0.07] hover:border-emerald-500/20
            hover:shadow-[0_0_25px_-5px_rgba(16,185,129,0.15)] hover:-translate-y-1"
     @mousemove="handleMouseMove"
     @mouseleave="handleMouseLeave"
@@ -113,7 +113,7 @@
     </div>
     
     <!-- Spotlight effect -->
-    <div 
+    <div
       class="absolute transition-opacity duration-300 opacity-0 pointer-events-none -inset-px group-hover:opacity-100"
       :style="spotlightStyle"
     >
@@ -129,8 +129,7 @@ const GRID_SIZE_Y = 14
 const INITIAL_SNAKE_LENGTH = 3
 const GAME_SPEED = 150 // ms between game ticks
 
-// Use the spotlight effect composable
-const { spotlightStyles: spotlightStyle, handleMouseMove, handleMouseLeave } = useSpotlightEffect()
+const { spotlightStyle, handleMouseMove, handleMouseLeave } = useSpotlightEffect()
 
 // Game state management
 const gameCanvas = ref<HTMLElement | null>(null)
@@ -226,13 +225,17 @@ const handleKeyDown = (e: KeyboardEvent) => {
 // Main game loop - executes every GAME_SPEED milliseconds
 const gameLoop = () => {
   if (!gameActive.value || snake.value.length === 0) return
-  
+
   // Apply queued direction change
   direction.value = nextDirection.value
-  
+
+  // Get the current head position
+  const currentHead = snake.value[0]
+  if (!currentHead) return
+
   // Calculate new head position based on current direction
-  const head = { ...snake.value[0] }
-  
+  const head = { x: currentHead.x, y: currentHead.y }
+
   switch (direction.value) {
     case 'up':
       head.y -= 1
@@ -247,22 +250,22 @@ const gameLoop = () => {
       head.x += 1
       break
   }
-  
+
   const currentGridSizeX = gameGrid.value[0]?.length || GRID_SIZE_X
   const currentGridSizeY = gameGrid.value.length || GRID_SIZE_Y
-  
+
   // Check for collisions with walls or self
   if (
-    head.x < 0 || 
-    head.x >= currentGridSizeX || 
-    head.y < 0 || 
+    head.x < 0 ||
+    head.x >= currentGridSizeX ||
+    head.y < 0 ||
     head.y >= currentGridSizeY ||
     snake.value.some(segment => segment.x === head.x && segment.y === head.y)
   ) {
     endGame()
     return
   }
-  
+
   // Add new head to snake
   snake.value.unshift(head)
   

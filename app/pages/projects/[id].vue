@@ -379,7 +379,7 @@ const { data: project, pending } = await useAsyncData(
       const projectSlug = route.params.id as string;
 
       // Query the project by slug
-      const result = await queryCollection<Project>('projects')
+      const result = await queryCollection('projects')
         .where('slug', '=', projectSlug)
         .first();
 
@@ -421,10 +421,10 @@ watchEffect(() => {
 
 // Get all projects for navigation and related projects
 // Using a simpler approach that's less likely to have issues
-const { data: allProjects } = await useAsyncData<Project[]>(
+const { data: allProjects } = await useAsyncData(
   'all-projects',
   async () => {
-    const projects = await queryCollection<Project>('projects')
+    const projects = await queryCollection('projects')
       .order('sort', 'ASC')
       .all();
 
@@ -479,7 +479,7 @@ const relatedProjects = computed(() => {
 
     // Check tag overlaps if tags exist
     if (p.tags && project.value?.tags) {
-      const tagOverlap = p.tags.filter((tag) =>
+      const tagOverlap = p.tags.filter((tag: string) =>
         project.value?.tags?.includes(tag),
       ).length;
       score += tagOverlap * 2;

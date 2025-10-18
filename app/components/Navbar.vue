@@ -41,8 +41,7 @@
           <span 
             class="absolute inset-0 transition-opacity duration-300 opacity-0 pointer-events-none group-hover:opacity-100 bg-gradient-to-r from-emerald-500/20 to-transparent"
             :style="spotlightStyles[index]"
-            @mousemove="handleMouseMove($event, index)"
-            @mouseleave="handleMouseLeave(index)"
+            v-bind="createHandlers(index)"
             aria-hidden="true"
           ></span>
 
@@ -117,8 +116,7 @@ const navRef = ref<HTMLElement | null>(null)
 const route = useRoute()
 const isProjectPage = computed(() => route.path.startsWith('/projects/'))
 
-// Use the spotlight effect composable for nav items
-const { spotlightStyles, handleMouseMove, handleMouseLeave } = useSpotlightEffect(3)
+const { spotlightStyles, createHandlers } = useSpotlightEffect(3)
 
 // Get appropriate icon for each section
 const getIconForSection = (label: string): string => {

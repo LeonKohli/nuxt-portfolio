@@ -28,8 +28,7 @@
                               focus:outline-none focus:ring-2 focus:ring-emerald-500/50"
                        :class="shouldAnimate ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'"
                        :style="{ transitionDelay: hasAnimated ? '0ms' : `${100 + (index * 50)}ms` }"
-                       @mousemove="handleMouseMove($event, index)"
-                       @mouseleave="handleMouseLeave(index)">
+                       v-bind="createHandlers(index)">
                         
                         <!-- Spotlight Effect (simplified) -->
                         <span class="absolute inset-0 transition-opacity duration-500 opacity-0 pointer-events-none group-hover:opacity-100 rounded-xl bg-gradient-to-br from-emerald-500/20 to-transparent"
@@ -77,8 +76,7 @@
 </template>
 
 <script setup lang="ts">
-// Use the spotlight effect composable - allocate enough for tech stack items
-const { spotlightStyles, handleMouseMove, handleMouseLeave } = useSpotlightEffect(20)
+const { spotlightStyles, createHandlers } = useSpotlightEffect(20)
 
 const { data: techStack, error } = await useAsyncData('tech-stack', () =>
   queryCollection('techStack').first()

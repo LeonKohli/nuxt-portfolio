@@ -39,7 +39,7 @@
       </p>
 
       <!-- Contact Button -->
-      <button 
+      <button
         class="relative inline-flex h-10 sm:h-12 w-[180px] sm:w-[210px] overflow-hidden rounded-lg p-[1px] focus:outline-none focus:ring-2 focus:ring-emerald-400/50 focus:ring-offset-2 focus:ring-offset-black group transition-all duration-700 delay-200"
         :class="shouldAnimate ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'"
         @click="copyEmail"
@@ -73,7 +73,7 @@
           </span>
         </span>
         <!-- Spotlight effect -->
-        <div 
+        <div
           class="absolute transition-opacity duration-300 opacity-0 pointer-events-none -inset-px group-hover:opacity-100"
           :style="spotlightStyle"
           aria-hidden="true"
@@ -119,8 +119,7 @@ const email = 'contact@leonkohli.dev'
 const { copy, copied } = useClipboard({ legacy: true, copiedDuring: 2000 })
 const copyEmail = () => copy(email)
 
-// Use the spotlight effect composable
-const { spotlightStyles: spotlightStyle, handleMouseMove, handleMouseLeave } = useSpotlightEffect()
+const { spotlightStyle, handleMouseMove, handleMouseLeave } = useSpotlightEffect()
 
 const backgroundIcons = [
   { name: 'simple-icons:vuedotjs', position: 'left-10 top-10' },
