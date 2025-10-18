@@ -45,6 +45,114 @@ export function useAnimationPresets() {
   }
 
   /**
+   * Smooth card hover animation with lift effect
+   * Uses spring physics for natural motion
+   */
+  const cardHover = {
+    initial: {
+      y: 0,
+      scale: 1,
+    },
+    hovered: {
+      y: -8,
+      scale: 1.02,
+      transition: {
+        type: 'spring',
+        stiffness: 400,
+        damping: 30,
+      },
+    },
+  }
+
+  /**
+   * Subtle scale hover for interactive elements
+   */
+  const scaleHover = (scaleValue = animation.transform.scale.subtle) => ({
+    initial: { scale: 1 },
+    hovered: {
+      scale: scaleValue,
+      transition: {
+        type: 'spring',
+        stiffness: 500,
+        damping: 25,
+      },
+    },
+    tapped: {
+      scale: 0.95,
+      transition: {
+        type: 'spring',
+        stiffness: 600,
+        damping: 20,
+      },
+    },
+  })
+
+  /**
+   * Button hover with lift and scale
+   */
+  const buttonHover = {
+    initial: {
+      y: 0,
+      scale: 1,
+    },
+    hovered: {
+      y: -2,
+      scale: 1.05,
+      transition: {
+        type: 'spring',
+        stiffness: 500,
+        damping: 25,
+      },
+    },
+    tapped: {
+      y: 0,
+      scale: 0.98,
+      transition: {
+        type: 'spring',
+        stiffness: 600,
+        damping: 20,
+      },
+    },
+  }
+
+  /**
+   * Icon hover with rotation and scale
+   */
+  const iconHover = {
+    initial: {
+      scale: 1,
+      rotate: 0,
+    },
+    hovered: {
+      scale: animation.transform.scale.small,
+      rotate: animation.transform.rotate.small,
+      transition: {
+        type: 'spring',
+        stiffness: 400,
+        damping: 20,
+      },
+    },
+  }
+
+  /**
+   * Fade hover for opacity transitions
+   */
+  const fadeHover = (
+    initialOpacity = 0,
+    hoveredOpacity = 1,
+    duration = animation.duration.fast / 1000,
+  ) => ({
+    initial: { opacity: initialOpacity },
+    hovered: {
+      opacity: hoveredOpacity,
+      transition: {
+        duration,
+        ease: animation.easing.smooth,
+      },
+    },
+  })
+
+  /**
    * Add delay to any animation variant
    * @param variant - Base variant object
    * @param delay - Delay in seconds
@@ -88,6 +196,13 @@ export function useAnimationPresets() {
     fade,
     slideUp,
     pop,
+
+    // Hover presets
+    cardHover,
+    scaleHover,
+    buttonHover,
+    iconHover,
+    fadeHover,
 
     // Utility functions
     withDelay,

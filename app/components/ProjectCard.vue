@@ -1,9 +1,9 @@
 <template>
   <div class="relative w-full touch-pan-x" ref="cardRef">
-    
-    <div 
-      class="flex w-full overflow-x-scroll overscroll-x-contain py-8 scroll-smooth 
-             [scrollbar-width:none] snap-x snap-mandatory touch-pan-x" 
+
+    <div
+      class="flex w-full overflow-x-scroll overscroll-x-contain py-8 scroll-smooth
+             [scrollbar-width:none] snap-x snap-mandatory touch-pan-x"
       ref="scrollContainer"
       @scroll="handleScroll"
     >
@@ -11,65 +11,100 @@
       <div class="flex flex-row justify-start min-w-full gap-4 md:gap-6">
         <!-- Initial spacer for mobile -->
         <div class="w-4 shrink-0 md:hidden" aria-hidden="true" />
-        
+
         <ClientOnly>
           <article
             v-for="(project, index) in projects"
             :key="project.slug"
             v-motion="cardMotion(index)"
             class="shrink-0 snap-center w-[min(85vw,380px)] md:w-[384px] md:snap-start
-                   first:pl-0 last:pr-4 md:last:pr-0 project-transition"
-            @mouseenter="handleProjectHover(project.slug, true)"
-            @mouseleave="handleProjectHover(project.slug, false)"
+                   first:pl-0 last:pr-4 md:last:pr-0"
           >
             <NuxtLink
               :to="`/projects/${project.slug}`"
-              class="rounded-[24px] h-[24rem] sm:h-[26rem] md:h-[32rem] w-full md:w-[384px] group 
-                     overflow-hidden flex flex-col items-start justify-start relative z-10 
-                     cursor-pointer project-transition hover:shadow-[0_8px_30px_rgba(0,0,0,0.12)] 
-                     hover:shadow-emerald-500/10"
+              class="block rounded-[24px] h-[24rem] sm:h-[26rem] md:h-[32rem] w-full md:w-[384px]
+                     overflow-hidden relative cursor-pointer"
+              @mouseenter="handleCardHover(project.slug, true)"
+              @mouseleave="handleCardHover(project.slug, false)"
             >
-              <!-- Background layers -->
-              <div class="absolute inset-0 z-20 bg-gradient-to-t from-black via-black/80 to-black/60 opacity-80 group-hover:opacity-85 project-transition"></div>
-              <div class="absolute inset-0 z-30 bg-[#000000] opacity-0 group-hover:opacity-40 project-transition"></div>
-              
+              <!-- Background gradient -->
+              <div
+                v-motion="`${project.slug}-bg-gradient`"
+                :initial="{ opacity: 0.8 }"
+                :variants="bgGradientVariants"
+                class="absolute inset-0 z-20 bg-gradient-to-t from-black via-black/80 to-black/60"
+              />
+
+              <!-- Background overlay -->
+              <div
+                v-motion="`${project.slug}-bg-overlay`"
+                :initial="{ opacity: 0 }"
+                :variants="bgOverlayVariants"
+                class="absolute inset-0 z-30 bg-[#000000]"
+              />
+
+              <!-- Shadow overlay -->
+              <div
+                v-motion="`${project.slug}-shadow`"
+                :initial="{ boxShadow: '0 0 0 rgba(0,0,0,0)' }"
+                :variants="shadowVariants"
+                class="absolute inset-0 z-10 pointer-events-none"
+              />
+
               <!-- Content -->
               <div class="relative z-40 flex flex-col h-full p-6 md:p-8">
                 <!-- Title and description area -->
                 <header class="flex flex-col flex-grow">
-                  <div class="transform project-transition group-hover:-translate-y-1">
-                    <h3 class="text-2xl md:text-3xl font-bold max-w-xs text-left [text-wrap:balance] 
+                  <div
+                    v-motion="`${project.slug}-title`"
+                    :initial="{ y: 0 }"
+                    :variants="titleVariants"
+                  >
+                    <h3 class="text-2xl md:text-3xl font-bold max-w-xs text-left [text-wrap:balance]
                              mb-2 leading-tight tracking-tight text-white font-exo">
                       {{ project.title }}
                     </h3>
-                    <p class="text-base md:text-lg max-w-xs text-left [text-wrap:balance] 
-                             tracking-tight leading-[1.6] text-white/80 project-transition 
-                             group-hover:opacity-0 line-clamp-2">
+                    <p
+                      v-motion="`${project.slug}-subtitle`"
+                      :initial="{ opacity: 0.8, y: 0 }"
+                      :variants="subtitleVariants"
+                      class="text-base md:text-lg max-w-xs text-left [text-wrap:balance]
+                             tracking-tight leading-[1.6] text-white/80 line-clamp-2"
+                    >
                       {{ project.subtitle }}
                     </p>
                   </div>
 
-                  <p class="flex-grow mt-4 opacity-0 project-transition group-hover:opacity-100
-                           text-base md:text-lg max-w-xs text-left [text-wrap:balance] 
-                           tracking-tight leading-[1.6] text-white/90">
+                  <p
+                    v-motion="`${project.slug}-description`"
+                    :initial="{ opacity: 0, y: 20 }"
+                    :variants="descriptionVariants"
+                    class="flex-grow mt-4 text-base md:text-lg max-w-xs text-left [text-wrap:balance]
+                           tracking-tight leading-[1.6] text-white/90"
+                  >
                     {{ project.description }}
                   </p>
                 </header>
-                
+
                 <!-- Footer content -->
-                <footer class="mt-auto transform translate-y-4 opacity-0 pointer-events-none project-transition group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto">
+                <footer
+                  v-motion="`${project.slug}-footer`"
+                  :initial="{ y: 16, opacity: 0 }"
+                  :variants="footerVariants"
+                  class="mt-auto"
+                >
                   <!-- Tech Stack -->
                   <ul class="flex flex-wrap gap-2 mb-6">
-                    <li 
-                      v-for="tech in project.tech" 
+                    <li
+                      v-for="tech in project.tech"
                       :key="tech.name"
-                      class="px-3 py-1.5 text-sm rounded-full text-white/90 bg-white/10 backdrop-blur-xl 
-                             hover:bg-white/20 flex items-center gap-1.5 group/tech project-hover-transition"
+                      class="px-3 py-1.5 text-sm rounded-full text-white/90 bg-white/10 backdrop-blur-xl
+                             flex items-center gap-1.5"
                     >
-                      <Icon 
+                      <Icon
                         v-if="isVisible"
-                        :name="tech.icon" 
-                        class="w-3.5 h-3.5 project-hover-transition group-hover/tech:scale-110 group-hover/tech:rotate-[8deg]" 
+                        :name="tech.icon"
+                        class="w-3.5 h-3.5"
                         loading="lazy"
                         width="14"
                         height="14"
@@ -81,21 +116,20 @@
 
                   <!-- Links -->
                   <div class="flex gap-3">
-                    <a 
+                    <a
                       v-if="project.repo"
-                      :href="project.repo" 
+                      :href="project.repo"
                       target="_blank"
                       rel="noopener noreferrer"
-                      class="group/btn flex items-center px-4 py-2 text-sm font-medium rounded-full text-white 
-                             bg-white/10 hover:bg-white/20 hover:-translate-y-0.5 active:translate-y-0 
-                             project-hover-transition"
+                      class="flex items-center px-4 py-2 text-sm font-medium rounded-full text-white
+                             bg-white/10 transition-colors duration-200 hover:bg-white/20"
                       @click.stop
                       data-umami-event="View Project GitHub"
                       :data-umami-event-project="project.title"
                     >
-                      <Icon 
-                        name="ph:github-logo-fill" 
-                        class="w-4 h-4 mr-2 project-hover-transition group-hover/btn:scale-110 group-hover/btn:rotate-[8deg]" 
+                      <Icon
+                        name="ph:github-logo-fill"
+                        class="w-4 h-4 mr-2"
                         loading="lazy"
                         width="16"
                         height="16"
@@ -103,21 +137,20 @@
                       />
                       <span>GitHub</span>
                     </a>
-                    <a 
+                    <a
                       v-if="project.link"
-                      :href="project.link" 
+                      :href="project.link"
                       target="_blank"
                       rel="noopener noreferrer"
-                      class="group/btn flex items-center px-4 py-2 text-sm font-medium rounded-full text-emerald-400 
-                             bg-emerald-500/20 hover:bg-emerald-500/30 hover:-translate-y-0.5 active:translate-y-0 
-                             project-hover-transition"
+                      class="flex items-center px-4 py-2 text-sm font-medium rounded-full text-emerald-400
+                             bg-emerald-500/20 transition-colors duration-200 hover:bg-emerald-500/30"
                       @click.stop
                       data-umami-event="View Project Live"
                       :data-umami-event-project="project.title"
                     >
-                      <Icon 
-                        name="lucide:external-link" 
-                        class="w-4 h-4 mr-2 project-hover-transition group-hover/btn:scale-110 group-hover/btn:rotate-[8deg]" 
+                      <Icon
+                        name="lucide:external-link"
+                        class="w-4 h-4 mr-2"
                         loading="lazy"
                         width="16"
                         height="16"
@@ -130,24 +163,30 @@
               </div>
 
               <!-- Project Image -->
-              <NuxtImg 
-                :src="project.image"
-                :alt="project.title"
-                loading="lazy"
-                width="384"
-                height="512"
-                :placeholder="[100, 133, 75, 5]"
-                class="absolute inset-0 z-10 object-cover scale-[1.01] brightness-[0.7] group-hover:scale-[1.02] 
-                       group-hover:brightness-[0.85] group-hover:blur-[2px] project-transition project-card-image"
-                sizes="(max-width: 640px) 85vw, (max-width: 768px) 280px, 384px"
-                format="webp"
-                quality="80"
-                fit="cover"
-                :modifiers="{
-                  blur: 0.3,
-                  background: 'black'
-                }"
-              />
+              <div
+                v-motion="`${project.slug}-image`"
+                :initial="{ scale: 1.01, filter: 'brightness(0.7)' }"
+                :variants="imageVariants"
+                class="absolute inset-0 z-10"
+              >
+                <NuxtImg
+                  :src="project.image"
+                  :alt="project.title"
+                  loading="lazy"
+                  width="384"
+                  height="512"
+                  :placeholder="[100, 133, 75, 5]"
+                  class="w-full h-full object-cover"
+                  sizes="(max-width: 640px) 85vw, (max-width: 768px) 280px, 384px"
+                  format="webp"
+                  quality="80"
+                  fit="cover"
+                  :modifiers="{
+                    blur: 0.3,
+                    background: 'black'
+                  }"
+                />
+              </div>
             </NuxtLink>
           </article>
         </ClientOnly>
@@ -227,15 +266,10 @@ const cardRef = ref<HTMLElement | null>(null)
 const isVisible = useElementVisibility(cardRef)
 
 const scrollContainer = ref<HTMLElement | null>(null)
-const hoveredProjectId = ref<string | null>(null)
 
 const isAtStart = ref(true)
 const isAtEnd = ref(false)
 const showNavigation = ref(false)
-
-const handleProjectHover = (projectId: string, isHovering: boolean) => {
-  hoveredProjectId.value = isHovering ? projectId : null
-}
 
 const handleScroll = useThrottleFn(() => {
   if (!scrollContainer.value) return
@@ -303,20 +337,162 @@ const scrollRight = () => {
 }
 
 const { staggered } = useAnimationPresets()
+const { animation } = useAppConfig()
+
 const cardMotion = (index: number) => staggered(index, 'slow')
+
+// Define all animation variants
+const bgGradientVariants = {
+  initial: { opacity: 0.8 },
+  hovered: {
+    opacity: 0.85,
+    transition: {
+      duration: 0.4,
+      ease: animation.easing.smooth,
+    },
+  },
+}
+
+const bgOverlayVariants = {
+  initial: { opacity: 0 },
+  hovered: {
+    opacity: 0.4,
+    transition: {
+      duration: 0.4,
+      ease: animation.easing.smooth,
+    },
+  },
+}
+
+const shadowVariants = {
+  initial: { boxShadow: '0 0 0 rgba(0,0,0,0)' },
+  hovered: {
+    boxShadow: '0 8px 30px rgba(16, 185, 129, 0.1)',
+    transition: {
+      duration: 0.4,
+      ease: animation.easing.smooth,
+    },
+  },
+}
+
+const titleVariants = {
+  initial: { y: 0 },
+  hovered: {
+    y: -4,
+    transition: {
+      type: 'spring',
+      stiffness: 400,
+      damping: 25,
+    },
+  },
+}
+
+const subtitleVariants = {
+  initial: {
+    opacity: 0.8,
+    y: 0,
+  },
+  hovered: {
+    opacity: 0,
+    y: -16,
+    transition: {
+      opacity: {
+        duration: 0.25,
+        ease: animation.easing.smooth,
+      },
+      y: {
+        type: 'spring',
+        stiffness: 400,
+        damping: 30,
+      },
+    },
+  },
+}
+
+const descriptionVariants = {
+  initial: {
+    opacity: 0,
+    y: 20,
+  },
+  hovered: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      opacity: {
+        duration: 0.35,
+        delay: 0.1,
+        ease: animation.easing.smooth,
+      },
+      y: {
+        type: 'spring',
+        stiffness: 350,
+        damping: 28,
+        delay: 0.1,
+      },
+    },
+  },
+}
+
+const footerVariants = {
+  initial: { y: 16, opacity: 0 },
+  hovered: {
+    y: 0,
+    opacity: 1,
+    transition: {
+      type: 'spring',
+      stiffness: 350,
+      damping: 30,
+    },
+  },
+}
+
+const imageVariants = {
+  initial: {
+    scale: 1.01,
+    filter: 'brightness(0.7)',
+  },
+  hovered: {
+    scale: 1.04,
+    filter: 'brightness(0.85) blur(2px)',
+    transition: {
+      type: 'spring',
+      stiffness: 300,
+      damping: 30,
+    },
+  },
+}
+
+// Handle card hover to control all child animations
+const motions = useMotions()
+
+const handleCardHover = (slug: string, isHovered: boolean) => {
+  const variant = isHovered ? 'hovered' : 'initial'
+
+  // Trigger all child animations for this card
+  const elements = [
+    `${slug}-bg-gradient`,
+    `${slug}-bg-overlay`,
+    `${slug}-shadow`,
+    `${slug}-title`,
+    `${slug}-subtitle`,
+    `${slug}-description`,
+    `${slug}-footer`,
+    `${slug}-image`,
+  ]
+
+  elements.forEach((elementName) => {
+    const motion = motions[elementName]
+    if (motion?.variant) {
+      motion.variant.value = variant
+    }
+  })
+}
 </script>
 
 <style scoped>
 /* Hide scrollbar */
 .overflow-x-scroll::-webkit-scrollbar {
   display: none;
-}
-
-/* Smooth transitions */
-.transition-transform {
-  transition-property: transform;
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  transition-duration: 500ms;
 }
 
 /* Smooth scrolling for Safari */
@@ -330,34 +506,5 @@ const cardMotion = (index: number) => staggered(index, 'slow')
 .touch-pan-x {
   touch-action: pan-x;
   -webkit-overflow-scrolling: touch;
-}
-
-/* Base transitions */
-.project-transition {
-  transition-property: transform, opacity, box-shadow, filter;
-  transition-timing-function: cubic-bezier(0.25, 0.1, 0.25, 1.0);
-  transition-duration: 500ms;
-  will-change: transform, opacity;
-}
-
-.project-hover-transition {
-  transition-property: transform, opacity, background-color, scale;
-  transition-timing-function: cubic-bezier(0.2, 0.8, 0.2, 1);
-  transition-duration: 300ms;
-  will-change: transform, opacity, background-color;
-}
-
-/* Prevent animations on reduced motion preference */
-@media (prefers-reduced-motion: reduce) {
-  .project-transition,
-  .project-hover-transition {
-    transition: none;
-    transform: none !important;
-  }
-
-  .project-card-image {
-    transform: none !important;
-    filter: brightness(0.7) !important;
-  }
 }
 </style> 
