@@ -16,7 +16,7 @@ useSeoMeta({
   description: 'Portfolio of Leon Kohlhaußen - Full Stack Developer based in Potsdam, Germany.',
   ogTitle: 'Leon Kohlhaußen - Full Stack Developer',
   ogDescription: 'Portfolio of Leon Kohlhaußen - Full Stack Developer based in Potsdam, Germany',
-  ogUrl: 'https://leonkohli.com',
+  ogUrl: 'https://leonkohli.dev',
   twitterTitle: 'Leon Kohlhaußen - Full Stack Developer',
   twitterDescription: 'Portfolio of Leon Kohlhaußen - Full Stack Developer based in Potsdam, Germany',
   author: 'Leon Kohlhaußen',

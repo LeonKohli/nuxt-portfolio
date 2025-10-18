@@ -1,7 +1,7 @@
 <template>
     <section
         id="tech-stack"
-        v-motion="'section-fade'"
+        v-motion="fade"
         class="flex flex-col justify-center min-h-screen px-4 pt-24 overflow-hidden sm:px-6 lg:px-8 md:pt-0"
     >
         <div class="w-10/12 md:w-8/12 mx-auto max-w-[110rem] px-4">
@@ -9,11 +9,11 @@
             <header class="flex flex-col items-center mb-16 text-center md:items-start md:text-left">
                 <h2 class="text-3xl font-bold tracking-tight sm:text-4xl md:text-6xl lg:text-7xl font-exo">
                     <span
-                      v-motion="'section-fade'"
+                      v-motion="fade"
                       class="text-zinc-100"
                     >My</span>
                     <span
-                      v-motion="'section-fade-up'"
+                      v-motion="slideUp"
                       class="relative inline-block ml-3"
                     >
                         <span class="bg-gradient-to-r from-green-700 via-green-500 to-green-400 bg-clip-text text-transparent transition-all duration-300 hover:bg-[length:200%_100%] bg-[length:100%_100%] bg-[position:0%] hover:bg-[position:100%]">
@@ -22,7 +22,7 @@
                     </span>
                 </h2>
                 <p
-                  v-motion="'section-fade-up-delay-sm'"
+                  v-motion="withDelay(slideUp, 0.15)"
                   class="max-w-[680px] mt-6 text-lg text-white/70 md:text-xl"
                 >
                     These are the technologies I have experience with.
@@ -98,21 +98,8 @@ if (error.value || !techStack.value?.technologies) {
     })
 }
 
-const chipMotion = (index: number) => ({
-  initial: {
-    opacity: 0,
-    y: 24
-  },
-  visibleOnce: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      delay: 0.12 + (index * 0.05),
-      duration: 0.5,
-      ease: [0.22, 1, 0.36, 1]
-    }
-  }
-})
+const { fade, slideUp, withDelay, staggered } = useAnimationPresets()
+const chipMotion = (index: number) => staggered(index, 'fast', 0.12)
 
 // Convert hex color to tailwind-compatible background classes to avoid hydration mismatch
 function getIconBackgroundClass(hexColor: string): string {

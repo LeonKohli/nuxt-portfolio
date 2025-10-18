@@ -1,6 +1,6 @@
 <template>
-  <footer 
-    v-motion="'section-fade'"
+  <footer
+    v-motion="fade"
     class="relative px-4 py-12 overflow-hidden sm:px-6 lg:px-8"
   >
     <!-- Background Elements -->
@@ -21,7 +21,7 @@
     <div class="relative w-10/12 md:w-8/12 mx-auto max-w-[110rem] text-center">
       <!-- Main Content -->
       <h2
-        v-motion="'section-fade'"
+        v-motion="fade"
         class="mb-12 text-3xl font-bold tracking-wide sm:text-4xl md:text-6xl lg:text-7xl font-exo"
       >
         Let's
@@ -33,7 +33,7 @@
       </h2>
 
       <p
-        v-motion="'section-fade-up'"
+        v-motion="slideUp"
         class="mb-12 text-white/70 max-w-[75ch] mx-auto tracking-wide text-lg"
       >
         I am always open to new opportunities and collaborations. Whether you have a question, 
@@ -42,7 +42,7 @@
 
       <!-- Contact Button -->
       <button
-        v-motion="'section-fade-up-delay-sm'"
+        v-motion="withDelay(slideUp, 0.15)"
         class="relative inline-flex h-10 sm:h-12 w-[180px] sm:w-[210px] overflow-hidden rounded-lg p-[1px] focus:outline-none focus:ring-2 focus:ring-emerald-400/50 focus:ring-offset-2 focus:ring-offset-black group transition-all duration-700 delay-200"
         @click="copyEmail"
         data-umami-event="Copy Email"
@@ -105,7 +105,7 @@
 
       <!-- Copyright -->
       <div
-        v-motion="'section-fade-up-delay-md'"
+        v-motion="withDelay(slideUp, 0.3)"
         class="mt-12 text-sm text-white/40"
       >
         © {{ new Date().getFullYear() }} Built with 
@@ -116,6 +116,8 @@
 </template>
 
 <script setup lang="ts">
+const { fade, slideUp, withDelay, staggered } = useAnimationPresets()
+
 const email = 'contact@leonkohli.dev'
 
 // Use VueUse clipboard composable
@@ -126,7 +128,7 @@ const { spotlightStyle, handleMouseMove, handleMouseLeave } = useSpotlightEffect
 
 const backgroundIcons = [
   { name: 'simple-icons:vuedotjs', position: 'left-10 top-10' },
-  { name: 'simple-icons:typescript', position: 'right-20 top-20' }, 
+  { name: 'simple-icons:typescript', position: 'right-20 top-20' },
   { name: 'simple-icons:python', position: 'left-1/4 bottom-20' }
 ]
 
@@ -136,32 +138,6 @@ const socialLinks = [
   { name: 'LinkedIn', url: 'https://www.linkedin.com/in/leon-kohlhau%C3%9Fen/', icon: 'simple-icons:linkedin' },
 ]
 
-const iconMotion = (index: number) => ({
-  initial: {
-    opacity: 0
-  },
-  visibleOnce: {
-    opacity: 1,
-    transition: {
-      delay: 0.1 + (index * 0.05),
-      duration: 0.4
-    }
-  }
-})
-
-const linkMotion = (index: number) => ({
-  initial: {
-    opacity: 0,
-    y: 12
-  },
-  visibleOnce: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      delay: 0.3 + (index * 0.08),
-      duration: 0.45,
-      ease: [0.22, 1, 0.36, 1]
-    }
-  }
-})
+const iconMotion = (index: number) => staggered(index, 'fast', 0.1)
+const linkMotion = (index: number) => staggered(index, 'normal', 0.3)
 </script>

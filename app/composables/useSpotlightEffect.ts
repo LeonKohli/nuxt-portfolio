@@ -1,28 +1,46 @@
+import type { CSSProperties, ComputedRef, Ref } from 'vue'
 import { useThrottleFn } from '@vueuse/core'
 
-export function useSpotlightEffect(): {
-  spotlightStyle: ComputedRef<{ background: string; transform: string }>
+type SpotlightStyle = CSSProperties & {
+  background: string
+  transform: string
+}
+
+interface SpotlightHandlers {
+  onMousemove: (event: MouseEvent) => void
+  onMouseleave: () => void
+}
+
+interface SingleSpotlightReturn {
+  spotlightStyle: ComputedRef<SpotlightStyle>
   handleMouseMove: (event: MouseEvent) => void
   handleMouseLeave: () => void
 }
 
-export function useSpotlightEffect(count: number): {
-  spotlightStyles: Ref<Array<{ background: string; transform: string }>>
-  createHandlers: (index: number) => {
-    onMousemove: (event: MouseEvent) => void
-    onMouseleave: () => void
-  }
+interface MultiSpotlightReturn {
+  spotlightStyles: Ref<SpotlightStyle[]>
+  createHandlers: (index: number) => SpotlightHandlers
 }
 
-export function useSpotlightEffect(count: number = 1): any {
-  const spotlightStyles = ref(
+/**
+ * Creates spotlight effect that follows mouse position
+ * @param count - Number of spotlights (default: 1)
+ */
+export function useSpotlightEffect(): SingleSpotlightReturn
+export function useSpotlightEffect(count: number): MultiSpotlightReturn
+export function useSpotlightEffect(count: number = 1): SingleSpotlightReturn | MultiSpotlightReturn {
+  const { animation } = useAppConfig()
+  const color = animation.colors.spotlight
+  const throttle = animation.performance.throttle
+
+  const spotlightStyles = ref<SpotlightStyle[]>(
     Array.from({ length: count }, () => ({
       background: 'radial-gradient(circle at 50% 50%, rgba(16, 185, 129, 0) 0%, transparent 60%)',
-      transform: 'translate(0%, 0%)'
-    }))
+      transform: 'translate(0%, 0%)',
+    })),
   )
 
-  const createHandlers = (index: number) => {
+  const createHandlers = (index: number): SpotlightHandlers => {
     const onMousemove = useThrottleFn((event: MouseEvent) => {
       const target = event.currentTarget as HTMLElement
       const rect = target.getBoundingClientRect()
@@ -30,15 +48,15 @@ export function useSpotlightEffect(count: number = 1): any {
       const y = ((event.clientY - rect.top) / rect.height) * 100
 
       spotlightStyles.value[index] = {
-        background: `radial-gradient(circle at ${x}% ${y}%, rgba(16, 185, 129, 0.15) 0%, transparent 60%)`,
-        transform: 'translate(0%, 0%)'
+        background: `radial-gradient(circle at ${x}% ${y}%, ${color} 0%, transparent 60%)`,
+        transform: 'translate(0%, 0%)',
       }
-    }, 16)
+    }, throttle)
 
     const onMouseleave = () => {
       spotlightStyles.value[index] = {
         background: 'radial-gradient(circle at 50% 50%, rgba(16, 185, 129, 0) 0%, transparent 60%)',
-        transform: 'translate(0%, 0%)'
+        transform: 'translate(0%, 0%)',
       }
     }
 
@@ -48,9 +66,9 @@ export function useSpotlightEffect(count: number = 1): any {
   if (count === 1) {
     const { onMousemove, onMouseleave } = createHandlers(0)
     return {
-      spotlightStyle: computed(() => spotlightStyles.value[0]),
+      spotlightStyle: computed(() => spotlightStyles.value[0] as SpotlightStyle),
       handleMouseMove: onMousemove,
-      handleMouseLeave: onMouseleave
+      handleMouseLeave: onMouseleave,
     }
   }
 

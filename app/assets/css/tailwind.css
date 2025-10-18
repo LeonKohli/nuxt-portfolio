@@ -19,6 +19,40 @@
   --radius-lg: var(--radius);
   --radius-md: calc(var(--radius) - 2px);
   --radius-sm: calc(var(--radius) - 4px);
+
+  /* Animation Design Tokens */
+  --animate-duration-fast: 200ms;
+  --animate-duration-normal: 400ms;
+  --animate-duration-moderate: 600ms;
+  --animate-duration-slow: 800ms;
+
+  /* Easing Functions */
+  --ease-smooth: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-bounce: cubic-bezier(0.2, 0.8, 0.2, 1);
+
+  /* Custom Animations */
+  --animate-fade-up: fade-up 0.6s var(--ease-smooth);
+  --animate-fade-in: fade-in 0.6s var(--ease-smooth);
+
+  @keyframes fade-up {
+    from {
+      opacity: 0;
+      transform: translateY(24px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
 }
 
 /* Shadcn-vue color theme definitions using @theme inline */

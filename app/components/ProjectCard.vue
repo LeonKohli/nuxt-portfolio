@@ -302,21 +302,8 @@ const scrollRight = () => {
   })
 }
 
-const cardMotion = (index: number) => ({
-  initial: {
-    opacity: 0,
-    y: 32
-  },
-  visibleOnce: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      delay: 0.2 + (index * 0.12),
-      duration: 0.6,
-      ease: [0.22, 1, 0.36, 1]
-    }
-  }
-})
+const { staggered } = useAnimationPresets()
+const cardMotion = (index: number) => staggered(index, 'slow')
 </script>
 
 <style scoped>

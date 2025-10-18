@@ -1,8 +1,8 @@
 <template>
-  <section 
-    v-motion="'section-fade'"
+  <section
+    v-motion="fade"
     class="relative flex items-center justify-center min-h-screen px-4 pb-16 overflow-hidden sm:px-6 lg:px-8 md:pb-0"
-    id="hero" 
+    id="hero"
     aria-labelledby="hero-title"
   >
     <div class="w-10/12 md:w-8/12 mx-auto max-w-[110rem]">
@@ -15,8 +15,8 @@
         <div class="flex items-center justify-center flex-grow">
           <div class="z-10 tracking-wide">
             <!-- Greeting -->
-            <p 
-              v-motion="'section-fade-up'"
+            <p
+              v-motion="slideUp"
               class="w-full mb-2 text-sm font-bold tracking-widest text-center text-green-700 uppercase lg:text-base md:pr-4 md:text-left"
             >
               <span class="relative inline-block group whitespace-nowrap transition-opacity duration-500 ease-out">
@@ -29,14 +29,14 @@
 
             <!-- Name - Optimized for LCP with subtle fade animation -->
             <h1 id="hero-title" class="font-bold text-6xl md:text-[9vw] lg:text-[9.8vw] text-zinc-100 leading-none z-50 text-center md:text-left">
-              <span 
-                v-motion="'section-fade'"
+              <span
+                v-motion="fade"
                 class="block font-exo"
               >
                 LEON
               </span>
-              <span 
-                v-motion="'section-fade-up-delay-sm'"
+              <span
+                v-motion="withDelay(slideUp, 0.15)"
                 class="block font-exo"
               >
                 KOHLHAUßEN
@@ -46,8 +46,8 @@
             <!-- Location and Social Links -->
             <div class="flex flex-col items-center gap-4 mt-6 md:items-start md:flex-row md:justify-between">
               <!-- Location -->
-              <div 
-                v-motion="'section-fade-up-delay-md'"
+              <div
+                v-motion="withDelay(slideUp, 0.3)"
                 class="flex items-center gap-3 text-base sm:text-lg group transition-all duration-700 ease-out"
               >
                 <Icon name="ph:map-pin-fill"
@@ -60,8 +60,8 @@
               </div>
               
               <!-- Social links -->
-              <div 
-                v-motion="'section-fade-up-delay-lg'"
+              <div
+                v-motion="withDelay(slideUp, 0.45)"
                 class="flex items-center gap-4 transition-all duration-700 ease-out"
               >
                 <NuxtLink
@@ -90,8 +90,8 @@
 
         <!-- Scroll Arrow -->
         <div class="absolute flex justify-center w-full -translate-x-1/2 bottom-8 left-1/2">
-          <button 
-            v-motion="'section-fade-up-delay-lg'"
+          <button
+            v-motion="withDelay(slideUp, 0.45)"
             class="transition-all duration-300 hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-emerald-400/50"
             :class="[
               isScrolled ? 'opacity-0 translate-y-4 pointer-events-none' : 'opacity-100'
@@ -112,6 +112,8 @@
 </template>
 
 <script setup lang="ts">
+const { fade, slideUp, withDelay } = useAnimationPresets()
+
 const socialLinks = [
   { 
     name: 'email',

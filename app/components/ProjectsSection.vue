@@ -1,7 +1,7 @@
 <template>
-  <section 
-    v-motion="'section-fade'"
-    class="relative flex flex-col justify-center min-h-screen px-0 overflow-hidden sm:px-6 lg:px-8" 
+  <section
+    v-motion="fade"
+    class="relative flex flex-col justify-center min-h-screen px-0 overflow-hidden sm:px-6 lg:px-8"
     id="projects"
   >
     <!-- Header Container -->
@@ -9,11 +9,11 @@
       <h2 class="font-bold tracking-tight text-center md:text-left">
         <span class="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-exo">
           <span
-            v-motion="'section-fade'"
+            v-motion="fade"
             class="text-zinc-100"
           >My</span>
-          <span 
-            v-motion="'section-fade-up'"
+          <span
+            v-motion="slideUp"
             class="relative inline-block ml-3 group"
           >
             <span class="bg-gradient-to-r from-green-700 via-green-500 to-green-400 
@@ -25,8 +25,8 @@
           </span>
         </span>
       </h2>
-      <p 
-        v-motion="'section-fade-up-delay-sm'"
+      <p
+        v-motion="withDelay(slideUp, 0.15)"
         class="max-w-[680px] mt-8 text-lg text-white/70 md:text-xl"
       >
         Some of my most interesting projects, showcasing my skills and experience in web development.
@@ -71,6 +71,8 @@
 </template>
 
 <script setup lang="ts">
+const { fade, slideUp, withDelay } = useAnimationPresets()
+
 const { data: projects } = await useAsyncData(
   'projects',
   () => queryCollection('projects').order('sort', 'ASC').all()

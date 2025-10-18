@@ -1,7 +1,7 @@
 <template>
-  <section 
-    v-motion="'section-fade'"
-    class="flex flex-col justify-center min-h-screen px-4 pt-24 overflow-hidden sm:px-6 lg:px-8 md:pt-0" 
+  <section
+    v-motion="fade"
+    class="flex flex-col justify-center min-h-screen px-4 pt-24 overflow-hidden sm:px-6 lg:px-8 md:pt-0"
     id="about"
   >
     <div class="w-10/12 md:w-8/12 mx-auto max-w-[110rem] px-4">
@@ -10,11 +10,11 @@
         <h2 class="font-bold tracking-tight">
           <span class="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-exo">
             <span
-              v-motion="'section-fade'"
+              v-motion="fade"
               class="text-zinc-100"
             >About</span>
             <span
-              v-motion="'section-fade-up'"
+              v-motion="slideUp"
               class="relative inline-block ml-3 group"
             >
               <span class="bg-gradient-to-r from-green-700 via-green-500 to-green-400 bg-clip-text text-transparent transition-all duration-300 group-hover:bg-[length:200%_100%] bg-[length:100%_100%] bg-[position:0%] hover:bg-[position:100%]">
@@ -31,7 +31,7 @@
         <div class="grid grid-cols-1 gap-8 lg:grid-cols-2 lg:gap-12">
           <!-- Left Column: Bio -->
           <div
-            v-motion="'section-fade-up'"
+            v-motion="slideUp"
             class="transition-all duration-700"
           >
             <p class="mb-6 text-xl md:text-2xl text-white/90 leading-relaxed [text-wrap:balance]">
@@ -48,7 +48,7 @@
 
           <!-- Right Column: Beyond Coding -->
           <div
-            v-motion="'section-fade-up-delay-sm'"
+            v-motion="withDelay(slideUp, 0.15)"
             class="transition-all duration-700"
           >
             <BeyondCoding />
@@ -62,3 +62,7 @@
     </div>
   </section>
 </template>
+
+<script setup lang="ts">
+const { fade, slideUp, withDelay } = useAnimationPresets()
+</script>
