@@ -1,5 +1,6 @@
 <template>
-  <div 
+  <div
+    ref="iconContainer"
     class="absolute inset-0 overflow-hidden pointer-events-none"
     :class="[
       fullHeight ? 'h-screen' : 'h-full',
@@ -12,7 +13,7 @@
       class="absolute transition-transform"
       :class="[
         `float-animation-${index + 1}`,
-        { 'visible': isMounted }
+        { 'visible': isMounted, 'paused': !isContainerVisible }
       ]"
       :style="{
         top: `${icon.position.top}%`,
@@ -68,6 +69,10 @@ const props = withDefaults(defineProps<Props>(), {
 
 // Use VueUse for mounted state
 const isMounted = useMounted()
+
+// Track visibility to pause animations when not in view
+const iconContainer = ref<HTMLElement | null>(null)
+const isContainerVisible = useElementVisibility(iconContainer, { threshold: 0 })
 </script>
 
 <style scoped>
@@ -109,6 +114,10 @@ const isMounted = useMounted()
 .float-animation-4 { --fade-delay: 1.0s; }
 .float-animation-5 { --fade-delay: 1.3s; }
 .float-animation-6 { --fade-delay: 1.6s; }
+
+.paused[class*='float-animation-'] {
+  animation-play-state: paused !important;
+}
 
 @media (prefers-reduced-motion: reduce) {
   .visible[class*='float-animation-'] {

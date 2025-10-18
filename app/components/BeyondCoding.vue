@@ -11,9 +11,9 @@
       <div 
         v-for="(item, index) in hobbies" 
         :key="index"
-        class="group relative overflow-hidden rounded-xl border border-white/10 bg-white/[0.03] backdrop-blur-xl 
-               transition-all duration-300 hover:bg-white/[0.07] hover:border-emerald-500/20 
-               hover:shadow-[0_0_25px_-5px_rgba(16,185,129,0.15)] hover:-translate-y-1"
+        class="group relative overflow-hidden rounded-xl border border-white/10 bg-white/[0.03] backdrop-blur-xl
+               transition-all duration-300 hover:bg-white/[0.07] hover:border-emerald-500/20
+               hover:shadow-[0_0_25px_-5px_rgba(16,185,129,0.15)] hover:-translate-y-1 will-change-transform"
         v-bind="createHandlers(index)"
       >
         <div class="relative z-10 p-4">

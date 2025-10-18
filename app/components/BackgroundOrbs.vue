@@ -1,5 +1,5 @@
 <template>
-  <div class="fixed inset-0 z-0 overflow-hidden pointer-events-none">
+  <div ref="orbContainer" class="fixed inset-0 z-0 overflow-hidden pointer-events-none">
     <!-- Simple Grid Pattern -->
     <div class="absolute inset-0 overflow-hidden grid-pattern" />
     
@@ -19,6 +19,10 @@
 <script setup lang="ts">
 // Track scroll for orb darkening effect
 const { y: scrollY } = useWindowScroll()
+
+// Track visibility to pause animations when not in view
+const orbContainer = ref<HTMLElement | null>(null)
+const isVisible = useElementVisibility(orbContainer, { threshold: 0 })
 
 // Calculate parallax effects for each orb with maximum movement limits
 const orb1Style = computed(() => {
@@ -97,6 +101,7 @@ const orbCenterStyle = computed(() => {
   pointer-events: none;
   border-radius: 50%;
   filter: blur(80px);
+  will-change: transform;
 }
 
 /* Position wrappers - grid pattern is child 1 */

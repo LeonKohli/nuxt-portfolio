@@ -34,9 +34,9 @@
                 <li v-for="(tech, index) in techStack?.technologies" :key="tech.name">
                     <a :href="tech.url" target="_blank" rel="noopener noreferrer" 
                        v-motion="chipMotion(index)"
-                       class="group flex p-4 transition-all duration-500 rounded-xl border border-white/10 
+                       class="group flex p-4 transition-all duration-500 rounded-xl border border-white/10
                               hover:border-emerald-500/20 bg-white/[0.02] hover:bg-emerald-500/[0.02] hover:-translate-y-1.5
-                              focus:outline-none focus:ring-2 focus:ring-emerald-500/50"
+                              focus:outline-none focus:ring-2 focus:ring-emerald-500/50 will-change-transform"
                        v-bind="createHandlers(index)">
                         
                         <!-- Spotlight Effect (simplified) -->

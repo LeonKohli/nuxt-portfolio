@@ -347,14 +347,14 @@ const cardMotion = (index: number) => ({
 
 /* Base transitions */
 .project-transition {
-  transition-property: all;
+  transition-property: transform, opacity, box-shadow, filter;
   transition-timing-function: cubic-bezier(0.25, 0.1, 0.25, 1.0);
   transition-duration: 500ms;
   will-change: transform, opacity;
 }
 
 .project-hover-transition {
-  transition-property: all;
+  transition-property: transform, opacity, background-color, scale;
   transition-timing-function: cubic-bezier(0.2, 0.8, 0.2, 1);
   transition-duration: 300ms;
   will-change: transform, opacity, background-color;
