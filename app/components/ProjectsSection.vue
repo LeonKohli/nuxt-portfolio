@@ -74,8 +74,7 @@ const { data: projects } = await useAsyncData('projects', () =>
     .all()
 )
 
-// Computed property for sorted projects with fallback to empty array
-const sortedProjects = computed(() => projects.value ?? [])
+const sortedProjects = computed(() => projects.value || [])
 
 const currentProjectIndex = ref(0)
 const hasScrolled = ref(false)

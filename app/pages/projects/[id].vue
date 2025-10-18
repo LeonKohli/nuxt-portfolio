@@ -373,27 +373,10 @@ const getCategoryLabel = (category: string): string => {
 // Fetch the current project with a straightforward approach
 const { data: project, pending } = await useAsyncData(
   `project-${route.params.id}`,
-  async () => {
-    try {
-      // Get the slug from the route parameter
-      const projectSlug = route.params.id as string;
-
-      // Query the project by slug
-      const result = await queryCollection('projects')
-        .where('slug', '=', projectSlug)
-        .first();
-
-      if (!result) {
-        return null;
-      }
-
-      return result;
-    } catch (err) {
-      console.error('Error fetching project:', err);
-      return null;
-    }
-  }
-);
+  () => queryCollection('projects')
+    .where('slug', '=', route.params.id as string)
+    .first()
+)
 
 // SEO Meta tags - with better error handling
 watchEffect(() => {
@@ -419,82 +402,43 @@ watchEffect(() => {
   }
 });
 
-// Get all projects for navigation and related projects
-// Using a simpler approach that's less likely to have issues
 const { data: allProjects } = await useAsyncData(
   'all-projects',
-  async () => {
-    const projects = await queryCollection('projects')
-      .order('sort', 'ASC')
-      .all();
+  () => queryCollection('projects').order('sort', 'ASC').all()
+)
 
-    return projects;
-  },
-  {
-    default: () => []
-  }
-);
+const projectIndex = computed(() =>
+  allProjects.value?.findIndex(p => p.slug === project.value?.slug) ?? -1
+)
 
-// Get previous and next projects for navigation
-const projectIndex = computed(() => {
-  if (!project.value || !allProjects.value)
-    return -1;
-  return allProjects.value.findIndex((p) => p.slug === project.value?.slug);
-});
-
-const previousProject = computed(() => {
-  if (projectIndex.value <= 0 || !allProjects.value)
-    return null;
-  return allProjects.value[projectIndex.value - 1];
-});
+const previousProject = computed(() =>
+  projectIndex.value > 0 ? allProjects.value?.[projectIndex.value - 1] : null
+)
 
 const nextProject = computed(() => {
-  if (projectIndex.value === -1 || !allProjects.value || projectIndex.value >= allProjects.value.length - 1)
-    return null;
-  return allProjects.value[projectIndex.value + 1];
-});
+  const idx = projectIndex.value
+  const projects = allProjects.value
+  return idx >= 0 && projects && idx < projects.length - 1 ? projects[idx + 1] : null
+})
 
-// Get related projects based on shared tags, tech, or category
 const relatedProjects = computed(() => {
-  if (!project.value || !allProjects.value)
-    return [];
+  const current = project.value
+  const all = allProjects.value
+  if (!current || !all) return []
 
-  // Filter out the current project
-  const otherProjects = allProjects.value.filter((p) => p.slug !== project.value?.slug);
-
-  // Calculate a score for each project based on similarities
-  const projectsWithScores = otherProjects.map((p) => {
-    let score = 0;
-
-    // Check category match
-    if (p.category && p.category === project.value?.category) {
-      score += 3;
-    }
-
-    // Check tech stack overlaps
-    const techOverlap = p.tech.filter((tech) =>
-      project.value?.tech.some((t) => t.name === tech.name),
-    ).length;
-    score += techOverlap * 2;
-
-    // Check tag overlaps if tags exist
-    if (p.tags && project.value?.tags) {
-      const tagOverlap = p.tags.filter((tag: string) =>
-        project.value?.tags?.includes(tag),
-      ).length;
-      score += tagOverlap * 2;
-    }
-
-    return { project: p, score };
-  });
-
-  // Sort by score (highest first) and take top 3
-  return projectsWithScores
+  return all
+    .filter(p => p.slug !== current.slug)
+    .map(p => ({
+      project: p,
+      score: (p.category === current.category ? 3 : 0) +
+             p.tech.filter(t => current.tech.some(ct => ct.name === t.name)).length * 2 +
+             (p.tags && current.tags ? p.tags.filter((t: string) => current.tags?.includes(t)).length * 2 : 0)
+    }))
+    .filter(item => item.score > 0)
     .sort((a, b) => b.score - a.score)
-    .filter((item) => item.score > 0)
     .slice(0, 3)
-    .map((item) => item.project);
-});
+    .map(item => item.project)
+})
 </script>
 
 <style>

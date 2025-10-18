@@ -274,9 +274,8 @@ onMounted(() => {
     // Wait for next tick to ensure DOM is ready
     nextTick(() => {
       updateScrollState()
-      // Only show navigation if content is scrollable
-      showNavigation.value = 
-        scrollContainer.value!.scrollWidth > scrollContainer.value!.clientWidth
+      const el = scrollContainer.value
+      if (el) showNavigation.value = el.scrollWidth > el.clientWidth
     })
   }
 })
