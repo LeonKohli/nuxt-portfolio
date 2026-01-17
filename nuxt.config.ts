@@ -1,11 +1,11 @@
 import tailwindcss from '@tailwindcss/vite'
 
 export default defineNuxtConfig({
-  compatibilityDate: '2025-10-11',
+  compatibilityDate: '2026-01-01',
   devtools: { enabled: true },
-    nitro: {
-      preset: 'bun',
-    },
+  nitro: {
+    preset: 'bun',
+  },
   modules: [
     '@nuxt/icon',
     '@nuxt/fonts',
@@ -46,17 +46,20 @@ export default defineNuxtConfig({
         },
         ...(process.env.NODE_ENV === 'production'
           ? [
-              {
-                src: process.env.NUXT_PUBLIC_UMAMI_URL,
-                defer: true,
-                'data-website-id': process.env.NUXT_PUBLIC_UMAMI_WEBSITE_ID
-              }
-            ]
+            {
+              src: process.env.NUXT_PUBLIC_UMAMI_URL,
+              defer: true,
+              'data-website-id': process.env.NUXT_PUBLIC_UMAMI_WEBSITE_ID
+            }
+          ]
           : [])
       ]
     }
   },
   content: {
+    experimental: {
+      nativeSqlite: true
+    },
     build: {
       markdown: {
         highlight: {
@@ -93,7 +96,7 @@ export default defineNuxtConfig({
       ]
     }
   },
-  
+
   // Security configuration with CSP and SRI disabled
   // SRI is incompatible with external scripts (Cloudflare, Umami) that change independently
   security: {
