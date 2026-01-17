@@ -4,7 +4,7 @@ export default defineNuxtConfig({
   compatibilityDate: '2026-01-01',
   devtools: { enabled: true },
   nitro: {
-    preset: 'bun',
+    preset: 'node-server',
   },
   modules: [
     '@nuxt/icon',
