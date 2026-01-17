@@ -64,9 +64,7 @@ export default defineNuxtConfig({
     }
   },
   content: {
-    experimental: {
-      nativeSqlite: true
-    },
+    // Let @nuxt/content auto-detect SQLite provider (uses bun:sqlite on Bun runtime)
     build: {
       markdown: {
         highlight: {
