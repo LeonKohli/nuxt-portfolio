@@ -100,7 +100,8 @@ export default defineNuxtConfig({
     sri: false,
     headers: {
       contentSecurityPolicy: false
-    }
+    },
+    rateLimiter: false // Disable rate limiting in dev (annoying for hot-reload)
   }
 
 });
