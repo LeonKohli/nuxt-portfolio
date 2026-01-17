@@ -6,6 +6,9 @@ export default defineNuxtConfig({
   nitro: {
     preset: 'bun',
   },
+  typescript: {
+    typeCheck: false, // Disable during build - causes Docker hangs with Bun
+  },
   modules: [
     '@nuxt/icon',
     '@nuxt/fonts',
