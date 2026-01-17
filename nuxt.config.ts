@@ -4,7 +4,11 @@ export default defineNuxtConfig({
   compatibilityDate: '2026-01-01',
   devtools: { enabled: true },
   nitro: {
-    preset: 'node-server',
+    preset: 'bun',
+    // Bundle these packages instead of externalizing - fixes Bun module resolution
+    externals: {
+      inline: ['ofetch', 'ipx', 'defu', 'ufo']
+    }
   },
   typescript: {
     typeCheck: false, // Disable during build - causes Docker hangs with Bun
