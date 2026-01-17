@@ -13,6 +13,11 @@ export default defineNuxtConfig({
   typescript: {
     typeCheck: false, // Disable during build - causes Docker hangs with Bun
   },
+  // Load icons from CDN instead of bundling 21MB locally
+  icon: {
+    serverBundle: 'remote',
+  },
+
   modules: [
     '@nuxt/icon',
     '@nuxt/fonts',
