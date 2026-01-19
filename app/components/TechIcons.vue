@@ -1,128 +1,88 @@
 <template>
   <div
-    ref="iconContainer"
-    class="absolute inset-0 overflow-hidden pointer-events-none"
-    :class="[
-      fullHeight ? 'h-screen' : 'h-full',
-      zIndex ? `-z-${zIndex}` : ''
-    ]"
+    ref="containerRef"
+    class="absolute inset-0 h-full overflow-hidden pointer-events-none"
   >
-    <div 
-      v-for="(icon, index) in icons" 
+    <div
+      v-for="(icon, index) in icons"
       :key="icon.name"
-      class="absolute transition-transform"
+      class="absolute will-change-transform flex items-center justify-center select-none touch-none"
       :class="[
-        `float-animation-${index + 1}`,
-        { 'visible': isMounted, 'paused': !isContainerVisible }
+        { 'opacity-100': isMounted, 'opacity-0': !isMounted },
+        isInteractive ? 'cursor-grab active:cursor-grabbing pointer-events-auto' : 'pointer-events-none'
       ]"
       :style="{
-        top: `${icon.position.top}%`,
-        left: `${icon.position.left}%`,
-        fontSize: `${iconSize}px`
+        transform: `translate(${elements[index]?.x || 0}px, ${elements[index]?.y || 0}px)`,
+        transition: isDragging ? 'none' : 'opacity 0.5s ease-out',
+        width: `${iconSize}px`,
+        height: `${iconSize}px`
       }"
+      @mousedown.stop="(e) => startDrag(index, e.clientX, e.clientY)"
+      @touchstart.stop.prevent="(e) => e.touches[0] && startDrag(index, e.touches[0].clientX, e.touches[0].clientY)"
+      @dblclick.stop="kick(index)"
     >
-      <Icon 
-        :name="icon.name" 
+      <Icon
+        :name="icon.name"
         :class="[
-          'transform transition-all duration-500 hover:scale-110 hover:rotate-[360deg]',
+          'transition-colors duration-300 w-full h-full pointer-events-none',
           iconColorClass
         ]"
         :aria-label="icon.name.split(':')[1]"
-        :width="iconSize"
-        :height="iconSize"
+        :size="`${iconSize}px`"
       />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
+import type { InitialPosition } from '~/composables/useFloatingPhysics'
+
 interface TechIcon {
   name: string
-  position: {
-    top: number
-    left: number
-  }
+  initialPos: InitialPosition
 }
 
 interface Props {
   icons?: TechIcon[]
   iconSize?: number
-  fullHeight?: boolean
-  zIndex?: number
   iconColorClass?: string
 }
 
 const props = withDefaults(defineProps<Props>(), {
   icons: () => [
-    { name: 'simple-icons:vuedotjs', position: { top: 10, left: 5 } },
-    { name: 'simple-icons:nuxtdotjs', position: { top: 25, left: 85 } },
-    { name: 'simple-icons:typescript', position: { top: 15, left: 35 } },
-    { name: 'simple-icons:tailwindcss', position: { top: 35, left: 60 } },
-    { name: 'simple-icons:python', position: { top: 65, left: 15 } },
-    { name: 'simple-icons:postgresql', position: { top: 80, left: 75 } },
+    { name: 'simple-icons:vuedotjs', initialPos: { x: 5, y: 10 } },
+    { name: 'simple-icons:nuxtdotjs', initialPos: { x: 85, y: 25 } },
+    { name: 'simple-icons:typescript', initialPos: { x: 35, y: 15 } },
+    { name: 'simple-icons:tailwindcss', initialPos: { x: 60, y: 35 } },
+    { name: 'simple-icons:python', initialPos: { x: 15, y: 65 } },
+    { name: 'simple-icons:postgresql', initialPos: { x: 75, y: 80 } },
+    { name: 'simple-icons:docker', initialPos: { x: 90, y: 55 } },
+    { name: 'simple-icons:linux', initialPos: { x: 45, y: 85 } },
   ],
-  iconSize: 120,
-  fullHeight: true,
-  zIndex: 1,
-  iconColorClass: 'text-[#22c55e]'
+  iconSize: 100,
+  iconColorClass: 'text-[#22c55e]/20'
 })
 
-// Use VueUse for mounted state
 const isMounted = useMounted()
+const containerRef = ref<HTMLElement | null>(null)
 
-// Track visibility to pause animations when not in view
-const iconContainer = ref<HTMLElement | null>(null)
-const isContainerVisible = useElementVisibility(iconContainer, { threshold: 0 })
+// Extract initial positions from icons
+const initialPositions = computed(() =>
+  props.icons.map(icon => icon.initialPos)
+)
+
+// Use the physics composable
+const { elements, isDragging, isInteractive, startDrag, kick } = useFloatingPhysics(
+  initialPositions.value,
+  {
+    radius: props.iconSize / 2,
+    containerRef,
+    friction: 0.98,
+    maxVelocity: 60,
+    wallBounce: 0.8,
+    collisionBounce: 0.85,
+    throwMultiplier: 1.5,
+    ambientDrift: true,
+  }
+)
 </script>
-
-<style scoped>
-@keyframes fadeScale {
-  0% {
-    opacity: 0;
-    transform: scale(0.85);
-  }
-  100% {
-    opacity: var(--final-opacity);
-    transform: scale(1);
-  }
-}
-
-@keyframes float {
-  0%, 100% { transform: translate(0, 0); }
-  50% { transform: translate(0, -15px); }
-}
-
-[class*='float-animation-'] {
-  --final-opacity: 0.15;
-  opacity: 0;
-  will-change: transform, opacity;
-}
-
-.visible[class*='float-animation-'] {
-  animation: 
-    fadeScale 1s var(--fade-delay) forwards,
-    float 3s ease-in-out calc(var(--fade-delay) + 1s) infinite;
-}
-
-[class*='float-animation-']:hover {
-  --final-opacity: 0.3;
-}
-
-.float-animation-1 { --fade-delay: 0.1s; }
-.float-animation-2 { --fade-delay: 0.4s; }
-.float-animation-3 { --fade-delay: 0.7s; }
-.float-animation-4 { --fade-delay: 1.0s; }
-.float-animation-5 { --fade-delay: 1.3s; }
-.float-animation-6 { --fade-delay: 1.6s; }
-
-.paused[class*='float-animation-'] {
-  animation-play-state: paused !important;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .visible[class*='float-animation-'] {
-    animation: fadeScale 0.8s ease-out forwards !important;
-    transform: none !important;
-  }
-}
-</style>
