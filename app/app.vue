@@ -43,4 +43,28 @@ body {
   min-height: 100vh;
 }
 
+/* Simple, Clean Page Transitions */
+.page-enter-active,
+.page-leave-active {
+  transition: opacity 0.3s ease, filter 0.3s ease;
+}
+
+.page-enter-from,
+.page-leave-to {
+  opacity: 0;
+  filter: blur(4px);
+}
+
+/* Accessibility: Respect reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  .page-enter-active,
+  .page-leave-active {
+    transition: opacity 0.15s ease;
+  }
+
+  .page-enter-from,
+  .page-leave-to {
+    filter: none;
+  }
+}
 </style>

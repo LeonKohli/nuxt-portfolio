@@ -1,5 +1,5 @@
 <template>
-  <div class="pt-24 overflow-x-hidden page-transition">
+  <div class="pt-24 overflow-x-hidden">
     <!-- Hide the main navbar on project pages -->
 
     <!-- Navigation with Back Button -->
@@ -446,22 +446,6 @@ nav.main-navbar {
   display: none !important;
 }
 
-/* Page transition animations */
-.page-transition {
-  animation: fadeIn 0.5s ease-out forwards;
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
 /* Project navigation animation */
 .project-nav-link {
   transition: transform 0.3s ease, background-color 0.3s ease;
@@ -500,10 +484,6 @@ nav.main-navbar {
 
 /* Responsive adjustments */
 @media (prefers-reduced-motion: reduce) {
-  .page-transition {
-    animation: none;
-  }
-
   .project-nav-link:hover {
     transform: none;
   }
