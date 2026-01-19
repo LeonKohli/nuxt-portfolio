@@ -49,5 +49,8 @@
     "sharp": "^0.34.5",
     "typescript": "^5.9.3",
     "vue-tsc": "^3.2.2"
+  },
+  "patchedDependencies": {
+    "@nuxt/content@3.11.0": "patches/@nuxt%2Fcontent@3.11.0.patch"
   }
 }

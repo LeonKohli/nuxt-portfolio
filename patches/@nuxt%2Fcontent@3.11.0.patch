@@ -1,0 +1,13 @@
+diff --git a/dist/module.mjs b/dist/module.mjs
+index 681a4ea41437f24dfc0645cb544e858ab2f1a6d0..63b61cb0b365cc97e83766a1ae1880df69a0f264 100644
+--- a/dist/module.mjs
++++ b/dist/module.mjs
+@@ -1843,7 +1843,7 @@ function watchContents(nuxt, options, manifest) {
+     } else {
+       collectionDump.splice(indexToUpdate, itemsToRemove);
+     }
+-    updateTemplates({
++    await updateTemplates({
+       filter: (template) => [
+         moduleTemplates.manifest,
+         moduleTemplates.fullCompressedDump

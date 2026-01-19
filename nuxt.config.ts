@@ -33,6 +33,14 @@ export default defineNuxtConfig({
 
   vite: {
     plugins: [tailwindcss()],
+    // Workaround for @nuxt/content HMR race condition:
+    // Vite watcher sees database.compressed.mjs being written and triggers HMR
+    // before the file write completes, causing "Database integrity check failed"
+    server: {
+      watch: {
+        ignored: ['**/.nuxt/content/database.compressed.mjs', '**/.nuxt/content/sql_dump.txt']
+      }
+    }
   },
 
   css: ['@/assets/css/tailwind.css'],
