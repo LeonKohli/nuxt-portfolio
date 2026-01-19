@@ -27,12 +27,9 @@
               @mouseenter="handleCardHover(project.slug, true)"
               @mouseleave="handleCardHover(project.slug, false)"
             >
-              <!-- Background gradient -->
+              <!-- Background gradient (static - no animation needed, 5% opacity change was imperceptible) -->
               <div
-                v-motion="`${project.slug}-bg-gradient`"
-                :initial="{ opacity: 0.8 }"
-                :variants="bgGradientVariants"
-                class="absolute inset-0 z-20 bg-gradient-to-t from-black via-black/80 to-black/60"
+                class="absolute inset-0 z-20 bg-gradient-to-t from-black via-black/80 to-black/60 opacity-80"
               />
 
               <!-- Background overlay -->
@@ -43,12 +40,12 @@
                 class="absolute inset-0 z-30 bg-[#000000]"
               />
 
-              <!-- Shadow overlay -->
+              <!-- Shadow overlay (pre-rendered, opacity-only animation for GPU acceleration) -->
               <div
                 v-motion="`${project.slug}-shadow`"
-                :initial="{ boxShadow: '0 0 0 rgba(0,0,0,0)' }"
+                :initial="{ opacity: 0 }"
                 :variants="shadowVariants"
-                class="absolute inset-0 z-10 pointer-events-none"
+                class="absolute inset-0 z-10 pointer-events-none shadow-[0_8px_30px_rgba(16,185,129,0.1)]"
               />
 
               <!-- Content -->
@@ -354,18 +351,7 @@ const { animation } = useAppConfig()
 
 const cardMotion = (index: number) => staggered(index, 'slow')
 
-// Define all animation variants
-const bgGradientVariants = {
-  initial: { opacity: 0.8 },
-  hovered: {
-    opacity: 0.85,
-    transition: {
-      duration: 0.4,
-      ease: animation.easing.smooth,
-    },
-  },
-}
-
+// Define all animation variants (7 elements - bgGradient removed as 5% opacity change was imperceptible)
 const bgOverlayVariants = {
   initial: { opacity: 0 },
   hovered: {
@@ -378,9 +364,9 @@ const bgOverlayVariants = {
 }
 
 const shadowVariants = {
-  initial: { boxShadow: '0 0 0 rgba(0,0,0,0)' },
+  initial: { opacity: 0 },
   hovered: {
-    boxShadow: '0 8px 30px rgba(16, 185, 129, 0.1)',
+    opacity: 1,
     transition: {
       duration: 0.4,
       ease: animation.easing.smooth,
@@ -481,9 +467,8 @@ const motions = useMotions()
 const handleCardHover = (slug: string, isHovered: boolean) => {
   const variant = isHovered ? 'hovered' : 'initial'
 
-  // Trigger all child animations for this card
+  // Trigger all child animations for this card (7 elements)
   const elements = [
-    `${slug}-bg-gradient`,
     `${slug}-bg-overlay`,
     `${slug}-shadow`,
     `${slug}-title`,
