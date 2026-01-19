@@ -53,7 +53,7 @@ export default defineContentConfig({
       type: 'page',
       source: {
         include: '*.md',
-        exclude: ['tech-stack.md']
+        exclude: ['tech-stack.md', 'projects/**']
       }
     })
   }
