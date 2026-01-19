@@ -1,19 +1,23 @@
 <template>
   <div class="relative min-h-screen overflow-x-hidden font-mono antialiased text-white bg-black" role="document">
     <!-- Simplified background gradient -->
-    <div 
-      class="fixed inset-0 bg-gradient-to-b from-emerald-900/20 via-black to-black" 
+    <div
+      class="fixed inset-0 bg-gradient-to-b from-emerald-900/20 via-black to-black"
       aria-hidden="true">
     </div>
-    
+
     <!-- Animated orbs -->
     <BackgroundOrbs aria-hidden="true" />
+
+    <!-- Global tech icons - spans full document height -->
+    <GlobalTechIcons aria-hidden="true" />
 
     <!-- Navigation -->
     <Navbar />
 
-    <!-- Main content -->
-    <main id="main-content" class="relative z-10">
+    <!-- Main content - pointer-events-none allows clicks to pass through to icons behind -->
+    <!-- Interactive elements in sections have pointer-events-auto -->
+    <main id="main-content" class="relative z-10 pointer-events-none">
       <NuxtPage />
     </main>
   </div>

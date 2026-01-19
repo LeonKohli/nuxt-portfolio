@@ -3,11 +3,8 @@
     v-motion="fade"
     class="relative px-4 py-12 overflow-hidden sm:px-6 lg:px-8"
   >
-    <!-- Background Elements -->
-    <TechIcons aria-hidden="true" />
-
     <!-- Content -->
-    <div class="relative w-10/12 md:w-8/12 mx-auto max-w-[110rem] text-center pointer-events-none">
+    <div class="relative z-10 w-10/12 md:w-8/12 mx-auto max-w-[110rem] text-center pointer-events-none">
       <!-- Main Content -->
       <h2
         v-motion="fade"

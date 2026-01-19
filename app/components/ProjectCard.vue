@@ -1,5 +1,5 @@
 <template>
-  <div class="relative w-full touch-pan-x" ref="cardRef">
+  <div class="relative w-full touch-pan-x pointer-events-auto" ref="cardRef">
 
     <div
       class="flex w-full overflow-x-scroll overscroll-x-contain py-8 scroll-smooth

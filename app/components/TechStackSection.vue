@@ -32,11 +32,11 @@
             <!-- Tech Grid - Fixed 3 rows max -->
             <ul class="grid grid-cols-1 gap-3 xs:grid-cols-2 sm:grid-cols-3 md:grid-cols-4">
                 <li v-for="(tech, index) in techStack?.technologies" :key="tech.name">
-                    <a :href="tech.url" target="_blank" rel="noopener noreferrer" 
+                    <a :href="tech.url" target="_blank" rel="noopener noreferrer"
                        v-motion="chipMotion(index)"
                        class="group flex p-4 transition-all duration-500 rounded-xl border border-white/10
                               hover:border-emerald-500/20 bg-white/[0.02] hover:bg-emerald-500/[0.02] hover:-translate-y-1.5
-                              focus:outline-none focus:ring-2 focus:ring-emerald-500/50 will-change-transform"
+                              focus:outline-none focus:ring-2 focus:ring-emerald-500/50 will-change-transform pointer-events-auto"
                        v-bind="createHandlers(index)">
                         
                         <!-- Spotlight Effect (simplified) -->

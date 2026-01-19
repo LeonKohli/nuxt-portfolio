@@ -46,6 +46,8 @@ interface Props {
   icons?: TechIcon[]
   iconSize?: number
   iconColorClass?: string
+  /** Use container bounds instead of window (for smaller containers like footer) */
+  useContainerBounds?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -60,7 +62,8 @@ const props = withDefaults(defineProps<Props>(), {
     { name: 'simple-icons:linux', initialPos: { x: 45, y: 85 } },
   ],
   iconSize: 100,
-  iconColorClass: 'text-[#22c55e]/20'
+  iconColorClass: 'text-[#22c55e]/20',
+  useContainerBounds: false,
 })
 
 const isMounted = useMounted()
@@ -77,6 +80,7 @@ const { elements, isDragging, isInteractive, startDrag, kick } = useFloatingPhys
   {
     radius: props.iconSize / 2,
     containerRef,
+    useContainerBounds: props.useContainerBounds,
     friction: 0.98,
     maxVelocity: 60,
     wallBounce: 0.8,

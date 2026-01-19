@@ -6,9 +6,6 @@
     aria-labelledby="hero-title"
   >
     <div class="w-10/12 md:w-8/12 mx-auto max-w-[110rem]">
-      <!-- Tech icons background -->
-      <TechIcons aria-hidden="true" />
-      
       <!-- Main content with simplified structure -->
       <div class="relative z-10 flex flex-col h-screen pointer-events-none">
         <!-- Content wrapper -->
