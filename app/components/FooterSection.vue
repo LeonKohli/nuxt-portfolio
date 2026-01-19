@@ -4,25 +4,14 @@
     class="relative px-4 py-12 overflow-hidden sm:px-6 lg:px-8"
   >
     <!-- Background Elements -->
-    <div class="absolute inset-0 opacity-15">
-      <Icon 
-        v-for="(icon, index) in backgroundIcons" 
-        :key="index"
-        :name="icon.name"
-        v-motion="iconMotion(index)"
-        :class="[
-          'absolute text-green-400 w-14 h-14 transition-opacity duration-700',
-          icon.position
-        ]"
-      />
-    </div>
+    <TechIcons aria-hidden="true" />
 
     <!-- Content -->
-    <div class="relative w-10/12 md:w-8/12 mx-auto max-w-[110rem] text-center">
+    <div class="relative w-10/12 md:w-8/12 mx-auto max-w-[110rem] text-center pointer-events-none">
       <!-- Main Content -->
       <h2
         v-motion="fade"
-        class="mb-12 text-3xl font-bold tracking-wide sm:text-4xl md:text-6xl lg:text-7xl font-exo"
+        class="mb-12 text-3xl font-bold tracking-wide sm:text-4xl md:text-6xl lg:text-7xl font-exo pointer-events-auto"
       >
         Let's
         <span class="relative inline-block group">
@@ -34,7 +23,7 @@
 
       <p
         v-motion="slideUp"
-        class="mb-12 text-white/70 max-w-[75ch] mx-auto tracking-wide text-lg"
+        class="mb-12 text-white/70 max-w-[75ch] mx-auto tracking-wide text-lg pointer-events-auto"
       >
         I am always open to new opportunities and collaborations. Whether you have a question, 
         a project proposal, or just want to say hello, feel free to get in touch.
@@ -43,7 +32,7 @@
       <!-- Contact Button -->
       <button
         v-motion="withDelay(slideUp, 0.15)"
-        class="relative inline-flex h-10 sm:h-12 w-[180px] sm:w-[210px] overflow-hidden rounded-lg p-[1px] focus:outline-none focus:ring-2 focus:ring-emerald-400/50 focus:ring-offset-2 focus:ring-offset-black group transition-all duration-700 delay-200"
+        class="relative inline-flex h-10 sm:h-12 w-[180px] sm:w-[210px] overflow-hidden rounded-lg p-[1px] focus:outline-none focus:ring-2 focus:ring-emerald-400/50 focus:ring-offset-2 focus:ring-offset-black group transition-all duration-700 delay-200 pointer-events-auto"
         @click="copyEmail"
         data-umami-event="Copy Email"
         @mousemove="handleMouseMove"
@@ -85,7 +74,7 @@
       </button>
 
       <!-- Social Links -->
-      <div class="flex justify-center mt-12 space-x-6">
+      <div class="flex justify-center mt-12 gap-6 pointer-events-auto">
         <NuxtLink
           v-for="(link, index) in socialLinks"
           :key="link.name"
@@ -94,11 +83,16 @@
           target="_blank"
           rel="noopener noreferrer"
           v-motion="linkMotion(index)"
-          class="flex items-center justify-center w-10 h-10 transition-all duration-300 rounded-full text-white/40 hover:text-white focus:outline-none focus:ring-2 focus:ring-emerald-400/50 hover:-translate-y-1"
+          class="flex items-center justify-center transition-all duration-300 text-white/70 hover:text-white focus:outline-none focus:ring-2 focus:ring-emerald-400/50 hover:-translate-y-1 p-2"
           :data-umami-event="`Visit ${link.name}`"
           :aria-label="`Visit my ${link.name} profile`"
         >
-          <Icon :name="link.icon" class="w-5 h-5" aria-hidden="true" />
+          <Icon
+            :name="link.playfulIcon"
+            class="w-8 h-8 transition-all duration-300 sm:w-10 sm:h-10 group-hover:scale-110"
+            loading="lazy"
+            aria-hidden="true"
+          />
           <span class="sr-only">{{ link.name }}</span>
         </NuxtLink>
       </div>
@@ -126,18 +120,11 @@ const copyEmail = () => copy(email)
 
 const { spotlightStyle, handleMouseMove, handleMouseLeave } = useSpotlightEffect()
 
-const backgroundIcons = [
-  { name: 'simple-icons:vuedotjs', position: 'left-10 top-10' },
-  { name: 'simple-icons:typescript', position: 'right-20 top-20' },
-  { name: 'simple-icons:python', position: 'left-1/4 bottom-20' }
-]
-
 const socialLinks = [
-  { name: 'GitHub', url: 'https://github.com/leonkohli', icon: 'simple-icons:github' },
-  { name: 'GitLab', url: 'https://gitlab.com/opendata-apps/mantis', icon: 'simple-icons:gitlab' },
-  { name: 'LinkedIn', url: 'https://www.linkedin.com/in/leon-kohlhau%C3%9Fen/', icon: 'simple-icons:linkedin' },
+  { name: 'GitHub', url: 'https://github.com/leonkohli', playfulIcon: 'ph:github-logo-fill' },
+  { name: 'GitLab', url: 'https://gitlab.com/opendata-apps/mantis', playfulIcon: 'ph:gitlab-logo-simple-fill' },
+  { name: 'LinkedIn', url: 'https://www.linkedin.com/in/leon-kohlhau%C3%9Fen/', playfulIcon: 'ri:linkedin-fill' },
 ]
 
-const iconMotion = (index: number) => staggered(index, 'fast', 0.1)
 const linkMotion = (index: number) => staggered(index, 'normal', 0.3)
 </script>
