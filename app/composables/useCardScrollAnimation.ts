@@ -24,8 +24,6 @@ interface UseCardScrollAnimationOptions {
   projects: Ref<any[]> | any[]
   /** Callback to trigger animation for a specific card index */
   onAnimate: (index: number) => void
-  /** Optional: Custom scroll animation duration in ms (default: 400) */
-  scrollDuration?: number
   /** Optional: Visibility threshold (0-1, default: 0.2 = 20%) */
   visibilityThreshold?: number
 }
@@ -33,8 +31,6 @@ interface UseCardScrollAnimationOptions {
 interface CardDimensions {
   cardWidth: number
   cardGap: number
-  spacer: number
-  isMobile: boolean
 }
 
 export function useCardScrollAnimation(options: UseCardScrollAnimationOptions) {
@@ -42,7 +38,6 @@ export function useCardScrollAnimation(options: UseCardScrollAnimationOptions) {
     scrollContainer,
     projects,
     onAnimate,
-    scrollDuration = 400,
     visibilityThreshold = 0.2,
   } = options
 
@@ -53,17 +48,27 @@ export function useCardScrollAnimation(options: UseCardScrollAnimationOptions) {
   const visibleCardIndices = ref(new Set<number>())
 
   /**
-   * Calculate card dimensions based on current screen size
-   * Mobile: 85vw (max 380px) with 16px gaps
-   * Desktop: 384px with 24px gaps
+   * Get card dimensions from DOM (reads actual rendered values, no CSS duplication)
+   * Falls back to reasonable defaults if container not ready
    */
   const getCardDimensions = (): CardDimensions => {
-    const isMobile = width.value < 768
-    const cardWidth = isMobile ? Math.min(width.value * 0.85, 380) : 384
-    const cardGap = isMobile ? 16 : 24
-    const spacer = isMobile ? 16 : 0 // Initial spacer on mobile for centering
+    const container = scrollContainer.value
+    if (!container) return { cardWidth: 384, cardGap: 24 }
 
-    return { cardWidth, cardGap, spacer, isMobile }
+    const cards = container.querySelectorAll('article')
+    const firstCard = cards[0]
+    const secondCard = cards[1]
+    if (!firstCard || !secondCard) return { cardWidth: 384, cardGap: 24 }
+
+    // Read actual card width from DOM
+    const cardWidth = firstCard.offsetWidth
+
+    // Calculate gap from difference between card positions
+    const firstCardLeft = firstCard.getBoundingClientRect().left
+    const secondCardLeft = secondCard.getBoundingClientRect().left
+    const cardGap = secondCardLeft - firstCardLeft - cardWidth
+
+    return { cardWidth, cardGap }
   }
 
   /**
@@ -76,12 +81,22 @@ export function useCardScrollAnimation(options: UseCardScrollAnimationOptions) {
   })
 
   /**
-   * Calculate the left edge position of a card at given index
-   * Accounts for spacer and accumulated widths of previous cards
+   * Get the left edge position of a card from DOM
+   * Returns position relative to scroll container's scroll origin
    */
   const getCardPosition = (index: number): number => {
-    const { cardWidth, cardGap, spacer } = getCardDimensions()
-    return spacer + (cardWidth + cardGap) * index
+    const container = scrollContainer.value
+    if (!container) return 0
+
+    const cards = container.querySelectorAll('article')
+    const card = cards[index]
+    if (!card) return 0
+
+    const containerRect = container.getBoundingClientRect()
+    const cardRect = card.getBoundingClientRect()
+
+    // Position relative to scroll container (accounting for current scroll)
+    return cardRect.left - containerRect.left + container.scrollLeft
   }
 
   /**
@@ -131,7 +146,8 @@ export function useCardScrollAnimation(options: UseCardScrollAnimationOptions) {
     const container = scrollContainer.value
     const currentScroll = container.scrollLeft
     const viewportWidth = container.clientWidth
-    const { cardWidth, isMobile } = getCardDimensions()
+    const { cardWidth } = getCardDimensions()
+    const isMobile = width.value < 768 // snap-center on mobile, snap-start on desktop
 
     // Calculate where scroll will be after animation
     const scrollAmount = cardScrollDistance.value
@@ -208,9 +224,10 @@ export function useCardScrollAnimation(options: UseCardScrollAnimationOptions) {
     if (!scrollContainer.value) return
 
     const enteringCardIndex = getEnteringCardIndex('left')
+    const container = scrollContainer.value
 
     // Perform smooth scroll
-    scrollContainer.value.scrollBy({
+    container.scrollBy({
       left: -cardScrollDistance.value,
       behavior: 'smooth',
     })
@@ -220,8 +237,8 @@ export function useCardScrollAnimation(options: UseCardScrollAnimationOptions) {
       onAnimate(enteringCardIndex)
     }
 
-    // Update visibility tracking after scroll completes
-    setTimeout(updateVisibleCards, scrollDuration)
+    // Update visibility tracking when scroll completes (scrollend fires exactly when animation ends)
+    container.addEventListener('scrollend', updateVisibleCards, { once: true })
   }
 
   /**
@@ -231,9 +248,10 @@ export function useCardScrollAnimation(options: UseCardScrollAnimationOptions) {
     if (!scrollContainer.value) return
 
     const enteringCardIndex = getEnteringCardIndex('right')
+    const container = scrollContainer.value
 
     // Perform smooth scroll
-    scrollContainer.value.scrollBy({
+    container.scrollBy({
       left: cardScrollDistance.value,
       behavior: 'smooth',
     })
@@ -243,8 +261,8 @@ export function useCardScrollAnimation(options: UseCardScrollAnimationOptions) {
       onAnimate(enteringCardIndex)
     }
 
-    // Update visibility tracking after scroll completes
-    setTimeout(updateVisibleCards, scrollDuration)
+    // Update visibility tracking when scroll completes (scrollend fires exactly when animation ends)
+    container.addEventListener('scrollend', updateVisibleCards, { once: true })
   }
 
   // Initialize visible cards on mount
