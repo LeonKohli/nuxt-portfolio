@@ -4,11 +4,11 @@
     class="relative px-4 py-12 overflow-hidden sm:px-6 lg:px-8"
   >
     <!-- Content -->
-    <div class="relative z-10 w-10/12 md:w-8/12 mx-auto max-w-[110rem] text-center pointer-events-none">
+    <div class="relative z-10 w-10/12 md:w-8/12 mx-auto max-w-[110rem] text-center">
       <!-- Main Content -->
       <h2
         v-motion="fade"
-        class="mb-12 text-3xl font-bold tracking-wide sm:text-4xl md:text-6xl lg:text-7xl font-exo pointer-events-auto"
+        class="mb-12 text-3xl font-bold tracking-tight sm:text-4xl md:text-6xl lg:text-7xl font-exo"
       >
         Let's
         <span class="relative inline-block group">
@@ -20,7 +20,7 @@
 
       <p
         v-motion="slideUp"
-        class="mb-12 text-white/70 max-w-[75ch] mx-auto tracking-wide text-lg pointer-events-auto"
+        class="mb-12 text-white/70 max-w-[75ch] mx-auto text-lg"
       >
         I am always open to new opportunities and collaborations. Whether you have a question, 
         a project proposal, or just want to say hello, feel free to get in touch.
@@ -29,7 +29,7 @@
       <!-- Contact Button -->
       <button
         v-motion="withDelay(slideUp, 0.15)"
-        class="relative inline-flex h-10 sm:h-12 w-[180px] sm:w-[210px] overflow-hidden rounded-lg p-[1px] focus:outline-none focus:ring-2 focus:ring-emerald-400/50 focus:ring-offset-2 focus:ring-offset-black group transition-all duration-700 delay-200 pointer-events-auto"
+        class="relative inline-flex h-10 sm:h-12 w-[180px] sm:w-[210px] overflow-hidden rounded-lg p-[1px] focus:outline-none focus:ring-2 focus:ring-emerald-400/50 focus:ring-offset-2 focus:ring-offset-black group transition-all duration-700 delay-200"
         @click="copyEmail"
         data-umami-event="Copy Email"
         @mousemove="handleMouseMove"
@@ -71,7 +71,7 @@
       </button>
 
       <!-- Social Links -->
-      <div class="flex justify-center mt-12 gap-6 pointer-events-auto">
+      <div class="flex justify-center mt-12 gap-6">
         <NuxtLink
           v-for="(link, index) in socialLinks"
           :key="link.name"

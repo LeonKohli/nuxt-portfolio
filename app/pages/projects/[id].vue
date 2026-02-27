@@ -200,7 +200,7 @@
           <!-- Markdown Content -->
           <ContentRenderer
             :value="project"
-            class="prose prose-lg prose-invert max-w-none"
+            class="project-content prose prose-lg prose-invert max-w-[75ch]"
           >
             <!-- Empty slot when no content is available -->
             <template #empty>

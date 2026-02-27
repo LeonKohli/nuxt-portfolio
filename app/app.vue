@@ -9,15 +9,14 @@
     <!-- Animated orbs -->
     <BackgroundOrbs aria-hidden="true" />
 
-    <!-- Global tech icons - spans full document height -->
+    <!-- Global tech icons - rendered behind content, interaction via JS hit-testing -->
     <GlobalTechIcons aria-hidden="true" />
 
     <!-- Navigation -->
     <Navbar />
 
-    <!-- Main content - pointer-events-none allows clicks to pass through to icons behind -->
-    <!-- Interactive elements in sections have pointer-events-auto -->
-    <main id="main-content" class="relative z-10 pointer-events-none">
+    <!-- Main content -->
+    <main id="main-content" class="relative z-10">
       <NuxtPage />
     </main>
   </div>

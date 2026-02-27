@@ -7,16 +7,16 @@
   >
     <div class="w-10/12 md:w-8/12 mx-auto max-w-[110rem]">
       <!-- Main content with simplified structure -->
-      <div class="relative z-10 flex flex-col h-screen pointer-events-none">
+      <div class="relative z-10 flex flex-col h-screen">
         <!-- Content wrapper -->
         <div class="flex items-center justify-center flex-grow">
-          <div class="z-10 tracking-wide pointer-events-none">
+          <div class="z-10 tracking-wide">
             <!-- Greeting -->
             <p
               v-motion="slideUp"
-              class="w-full mb-2 text-sm font-bold tracking-widest text-center text-green-700 uppercase lg:text-base md:pr-4 md:text-left"
+              class="w-full mb-2 text-sm font-medium tracking-wide text-center text-green-700 uppercase lg:text-base md:pr-4 md:text-left"
             >
-              <span class="relative inline-block group whitespace-nowrap transition-opacity duration-500 ease-out pointer-events-auto">
+              <span class="relative inline-block group whitespace-nowrap transition-opacity duration-500 ease-out">
                 <span class="absolute top-0 left-0 right-0 bottom-[-0.2em] bg-gradient-to-r from-green-700 via-green-500 to-green-400 bg-clip-text text-transparent transition-all duration-300 group-hover:bg-[length:200%_100%] bg-[length:100%_100%] bg-[position:0%] hover:bg-[position:100%]">
                   Hi there! I am
                 </span>
@@ -25,7 +25,7 @@
             </p>
 
             <!-- Name - Optimized for LCP with subtle fade animation -->
-            <h1 id="hero-title" class="font-bold text-6xl md:text-[9vw] lg:text-[9.8vw] text-zinc-100 leading-none z-50 text-center md:text-left pointer-events-none">
+            <h1 id="hero-title" class="font-bold text-6xl md:text-[9vw] lg:text-[9.8vw] text-zinc-100 leading-none z-50 text-center md:text-left">
               <span
                 v-motion="fade"
                 class="block font-exo"
@@ -45,7 +45,7 @@
               <!-- Location -->
               <div
                 v-motion="withDelay(slideUp, 0.3)"
-                class="flex items-center gap-3 text-base sm:text-lg group transition-all duration-700 ease-out pointer-events-auto"
+                class="flex items-center gap-3 text-base sm:text-lg group transition-all duration-700 ease-out"
               >
                 <Icon name="ph:map-pin-fill"
                   class="w-5 h-5 text-emerald-400 transition-transform duration-200 group-hover:scale-110 group-hover:rotate-[15deg]"
@@ -59,7 +59,7 @@
               <!-- Social links -->
               <div
                 v-motion="withDelay(slideUp, 0.45)"
-                class="flex items-center gap-6 transition-all duration-700 ease-out pointer-events-auto"
+                class="flex items-center gap-6 transition-all duration-700 ease-out"
               >
                 <NuxtLink
                   v-for="link in socialLinks"
@@ -87,7 +87,7 @@
         <div class="absolute flex justify-center w-full -translate-x-1/2 bottom-8 left-1/2">
           <button
             v-motion="withDelay(slideUp, 0.45)"
-            class="transition-all duration-300 hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-emerald-400/50 pointer-events-auto"
+            class="transition-all duration-300 hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-emerald-400/50"
             :class="[
               isScrolled ? 'opacity-0 translate-y-4 pointer-events-none' : 'opacity-100'
             ]"
