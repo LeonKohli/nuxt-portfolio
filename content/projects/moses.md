@@ -3,7 +3,7 @@ slug: moses
 sort: 5
 title: MOSES
 subtitle: Outlook VBA Module
-description: An Outlook VBA module to shift emails into servity itsm via API
+description: Outlook VBA module that turns support emails into ITSM tickets with one click
 tech: [{ name: 'VBA', icon: 'vscode-icons:file-type-vba' }]
 image: /images/projects/moses-preview.png
 tags: ['internal', 'automation', 'outlook', 'itsm', 'productivity']
@@ -11,7 +11,7 @@ tags: ['internal', 'automation', 'outlook', 'itsm', 'productivity']
 
 # MOSES: Mail to Ticket Automation
 
-As an internal project, I developed a solution when our IT department transitioned to a new Service Management system. We needed a way to efficiently convert incoming support emails into tickets without the tedious manual copy-pasting that was slowing down our team.
+When our IT department switched to a new Service Management system, converting support emails into tickets meant a lot of manual copy-pasting. That got old fast.
 
 ## The Solution
 
@@ -23,8 +23,8 @@ I created MOSES (Mail Outlook Service Entry System), a VBA module for Microsoft 
 - Maintains email threading for ongoing conversations
 - Provides status feedback to the user
 
-## Impact on Workflow
+## Results
 
-This internal tool transformed our support process, reducing the average time to process an email ticket from 3-4 minutes to under 30 seconds. With our team handling 50+ support emails daily, this saved approximately 2-3 hours of collective work each day.
+Ticket processing went from 3-4 minutes per email down to under 30 seconds. With 50+ support emails a day, that's about 2-3 hours saved across the team daily.
 
-Despite being built with the often-maligned VBA, the module has proven remarkably stable and has been in continuous use throughout our department for over a year with minimal maintenance required.
+Despite being built with the often-maligned VBA, the module has been running stable in our department for over a year with barely any maintenance.

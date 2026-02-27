@@ -3,7 +3,7 @@ slug: tebiplay
 sort: 6
 title: TebiPlay
 subtitle: LAN Party Management System
-description: Game Rating Management System for LAN Events
+description: Score tracking and team management for our annual trainee LAN party
 tech: [{ name: 'NuxtJS', icon: 'logos:nuxt-icon' }, { name: 'JavaScript', icon: 'logos:javascript' }, { name: 'Flask', icon: 'simple-icons:flask' }, { name: 'Docker', icon: 'logos:docker-icon' }, { name: 'PostgreSQL', icon: 'logos:postgresql' }, { name: 'TailwindCSS', icon: 'logos:tailwindcss-icon' }]
 link: https://tebiplay.zitau.de
 repo: https://github.com/ZIT-P22/TebiPlay
@@ -12,11 +12,11 @@ image: /images/projects/tebiplay-preview.png
 
 # TebiPlay: Making LAN Parties Competitive
 
-For our annual trainee team-building event, we organize a day-long LAN party with various competitive games. As the event grew larger each year, we needed a better way to track scores, manage teams, and keep everyone engaged throughout the day.
+We organize an annual LAN party for our trainee team-building event. Once the event got big enough, tracking scores on paper stopped working.
 
-## System Features
+## What It Does
 
-TebiPlay provides a complete management solution for gaming events:
+TebiPlay handles the logistics of a gaming event:
 
 - Team registration and management
 - Game scheduling with automatic notifications

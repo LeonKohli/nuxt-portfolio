@@ -3,7 +3,7 @@ slug: repolingo
 sort: 4
 title: RepoLingo
 subtitle: GitHub to LLM Data Converter
-description: Turn any GitHub Repository into structured XML data optimized for large language models
+description: Converts GitHub repos into structured XML so LLMs can actually use the code
 tech: [{ name: 'NuxtJS', icon: 'logos:nuxt-icon' }, { name: 'TailwindCSS', icon: 'logos:tailwindcss-icon' }, { name: 'TypeScript', icon: 'logos:typescript-icon' }, { name: 'Vue.js', icon: 'logos:vue' }, { name: 'Octokit', icon: 'simple-icons:github' }]
 link: https://repolingo.leonkohli.dev
 repo: https://github.com/LeonKohli/RepoLingo
@@ -14,21 +14,20 @@ tags: ['ai-tools', 'github', 'code-analysis', 'llm', 'xml', 'data-conversion']
 
 # RepoLingo: Making Code Repositories LLM-Friendly
 
-When working with large language models (LLMs) like GPT-4, I often needed to reference code from GitHub repositories. However, raw repository data isn't optimized for LLM consumption - it contains too much noise and lacks the right structure.
+I kept needing to feed GitHub repos into LLMs, but raw repository data is full of noise. Too many irrelevant files, no structure, and you burn through your token budget on stuff that doesn't matter.
 
-## What RepoLingo Does
+## What It Does
 
-RepoLingo is a web application that:
+Point it at any public GitHub repo, and it:
 
-- Fetches any public GitHub repository
-- Analyzes the codebase structure
-- Filters out non-essential files (like node_modules, build artifacts)
-- Formats the code with proper context and relationships
-- Outputs LLM-optimized XML data that preserves important code context
+- Fetches the repository
+- Figures out which files matter
+- Strips out noise (node_modules, build artifacts, etc.)
+- Outputs structured XML with the code and its relationships
 
 ## Technical Implementation
 
-Built with Nuxt.js 3, Vue.js 3, and TypeScript, the application uses Octokit (GitHub API client) to access repositories and implements intelligent parsing algorithms to determine which files are most relevant to understanding the codebase. Additional technologies include:
+Built with Nuxt.js 3, Vue.js 3, and TypeScript. Uses Octokit to talk to the GitHub API. Also uses:
 
 - highlight.js for code syntax highlighting
 - gpt-tokenizer for token counting and optimization
@@ -36,28 +35,24 @@ Built with Nuxt.js 3, Vue.js 3, and TypeScript, the application uses Octokit (Gi
 
 ## Customization Options
 
-Users can tailor the output to their specific needs:
-- Customize ignore patterns to exclude irrelevant files
+You can configure:
+- Ignore patterns to exclude files you don't need
 - Select branch and file size limits
 - Include or exclude tree structure
 - Copy or download the generated XML
 
-## Target Audience
+## Who It's For
 
-The tool has become particularly useful for:
-- AI companies needing LLM-ready code data for training models
-- Researchers analyzing code patterns across repositories
-- Developers seeking to provide comprehensive context to AI assistants
-- Data scientists preparing code datasets for analysis
+Mostly developers who want to give AI assistants full project context, but also researchers analyzing code patterns and data scientists preparing code datasets.
 
 ## XML Output Format
 
-The structured XML format preserves critical information about the codebase:
+The XML format keeps the important stuff:
 - File hierarchies and relationships
-- Code content with proper syntax formatting
-- Directory structures and organization
+- Code content with syntax formatting
+- Directory structures
 - Import/export relationships between files
-- Metadata about file types and sizes
+- File type and size metadata
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -89,4 +84,4 @@ The structured XML format preserves critical information about the codebase:
 </llm_context>
 ```
 
-This structured approach is especially effective when working with token limitations in LLM interfaces, as it prioritizes the most relevant code while maintaining context. 
+This helps a lot when you're hitting token limits, since it prioritizes the most relevant code while keeping context intact.

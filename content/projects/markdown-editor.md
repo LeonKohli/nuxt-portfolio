@@ -2,8 +2,8 @@
 slug: markdown-editor
 sort: 10
 title: Markdown Editor
-subtitle: Modern Markdown Editor with Live Preview
-description: A feature-rich markdown editor with real-time preview, syntax highlighting, and seamless editing in a beautiful, responsive interface
+subtitle: Markdown Editor with Live Preview
+description: Markdown editor with live preview, syntax highlighting, math rendering, and diagram support
 tech: [
   { name: 'NuxtJS', icon: 'logos:nuxt-icon' },
   { name: 'Vue.js', icon: 'logos:vue' },
@@ -37,62 +37,23 @@ features: [
 
 # Markdown Editor
 
-A modern, feature-rich markdown editor with live preview, built with Nuxt 3 and Vue 3. Experience real-time rendering, syntax highlighting, and seamless editing in a beautiful, responsive interface.
-
-## Overview
-
-This markdown editor provides a comprehensive writing environment for developers, writers, and content creators. With its intuitive interface and powerful features, you can focus on writing while the editor handles formatting and presentation.
+Split-pane markdown editor: write on the left, see the rendered result on the right. Supports math, diagrams, code highlighting, and all the extended markdown features I kept needing in other editors.
 
 ## Key Features
 
-### Real-Time Preview
-The split-pane interface shows your markdown on the left and the rendered output on the right, updating instantly as you type. This immediate feedback helps you see exactly how your content will appear.
-
-### Extended Markdown Support
-Beyond standard markdown, the editor supports:
-- Tables with proper alignment
-- Footnotes for additional context
-- Task lists for project management
-- Code blocks with syntax highlighting
-- Math equations using LaTeX syntax
-- Diagrams using Mermaid and PlantUML
-
-### Developer-Friendly
-- **Syntax Highlighting**: Over 100 programming languages supported
-- **Smart Copy**: One-click code block copying with automatic clipboard formatting
-- **Export Options**: Download your work as Markdown, HTML, or plain text
-- **PWA Support**: Install as a desktop app and use offline
-
-### Writing Experience
-- **Focus Mode**: Distraction-free writing environment
-- **Auto-Save**: Never lose your work with intelligent auto-saving
-- **Scroll Sync**: Synchronized scrolling between editor and preview panes
-- **Dark Mode**: Easy on the eyes with automatic theme detection
+Tables, footnotes, task lists, LaTeX math (KaTeX), and Mermaid/PlantUML diagrams on top of standard markdown. Syntax highlighting for 100+ languages, one-click code copying, focus mode, auto-save, scroll sync, dark mode, and it works offline as a PWA.
 
 ## Technical Implementation
 
-The editor is built using modern web technologies:
-- **Nuxt 3** for the application framework
-- **Vue 3** Composition API for reactive components
-- **TypeScript** for type safety
-- **markdown-it** for markdown processing
-- **KaTeX** for math rendering
-- **Mermaid** for diagram generation
-- **shadcn-vue** for UI components
-- **TailwindCSS** for styling
+Built with Nuxt 3, Vue 3 Composition API, and TypeScript. Uses markdown-it for processing, KaTeX for math, Mermaid for diagrams, shadcn-vue for UI, and TailwindCSS for styling.
 
 ## Performance
 
-The application is optimized for performance with:
-- Lazy loading of heavy dependencies
+- Lazy loading for heavy dependencies
 - Debounced preview updates
-- Efficient DOM updates using Vue's reactivity
-- Service worker for offline functionality
+- Vue reactivity for efficient DOM updates
+- Service worker for offline use
 
 ## Use Cases
 
-- **Technical Documentation**: Write documentation with code examples and diagrams
-- **Academic Writing**: Include mathematical formulas and references
-- **Project Planning**: Use task lists and diagrams for project management
-- **Blog Writing**: Create content with rich formatting
-- **Note Taking**: Quick notes with powerful formatting options
+Works well for technical docs, academic writing with math formulas, project planning with task lists and diagrams, blog posts, or just quick notes.

@@ -3,7 +3,7 @@ slug: binary-game
 sort: 8
 title: Binary Game
 subtitle: Interactive Binary Learning Tool
-description: An engaging web-based puzzle that challenges players to convert decimal numbers to binary through interactive gameplay
+description: Browser puzzle where you convert decimal numbers to binary by toggling cells in a grid
 tech: [{ name: 'HTML', icon: 'logos:html-5' }, { name: 'CSS', icon: 'logos:css-3' }, { name: 'JavaScript', icon: 'logos:javascript' }, { name: 'TailwindCSS', icon: 'logos:tailwindcss-icon' }]
 link: https://leonkohli.github.io/binaryGame
 repo: https://github.com/LeonKohli/binaryGame
@@ -12,72 +12,38 @@ category: education
 tags: ['education', 'binary', 'game', 'learning', 'puzzle', 'glassmorphism', 'interactive']
 ---
 
-# Binary Game: Learning Through Play
+# Binary Game
 
-## Project Overview
-
-The Binary Game turns abstract binary concepts into an interactive puzzle that makes learning intuitive and engaging. As a fundamental concept in computer science, binary deserves more than dry textbook explanations—it deserves to be experienced.
+A browser-based puzzle where you convert decimal numbers to binary by toggling cells in a grid. I built it because binary conversion is one of those things that clicks way faster when you can play with it instead of reading about it.
 
 ## How It Works
 
-Players interact with a grid of binary cells (0s and 1s) and must match target decimal sums for each row and column:
+You get a grid of 0s and 1s. Each row and column has a target decimal sum you need to match:
 
-1. **Choose Your Challenge**: Select from 4×4, 5×5, or 6×6 grids
-2. **Toggle Binary Cells**: Click to flip between 0 and 1
-3. **Match the Decimal Sums**: Each row and column displays its target decimal value
-4. **Win by Solving the Puzzle**: Match all rows and columns to win
+1. Pick a grid size (4x4, 5x5, or 6x6)
+2. Click cells to flip between 0 and 1
+3. Match the target decimal sum for each row and column
+4. All rows and columns correct = you win
 
-## Technical Highlights
+## Under the Hood
 
-### Binary-Decimal Conversion Engine
+Binary-to-decimal conversion happens in real-time with visual feedback when you hit a target. Each puzzle is procedurally generated — random binary matrix, calculated decimal targets, guaranteed solvable.
 
-The game features a real-time conversion system that:
+The UI is glassmorphism-style with frosted-glass backdrops and color-coded binary states.
 
-- Instantly translates binary sequences into decimal values
-- Provides immediate visual feedback when matches occur
-- Reinforces place value understanding through interaction
+## Difficulty Levels
 
-### Procedural Puzzle Generation
+- **4x4** — 4-bit numbers (0-15), good starting point
+- **5x5** — 5-bit numbers (0-31)
+- **6x6** — 6-bit numbers (0-63), gets tricky
 
-Each game creates a unique binary puzzle by:
+After a few rounds you start recognizing common binary values and converting in your head without thinking about it. That's the whole point.
 
-- Generating a random binary matrix configuration
-- Calculating target decimal sums for rows and columns
-- Ensuring every puzzle has at least one valid solution
+There's a "Give Up" button that reveals the solution so you can study the pattern before trying again.
 
-### Modern UI with Glassmorphism
+## Challenges
 
-The interface employs contemporary design techniques:
-
-- Frosted-glass backdrop effect for depth and contrast
-- High-visibility color coding for binary states
-- Responsive layout that works on all devices
-
-## Educational Design
-
-The game teaches through progressive complexity:
-
-- **Beginner (4×4)**: Introduces 4-bit numbers (0-15)
-- **Intermediate (5×5)**: Advances to 5-bit numbers (0-31)
-- **Advanced (6×6)**: Challenges with 6-bit numbers (0-63)
-
-Players naturally develop:
-
-- Pattern recognition for common binary values
-- Quick mental conversion between number systems
-- Understanding of place values in different bases
-
-## Learning Tools
-
-The "Give Up" feature transforms struggles into learning opportunities by:
-
-- Revealing the correct solution
-- Demonstrating how binary configurations create specific decimal values
-- Allowing players to study patterns before trying again
-
-## Technical Challenges Solved
-
-- Creating puzzles with unique solutions
+- Generating puzzles with unique solutions
 - Balancing difficulty across grid sizes
-- Optimizing for mobile touch interactions
-- Maintaining smooth performance across devices
+- Getting touch interactions right on mobile
+- Keeping performance smooth with larger grids

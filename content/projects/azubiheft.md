@@ -2,8 +2,8 @@
 slug: azubiheft
 sort: 7
 title: Azubiheft API
-subtitle: Python Wrapper for Training Report Management
-description: Python wrapper for azubiheft.de that automates the management of apprenticeship training reports
+subtitle: Python Wrapper for azubiheft.de
+description: Python wrapper for azubiheft.de that automates filling out apprenticeship training reports
 tech: [{ name: 'Python', icon: 'logos:python' }, { name: 'BeautifulSoup', icon: 'simple-icons:python' }, { name: 'Requests', icon: 'simple-icons:python' }]
 repo: https://github.com/LeonKohli/azubiheft-api
 link: https://pypi.org/project/azubiheftApi/
@@ -13,11 +13,11 @@ tags: ['automation', 'api-wrapper', 'education', 'productivity', 'python', 'trai
 
 # Azubiheft API
 
-During my time supervising German vocational trainees (Azubis), I found myself spending hours each week manually filling out digital training reports on azubiheft.de. This repetitive task seemed perfect for automation.
+When I was supervising German vocational trainees (Azubis), I was spending hours every week manually filling out training reports on azubiheft.de. So I automated it.
 
-## The Solution
+## What It Does
 
-I developed a Python wrapper for the azubiheft.de platform that allows users to:
+Python wrapper for azubiheft.de. You can:
 
 - Programmatically create and submit weekly training reports
 - Copy reports between trainees when they perform similar work
@@ -29,11 +29,11 @@ I developed a Python wrapper for the azubiheft.de platform that allows users to:
 
 ## Implementation Details
 
-The library uses requests and BeautifulSoup to interact with the azubiheft.de web interface, essentially creating a programmatic API where none existed before. Authentication is handled securely, and the package is available on PyPI for easy installation.
+Under the hood it's requests + BeautifulSoup scraping the azubiheft.de web interface, since there's no official API. Available on PyPI.
 
 ## Key Functions
 
-The API provides a comprehensive set of functions:
+The main API methods:
 - `login(username, password)`: Authenticate with the platform
 - `getSubjects()`: Retrieve available training subjects
 - `add_subject(name)`: Create a new subject category
@@ -43,20 +43,13 @@ The API provides a comprehensive set of functions:
 - `writeReport(date, text, hours, subject_id)`: Create or update a report
 - `deleteReport(date)`: Remove a report entry
 
-## How It Works
-
-Users log in with their azubiheft credentials through the API, then use a set of intuitive functions to interact with their training data. The wrapper handles all the web requests and form submissions behind the scenes, providing a clean Python interface to what would otherwise be manual web form interactions.
-
 ## Text Formatting
 
-The API supports formatted text in reports, allowing users to:
-- Use newline characters (`\n`) for paragraph breaks
-- Include multi-line text using Python's triple-quote syntax
-- Preserve formatting when retrieving reports with the `include_formatting=True` parameter
+Reports support formatted text — newlines with `\n`, multi-line strings with triple quotes, and `include_formatting=True` to preserve formatting when reading reports back.
 
 ## Impact
 
-This tool has saved me several hours each week and is now used by other trainers in my organization who supervise multiple trainees. It's particularly valuable for educational institutions and companies with large numbers of apprentices, where the time savings can be substantial.
+Saves me several hours a week. Other trainers in my organization who supervise multiple trainees have picked it up too, since the time adds up fast when you're filling out reports for a dozen Azubis.
 
 ## Example on how to use the API to copy reports between trainees
 

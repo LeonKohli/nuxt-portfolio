@@ -3,7 +3,7 @@ slug: bildrechte
 sort: 6
 title: Bildrechte
 subtitle: Image Rights Education
-description: Learn about image rights, copyright laws and ethical considerations in photography
+description: Interactive site explaining image rights and copyright laws, with a quiz to test your knowledge
 tech: [{ name: 'NuxtJS', icon: 'logos:nuxt-icon' }, { name: 'TailwindCSS', icon: 'logos:tailwindcss-icon' }]
 link: https://bildrechte.vercel.app
 repo: https://github.com/LeonKohli/bildrechte
@@ -12,22 +12,18 @@ image: /images/projects/bildrechte-preview.png
 
 # Bildrechte: Understanding Image Rights
 
-After noticing how many people (especially students and small business owners) were unknowingly violating image copyright laws online, I created this educational resource to help demystify the complex world of image rights.
+I kept seeing students and small business owners unknowingly violating image copyright laws online, so I built a site that explains how image rights actually work in plain language.
 
 ![Bildrechte](images/projects/demo/quiz.png)
 
-## Educational Content
-
-The site covers several key areas:
+## What It Covers
 
 - Basic copyright principles for images
-- Different types of licenses (Creative Commons, commercial, etc.)
-- How to properly attribute images
+- License types (Creative Commons, commercial, etc.)
+- How to attribute images correctly
 - Common misconceptions about "free" images
-- German-specific laws regarding image usage
+- German-specific image laws
 
-## Technical Implementation
+## How It Works
 
-Built with Nuxt.js and TailwindCSS, the site features an interactive quiz that helps users test their knowledge of image rights. The content is presented in a clear, accessible way with practical examples that make abstract legal concepts more understandable.
-
-The project has been shared with several educational institutions in Germany and serves as a quick reference guide for content creators who want to ensure they're respecting copyright laws. 
+Built with Nuxt.js and TailwindCSS. There's an interactive quiz so people can test what they actually know (spoiler: usually less than they think). Several schools in Germany have started using it as a reference.
