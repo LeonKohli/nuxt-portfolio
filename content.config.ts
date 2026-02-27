@@ -1,5 +1,4 @@
-import { defineCollection, defineContentConfig } from '@nuxt/content'
-import { z } from 'zod/v4'
+import { defineCollection, defineContentConfig, z } from '@nuxt/content'
 
 export default defineContentConfig({
   collections: {
@@ -10,7 +9,7 @@ export default defineContentConfig({
       schema: z.object({
         slug: z.string(),
         sort: z.number(),
-        status: z.string().optional(),
+        status: z.enum(['active', 'in-progress', 'completed', 'archived']).optional(),
         title: z.string(),
         subtitle: z.string(),
         description: z.string(),
@@ -29,8 +28,15 @@ export default defineContentConfig({
         startDate: z.string().optional(),
         endDate: z.string().optional(),
         complexity: z.number().optional(),
-        downloads: z.string().optional()
-      })
+        downloads: z.string().optional(),
+        // Extra fields used by specific projects — prevents Zod from silently stripping them
+        browsers: z.array(z.string()).optional(),
+        features: z.array(z.string()).optional(),
+      }),
+      indexes: [
+        { columns: ['slug'], unique: true },
+        { columns: ['sort'] }
+      ]
     }),
 
     // Tech stack collection - single data file
@@ -47,14 +53,5 @@ export default defineContentConfig({
         }))
       })
     }),
-
-    // Other content pages (about, etc.)
-    content: defineCollection({
-      type: 'page',
-      source: {
-        include: '*.md',
-        exclude: ['tech-stack.md', 'projects/**']
-      }
-    })
   }
 })

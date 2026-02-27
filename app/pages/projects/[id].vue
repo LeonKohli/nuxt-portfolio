@@ -377,29 +377,16 @@ const { data: project, pending } = await useAsyncData(
     .first()
 )
 
-// SEO Meta tags - with better error handling
-watchEffect(() => {
-  if (project.value) {
-    // Only set meta data when we have a valid project
-    useSeoMeta({
-      title: project.value.title || 'Project Details',
-      description: project.value.description 
-        ? (project.value.description.slice(0, 160) + '...') 
-        : 'View details about this project',
-      ogTitle: project.value.title || 'Project Details',
-      ogDescription: project.value.description 
-        ? (project.value.description.slice(0, 160) + '...') 
-        : 'View details about this project',
-      ogImage: project.value.image || '',
-    });
-  } else if (!pending.value && !project.value) {
-    // Set "not found" meta data
-    useSeoMeta({
-      title: 'Project Not Found',
-      description: 'The requested project could not be found',
-    });
-  }
-});
+// SEO Meta tags - getter functions for reactive SSR-compatible meta
+useSeoMeta({
+  title: () => project.value?.title || (pending.value ? 'Loading...' : 'Project Not Found'),
+  description: () => project.value?.description
+    ? project.value.description.slice(0, 160)
+    : (pending.value ? '' : 'The requested project could not be found'),
+  ogTitle: () => project.value?.title || 'Project Details',
+  ogDescription: () => project.value?.description?.slice(0, 160) || '',
+  ogImage: () => project.value?.image || '',
+})
 
 const { data: allProjects } = await useAsyncData(
   'all-projects',
