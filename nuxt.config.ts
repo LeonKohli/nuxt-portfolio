@@ -83,6 +83,9 @@ export default defineNuxtConfig({
         highlight: {
           theme: 'github-dark',
           langs: ['python', 'bash', 'json', 'xml'],
+        },
+        remarkPlugins: {
+          'remark-smartypants': {}
         }
       }
     }

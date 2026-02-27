@@ -223,6 +223,13 @@
   }
 }
 
+/* Enable kerning on display/heading text where pair spacing is visible */
+@layer base {
+  h1, h2, h3, h4, h5, h6 {
+    font-kerning: normal;
+  }
+}
+
 /* Component-specific styling for project content - uses prose plugin */
 /* NOTE: Tailwind v4 is stricter about @apply with typography modifiers,
    so we'll apply the prose classes directly in the HTML instead */
@@ -237,6 +244,7 @@
     color: white;
     font-family: 'Exo', sans-serif;
     font-weight: bold;
+    font-kerning: normal;
     margin-bottom: 1rem;
   }
 
