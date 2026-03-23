@@ -246,6 +246,7 @@
     font-weight: bold;
     font-kerning: normal;
     margin-bottom: 1rem;
+    text-wrap: balance;
   }
 
   & h1 {
@@ -285,6 +286,7 @@
     line-height: 1.625;
     margin-bottom: 1rem;
     font-size: 1.125rem;
+    text-wrap: pretty;
   }
 
   & strong {
@@ -396,8 +398,9 @@
     margin: 1.5rem auto;
     max-width: 100%;
     box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    outline: 1px solid rgba(255, 255, 255, 0.1);
+    outline-offset: -1px;
     transition: transform 0.2s;
-    border: 1px solid rgba(255, 255, 255, 0.1);
   }
 
   & img:hover {

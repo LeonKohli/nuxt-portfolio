@@ -16,14 +16,14 @@
                       v-motion="slideUp"
                       class="relative inline-block ml-3"
                     >
-                        <span class="bg-gradient-to-r from-green-700 via-green-500 to-green-400 bg-clip-text text-transparent transition-all duration-300 hover:bg-[length:200%_100%] bg-[length:100%_100%] bg-[position:0%] hover:bg-[position:100%]">
+                        <span class="bg-gradient-to-r from-green-700 via-green-500 to-green-400 bg-clip-text text-transparent transition-[background-size,background-position] duration-300 hover:bg-[length:200%_100%] bg-[length:100%_100%] bg-[position:0%] hover:bg-[position:100%]">
                             Tech Stack
                         </span>
                     </span>
                 </h2>
                 <p
                   v-motion="withDelay(slideUp, 0.15)"
-                  class="max-w-[680px] mt-6 text-lg text-white/70 md:text-xl"
+                  class="max-w-[680px] mt-6 text-lg text-white/70 md:text-xl [text-wrap:pretty]"
                 >
                     These are the technologies I have experience with.
                 </p>
@@ -34,9 +34,9 @@
                 <li v-for="(tech, index) in techStack?.technologies" :key="tech.name">
                     <a :href="tech.url" target="_blank" rel="noopener noreferrer"
                        v-motion="chipMotion(index)"
-                       class="group flex p-4 transition-all duration-500 rounded-xl border border-white/10
+                       class="group flex p-4 transition-[border-color,background-color,transform,box-shadow] duration-500 rounded-xl border border-white/10
                               hover:border-emerald-500/20 bg-white/[0.02] hover:bg-emerald-500/[0.02] hover:-translate-y-1.5
-                              focus:outline-none focus:ring-2 focus:ring-emerald-500/50 will-change-transform"
+                              active:scale-[0.96] focus:outline-none focus:ring-2 focus:ring-emerald-500/50 will-change-transform"
                        v-bind="createHandlers(index)">
                         
                         <!-- Spotlight Effect (simplified) -->
@@ -44,12 +44,12 @@
                               :style="spotlightStyles[index]"></span>
 
                         <!-- Icon Container -->
-                        <span class="flex items-center justify-center w-12 h-12 rounded-lg shrink-0 transition-all duration-500
+                        <span class="flex items-center justify-center w-12 h-12 rounded-lg shrink-0 transition-[box-shadow,transform] duration-500
                                      shadow-[0_0_0_1px_rgba(255,255,255,0.1)] group-hover:shadow-[0_0_0_1.5px_rgba(16,185,129,0.2)]
                                      group-hover:scale-110" 
                               :class="getIconBackgroundClass(tech.color)">
                             <Icon :name="tech.icon"
-                                  class="w-6 h-6 transition-all duration-500 group-hover:scale-110"
+                                  class="w-6 h-6 transition-transform duration-500 group-hover:scale-110"
                                   :style="{ color: tech.color }" 
                                   loading="lazy"
                                   width="24"
@@ -70,7 +70,7 @@
                         <!-- External Link Icon -->
                         <Icon 
                               name="lucide:external-link" 
-                              class="w-4 h-4 ml-auto text-white/30 opacity-0 transition-all duration-300 
+                              class="w-4 h-4 ml-auto text-white/30 opacity-0 transition-[opacity,transform,color] duration-300
                                      group-hover:opacity-100 group-hover:translate-x-0.5 group-hover:text-emerald-400"
                               loading="lazy"
                               width="16"

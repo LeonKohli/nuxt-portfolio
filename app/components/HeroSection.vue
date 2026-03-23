@@ -17,7 +17,7 @@
               class="w-full mb-2 text-sm font-medium tracking-wide text-center text-green-700 uppercase lg:text-base md:pr-4 md:text-left"
             >
               <span class="relative inline-block group whitespace-nowrap transition-opacity duration-500 ease-out">
-                <span class="absolute top-0 left-0 right-0 bottom-[-0.2em] bg-gradient-to-r from-green-700 via-green-500 to-green-400 bg-clip-text text-transparent transition-all duration-300 group-hover:bg-[length:200%_100%] bg-[length:100%_100%] bg-[position:0%] hover:bg-[position:100%]">
+                <span class="absolute top-0 left-0 right-0 bottom-[-0.2em] bg-gradient-to-r from-green-700 via-green-500 to-green-400 bg-clip-text text-transparent transition-[background-size,background-position] duration-300 group-hover:bg-[length:200%_100%] bg-[length:100%_100%] bg-[position:0%] hover:bg-[position:100%]">
                   Hi there! I am
                 </span>
                 <span class="invisible">Hi there! I am</span>
@@ -45,7 +45,7 @@
               <!-- Location -->
               <div
                 v-motion="withDelay(slideUp, 0.3)"
-                class="flex items-center gap-3 text-base sm:text-lg group transition-all duration-700 ease-out"
+                class="flex items-center gap-3 text-base sm:text-lg group transition-opacity duration-700 ease-out"
               >
                 <Icon name="ph:map-pin-fill"
                   class="w-5 h-5 text-emerald-400 transition-transform duration-200 group-hover:scale-110 group-hover:rotate-[15deg]"
@@ -57,23 +57,21 @@
               </div>
               
               <!-- Social links -->
-              <div
-                v-motion="withDelay(slideUp, 0.45)"
-                class="flex items-center gap-6 transition-all duration-700 ease-out"
-              >
+              <div class="flex items-center gap-4">
                 <NuxtLink
-                  v-for="link in socialLinks"
+                  v-for="(link, index) in socialLinks"
                   :key="link.name"
+                  v-motion="socialLink(index, 0.45)"
                   :to="link.url"
                   external
                   target="_blank"
-                  class="flex items-center justify-center transition-all duration-300 text-white/70 hover:text-white focus:outline-none focus:ring-2 focus:ring-emerald-400/50 hover:-translate-y-1 p-2"
+                  class="flex items-center justify-center transition-colors duration-300 text-white/70 hover:text-white focus:outline-none focus:ring-2 focus:ring-emerald-400/50 p-3 min-w-[44px] min-h-[44px]"
                   :data-umami-event="`Visit ${link.name}`"
                   :aria-label="link.screenReaderText"
                 >
                   <Icon
                     :name="link.playfulIcon"
-                    class="w-8 h-8 transition-all duration-300 sm:w-10 sm:h-10 group-hover:scale-110"
+                    class="w-7 h-7 sm:w-8 sm:h-8"
                     loading="lazy"
                     aria-hidden="true"
                   />
@@ -87,7 +85,7 @@
         <div class="absolute flex justify-center w-full -translate-x-1/2 bottom-8 left-1/2">
           <button
             v-motion="withDelay(slideUp, 0.45)"
-            class="transition-all duration-300 hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-emerald-400/50"
+            class="transition-[opacity,transform] duration-300 hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-emerald-400/50"
             :class="[
               isScrolled ? 'opacity-0 translate-y-4 pointer-events-none' : 'opacity-100'
             ]"
@@ -107,7 +105,7 @@
 </template>
 
 <script setup lang="ts">
-const { fade, slideUp, withDelay } = useAnimationPresets()
+const { fade, slideUp, withDelay, socialLink } = useAnimationPresets()
 
 const socialLinks = [
   { 

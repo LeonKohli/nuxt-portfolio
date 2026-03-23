@@ -17,7 +17,7 @@
               v-motion="slideUp"
               class="relative inline-block ml-3 group"
             >
-              <span class="bg-gradient-to-r from-green-700 via-green-500 to-green-400 bg-clip-text text-transparent transition-all duration-300 group-hover:bg-[length:200%_100%] bg-[length:100%_100%] bg-[position:0%] hover:bg-[position:100%]">
+              <span class="bg-gradient-to-r from-green-700 via-green-500 to-green-400 bg-clip-text text-transparent transition-[background-size,background-position] duration-300 group-hover:bg-[length:200%_100%] bg-[length:100%_100%] bg-[position:0%] hover:bg-[position:100%]">
                 Me
               </span>
             </span>
@@ -32,7 +32,7 @@
           <!-- Left Column: Bio -->
           <div
             v-motion="slideUp"
-            class="transition-all duration-700"
+            class="transition-opacity duration-700"
           >
             <p class="mb-6 text-xl md:text-2xl text-white/90 leading-relaxed [text-wrap:balance]">
               Hi, I'm 
@@ -49,7 +49,7 @@
           <!-- Right Column: Beyond Coding -->
           <div
             v-motion="withDelay(slideUp, 0.15)"
-            class="transition-all duration-700"
+            class="transition-opacity duration-700"
           >
             <BeyondCoding />
           </div>

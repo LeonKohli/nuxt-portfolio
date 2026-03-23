@@ -3,7 +3,7 @@
   <!-- Desktop Navbar (Left Side) -->
   <nav 
     ref="navRef"
-    class="fixed z-50 hidden transition-all duration-700 ease-in-out left-6 md:block will-change-transform will-change-opacity"
+    class="fixed z-50 hidden transition-[opacity,transform] duration-700 ease-in-out left-6 md:block will-change-[transform,opacity]"
     :class="[
       isVisible && !isProjectPage ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4',
       isVisible && !isProjectPage ? 'pointer-events-auto' : 'pointer-events-none'
@@ -16,7 +16,7 @@
       <li v-for="(item, index) in navItems" :key="item.label">
         <a 
           :href="item.href"
-          class="relative py-2 pr-4 overflow-hidden text-sm border rounded-full group transition-all duration-300 ease-in-out will-change-transform will-change-[background-color,padding] bg-black/30 backdrop-blur-sm border-white/5"
+          class="relative py-2 pr-4 overflow-hidden text-sm border rounded-full group transition-[color,background-color,border-color,padding,transform] duration-300 ease-in-out will-change-[transform,background-color,padding] bg-black/30 backdrop-blur-sm border-white/5"
           :class="[
             activeSection === item.href.substring(1) && !isProjectPage
               ? 'text-white border-white/20 pl-10' 
@@ -46,7 +46,7 @@
           ></span>
 
           <span 
-            class="absolute left-3 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full transition-all duration-300 ease-in-out"
+            class="absolute left-3 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full transition-[background-color,transform] duration-300 ease-in-out"
             :class="[
               activeSection === item.href.substring(1) && !isProjectPage
                 ? 'bg-emerald-400 scale-100'
@@ -64,7 +64,7 @@
   <!-- Mobile Navbar (Bottom) -->
   <nav 
     v-if="!isProjectPage"
-    class="fixed left-0 z-50 w-full transition-all duration-700 ease-in-out bottom-6 md:hidden"
+    class="fixed left-0 z-50 w-full transition-[opacity,transform] duration-700 ease-in-out bottom-6 md:hidden"
     :class="[
       isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4',
       isVisible ? 'pointer-events-auto' : 'pointer-events-none'
@@ -77,7 +77,7 @@
           <li v-for="(item, index) in navItems" :key="item.label">
             <a 
               :href="item.href"
-              class="relative px-3 py-1.5 text-xs font-medium transition-all duration-300 ease-in-out rounded-full flex items-center gap-1.5"
+              class="relative px-3 py-1.5 text-xs font-medium transition-[color,background-color] duration-300 ease-in-out rounded-full flex items-center gap-1.5"
               :class="[
                 activeSection === item.href.substring(1)
                   ? 'text-emerald-400 bg-white/5' 

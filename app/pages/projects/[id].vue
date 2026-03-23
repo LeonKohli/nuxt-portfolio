@@ -7,7 +7,7 @@
       <div class="container flex items-center justify-between px-4 py-4 mx-auto max-w-7xl">
         <NuxtLink
           to="/#projects"
-          class="flex items-center gap-2 transition-colors group text-white/80 hover:text-white"
+          class="flex items-center gap-2 transition-colors group text-white/80 hover:text-white active:scale-[0.96] min-h-[44px]"
         >
           <Icon
             name="lucide:arrow-left"
@@ -22,7 +22,7 @@
             :to="project.repo"
             target="_blank"
             rel="noopener noreferrer"
-            class="p-2 transition-colors text-white/60 hover:text-white"
+            class="p-2.5 transition-colors text-white/60 hover:text-white active:scale-[0.96] min-w-[44px] min-h-[44px] flex items-center justify-center"
             aria-label="View GitHub Repository"
           >
             <Icon name="ph:github-logo-fill" class="w-5 h-5" />
@@ -33,7 +33,7 @@
             :to="project.link"
             target="_blank"
             rel="noopener noreferrer"
-            class="p-2 transition-colors text-emerald-400/80 hover:text-emerald-400"
+            class="p-2.5 transition-colors text-emerald-400/80 hover:text-emerald-400 active:scale-[0.96] min-w-[44px] min-h-[44px] flex items-center justify-center"
             aria-label="Visit Live Site"
           >
             <Icon name="lucide:external-link" class="w-5 h-5" />
@@ -71,7 +71,7 @@
           <NuxtImg
             :src="project.image"
             :alt="project.title"
-            class="object-cover w-full h-full"
+            class="object-cover w-full h-full outline outline-1 -outline-offset-1 outline-white/10"
             width="1280"
             height="640"
             loading="eager"
@@ -107,14 +107,14 @@
         </figure>
 
         <!-- Project Title -->
-        <h1 class="mb-4 text-4xl font-bold font-exo md:text-5xl lg:text-6xl">
+        <h1 class="mb-4 text-4xl font-bold font-exo md:text-5xl lg:text-6xl [text-wrap:balance]">
           <span class="text-transparent bg-clip-text bg-gradient-to-r from-white via-white to-white/80">
             {{ project.title }}
           </span>
         </h1>
 
         <!-- Project Subtitle -->
-        <p class="mb-6 text-xl text-white/80 md:text-2xl">
+        <p class="mb-6 text-xl text-white/80 md:text-2xl [text-wrap:pretty]">
           {{ project.subtitle }}
         </p>
 
@@ -220,7 +220,7 @@
               :href="project.link"
               target="_blank"
               rel="noopener noreferrer"
-              class="flex items-center justify-center w-full gap-2 px-4 py-3 transition-colors rounded-xl bg-emerald-500/10 text-emerald-400 hover:bg-emerald-500/20"
+              class="flex items-center justify-center w-full gap-2 px-4 py-3 transition-[background-color,transform] rounded-xl bg-emerald-500/10 text-emerald-400 hover:bg-emerald-500/20 active:scale-[0.96]"
             >
               <Icon name="lucide:external-link" class="w-5 h-5" />
               <span class="font-medium">View Live Demo</span>
@@ -232,7 +232,7 @@
               :href="project.repo"
               target="_blank"
               rel="noopener noreferrer"
-              class="flex items-center justify-center w-full gap-2 px-4 py-3 transition-colors rounded-xl bg-white/10 text-white/90 hover:bg-white/15"
+              class="flex items-center justify-center w-full gap-2 px-4 py-3 transition-[background-color,transform] rounded-xl bg-white/10 text-white/90 hover:bg-white/15 active:scale-[0.96]"
             >
               <Icon name="ph:github-logo-fill" class="w-5 h-5" />
               <span class="font-medium">View on GitHub</span>
@@ -258,7 +258,7 @@
                         :alt="relatedProject.title"
                         width="48"
                         height="48"
-                        class="object-cover w-full h-full"
+                        class="object-cover w-full h-full outline outline-1 -outline-offset-1 outline-white/10"
                         loading="lazy"
                       />
                     </div>
@@ -329,7 +329,7 @@
               href="https://github.com/LeonKohli"
               target="_blank"
               rel="noopener noreferrer"
-              class="transition-colors text-white/60 hover:text-white/90"
+              class="transition-colors text-white/60 hover:text-white/90 p-2 min-w-[44px] min-h-[44px] flex items-center justify-center"
               aria-label="GitHub"
             >
               <Icon name="ph:github-logo-fill" class="w-5 h-5" />
@@ -338,7 +338,7 @@
               href="https://linkedin.com/in/leonkohli"
               target="_blank"
               rel="noopener noreferrer"
-              class="transition-colors text-white/60 hover:text-white/90"
+              class="transition-colors text-white/60 hover:text-white/90 p-2 min-w-[44px] min-h-[44px] flex items-center justify-center"
               aria-label="LinkedIn"
             >
               <Icon name="ph:linkedin-logo-fill" class="w-5 h-5" />
@@ -442,6 +442,10 @@ nav.main-navbar {
   transform: translateY(-2px);
 }
 
+.project-nav-link:active {
+  transform: scale(0.96);
+}
+
 /* Prose customizations for dark theme */
 .prose-invert {
   --tw-prose-body: rgb(255 255 255 / 0.8);
@@ -455,7 +459,7 @@ nav.main-navbar {
 .prose-invert :where(a):not(:where([class~="not-prose"] *)) {
   text-decoration: underline;
   text-decoration-color: rgb(52 211 153 / 0.3);
-  transition: all 0.2s ease;
+  transition: color 0.2s ease, text-decoration-color 0.2s ease;
 }
 
 .prose-invert :where(a):not(:where([class~="not-prose"] *)):hover {

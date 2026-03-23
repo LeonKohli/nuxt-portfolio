@@ -191,6 +191,43 @@ export function useAnimationPresets() {
     },
   })
 
+  /**
+   * Social link animation: staggered entrance + spring hover lift + spring press
+   * @param index - Item index for stagger
+   * @param baseDelay - Base delay before stagger starts
+   */
+  const socialLink = (index: number, baseDelay = 0.3) => ({
+    initial: { opacity: 0, y: animation.transform.slideDistance.large, scale: 1 },
+    visibleOnce: {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      transition: {
+        delay: baseDelay + index * animation.stagger.normal,
+        duration: animation.duration.moderate / 1000,
+        ease: animation.easing.smooth,
+      },
+    },
+    hovered: {
+      y: -6,
+      scale: 1.15,
+      transition: {
+        type: 'spring',
+        stiffness: 400,
+        damping: 20,
+      },
+    },
+    tapped: {
+      y: 0,
+      scale: 0.96,
+      transition: {
+        type: 'spring',
+        stiffness: 500,
+        damping: 25,
+      },
+    },
+  })
+
   return {
     // Base presets
     fade,
@@ -207,5 +244,6 @@ export function useAnimationPresets() {
     // Utility functions
     withDelay,
     staggered,
+    socialLink,
   }
 }

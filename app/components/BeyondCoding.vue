@@ -12,8 +12,8 @@
         v-for="(item, index) in hobbies" 
         :key="index"
         class="group relative overflow-hidden rounded-xl border border-white/10 bg-white/[0.03] backdrop-blur-xl
-               transition-all duration-300 hover:bg-white/[0.07] hover:border-emerald-500/20
-               hover:shadow-[0_0_25px_-5px_rgba(16,185,129,0.15)] hover:-translate-y-1 will-change-transform"
+               transition-[background-color,border-color,box-shadow,transform] duration-300 hover:bg-white/[0.07] hover:border-emerald-500/20
+               hover:shadow-[0_0_25px_-5px_rgba(16,185,129,0.15)] hover:-translate-y-1 active:scale-[0.96] will-change-transform"
         v-bind="createHandlers(index)"
       >
         <div class="relative z-10 p-4">
@@ -21,7 +21,7 @@
             <div class="flex items-center justify-center w-12 h-12 mr-4 rounded-lg bg-gradient-to-br from-emerald-500/10 to-emerald-500/5 group-hover:from-emerald-500/20 group-hover:to-emerald-500/10 shrink-0">
               <Icon 
                 :name="item.icon" 
-                class="w-6 h-6 transition-all duration-300 text-emerald-400 group-hover:scale-110 group-hover:rotate-3" 
+                class="w-6 h-6 transition-transform duration-300 text-emerald-400 group-hover:scale-110 group-hover:rotate-3" 
                 loading="lazy"
                 width="24"
                 height="24"

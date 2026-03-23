@@ -17,7 +17,7 @@
             class="relative inline-block ml-3 group"
           >
             <span class="bg-gradient-to-r from-green-700 via-green-500 to-green-400 
-                     bg-clip-text text-transparent transition-all duration-300 
+                     bg-clip-text text-transparent transition-[background-size,background-position] duration-300 
                      group-hover:bg-[length:200%_100%] bg-[length:100%_100%] 
                      bg-[position:0%] hover:bg-[position:100%]">
               Projects
@@ -27,7 +27,7 @@
       </h2>
       <p
         v-motion="withDelay(slideUp, 0.15)"
-        class="max-w-[680px] mt-8 text-lg text-white/70 md:text-xl"
+        class="max-w-[680px] mt-8 text-lg text-white/70 md:text-xl [text-wrap:pretty]"
       >
         Some of my most interesting projects, showcasing my skills and experience in web development.
       </p>
@@ -40,7 +40,7 @@
         <li
           v-for="(project, index) in sortedProjects"
           :key="project.slug"
-          class="w-2 h-2 transition-all duration-500 rounded-full" 
+          class="w-2 h-2 transition-[background-color,transform,box-shadow] duration-500 rounded-full" 
           :class="[
             currentProjectIndex === index
               ? 'bg-emerald-400/80 scale-125 shadow-[0_0_8px_rgba(52,211,153,0.5)]'

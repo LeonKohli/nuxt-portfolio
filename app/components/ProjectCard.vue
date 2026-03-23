@@ -201,7 +201,7 @@
             v-if="showNavigation"
           class="group/nav relative z-40 flex items-center justify-center w-12 h-12 rounded-full cursor-pointer 
                  disabled:opacity-30 bg-white/5 hover:bg-emerald-500/10 hover:-translate-y-1 active:translate-y-0 
-                 disabled:hover:scale-100 disabled:hover:translate-y-0 project-hover-transition
+                 disabled:hover:scale-100 disabled:hover:translate-y-0 transition-[background-color,transform,box-shadow,color] duration-300
                  hover:shadow-[0_0_15px_rgba(16,185,129,0.15)]"
           :disabled="isAtStart"
           @click="scrollLeft"
@@ -211,7 +211,7 @@
         >
           <Icon 
             name="lucide:chevron-left" 
-            class="w-6 h-6 text-white/80 group-hover/nav:text-emerald-400 project-hover-transition group-hover/nav:scale-110"
+            class="w-6 h-6 text-white/80 group-hover/nav:text-emerald-400 transition-[background-color,transform,box-shadow,color] duration-300 group-hover/nav:scale-110"
             aria-hidden="true"
           />
         </button>
@@ -219,7 +219,7 @@
           v-if="showNavigation"
           class="group/nav relative z-40 flex items-center justify-center w-12 h-12 rounded-full cursor-pointer 
                  disabled:opacity-30 bg-white/5 hover:bg-emerald-500/10 hover:-translate-y-1 active:translate-y-0 
-                 disabled:hover:scale-100 disabled:hover:translate-y-0 project-hover-transition
+                 disabled:hover:scale-100 disabled:hover:translate-y-0 transition-[background-color,transform,box-shadow,color] duration-300
                  hover:shadow-[0_0_15px_rgba(16,185,129,0.15)]"
           :disabled="isAtEnd"
           @click="scrollRight"
@@ -229,7 +229,7 @@
         >
           <Icon 
             name="lucide:chevron-right" 
-            class="w-6 h-6 text-white/80 group-hover/nav:text-emerald-400 project-hover-transition group-hover/nav:scale-110"
+            class="w-6 h-6 text-white/80 group-hover/nav:text-emerald-400 transition-[background-color,transform,box-shadow,color] duration-300 group-hover/nav:scale-110"
             aria-hidden="true"
           />
         </button>

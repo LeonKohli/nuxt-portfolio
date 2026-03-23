@@ -12,7 +12,7 @@
       >
         Let's
         <span class="relative inline-block group">
-          <span class="bg-gradient-to-r from-green-700 via-green-500 to-green-400 bg-clip-text text-transparent transition-all duration-300 group-hover:bg-[length:200%_100%] bg-[length:100%_100%] bg-[position:0%] hover:bg-[position:100%]">
+          <span class="bg-gradient-to-r from-green-700 via-green-500 to-green-400 bg-clip-text text-transparent transition-[background-size,background-position] duration-300 group-hover:bg-[length:200%_100%] bg-[length:100%_100%] bg-[position:0%] hover:bg-[position:100%]">
             connect
           </span>
         </span>
@@ -20,7 +20,7 @@
 
       <p
         v-motion="slideUp"
-        class="mb-12 text-white/70 max-w-[75ch] mx-auto text-lg"
+        class="mb-12 text-white/70 max-w-[75ch] mx-auto text-lg [text-wrap:pretty]"
       >
         I am always open to new opportunities and collaborations. Whether you have a question, 
         a project proposal, or just want to say hello, feel free to get in touch.
@@ -29,7 +29,7 @@
       <!-- Contact Button -->
       <button
         v-motion="withDelay(slideUp, 0.15)"
-        class="relative inline-flex h-10 sm:h-12 w-[180px] sm:w-[210px] overflow-hidden rounded-lg p-[1px] focus:outline-none focus:ring-2 focus:ring-emerald-400/50 focus:ring-offset-2 focus:ring-offset-black group transition-all duration-700 delay-200"
+        class="relative inline-flex h-10 sm:h-12 w-[180px] sm:w-[210px] overflow-hidden rounded-lg p-[1px] focus:outline-none focus:ring-2 focus:ring-emerald-400/50 focus:ring-offset-2 focus:ring-offset-black group transition-[opacity,transform] duration-700 delay-200 active:scale-[0.96]"
         @click="copyEmail"
         data-umami-event="Copy Email"
         @mousemove="handleMouseMove"
@@ -40,23 +40,23 @@
           class="absolute inset-[-1000%] animate-[spin_4s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#0A0A0A_0%,#0A0A0A_50%,#166534_100%)]" 
         />
         <span 
-          class="inline-flex items-center justify-center w-full h-full px-6 py-2 text-base font-medium text-white transition-all duration-300 bg-black rounded-lg cursor-pointer sm:px-8 sm:text-lg backdrop-blur-3xl group-hover:bg-black/80"
+          class="inline-flex items-center justify-center w-full h-full px-6 py-2 text-base font-medium text-white transition-colors duration-300 bg-black rounded-lg cursor-pointer sm:px-8 sm:text-lg backdrop-blur-3xl group-hover:bg-black/80"
         >
           <div class="relative w-4 h-4 mr-2 sm:w-5 sm:h-5 sm:mr-3">
             <Icon 
               name="lucide:copy"
-              class="absolute inset-0 w-4 h-4 transition-all duration-300 ease-in-out transform sm:w-5 sm:h-5"
-              :class="copied ? 'opacity-0 scale-75' : 'opacity-100 group-hover:text-emerald-400'"
+              class="absolute inset-0 w-4 h-4 transition-[opacity,transform,filter,color] duration-300 ease-[cubic-bezier(0.2,0,0,1)] sm:w-5 sm:h-5"
+              :class="copied ? 'opacity-0 scale-[0.25] blur-[4px]' : 'opacity-100 scale-100 blur-0 group-hover:text-emerald-400'"
               aria-hidden="true"
             />
             <Icon 
               name="lucide:check"
-              class="absolute inset-0 w-4 h-4 transition-all duration-300 ease-in-out transform sm:w-5 sm:h-5 text-emerald-400"
-              :class="copied ? 'opacity-100 scale-100' : 'opacity-0 scale-125'"
+              class="absolute inset-0 w-4 h-4 transition-[opacity,transform,filter] duration-300 ease-[cubic-bezier(0.2,0,0,1)] sm:w-5 sm:h-5 text-emerald-400"
+              :class="copied ? 'opacity-100 scale-100 blur-0' : 'opacity-0 scale-[0.25] blur-[4px]'"
               aria-hidden="true"
             />
           </div>
-          <span class="transition-all duration-300 ease-in-out">
+          <span class="transition-opacity duration-300 ease-in-out">
             {{ copied ? 'Copied!' : 'Copy Email' }}
           </span>
         </span>
@@ -75,18 +75,18 @@
         <NuxtLink
           v-for="(link, index) in socialLinks"
           :key="link.name"
+          v-motion="socialLink(index, 0.3)"
           :to="link.url"
           external
           target="_blank"
           rel="noopener noreferrer"
-          v-motion="linkMotion(index)"
-          class="flex items-center justify-center transition-all duration-300 text-white/70 hover:text-white focus:outline-none focus:ring-2 focus:ring-emerald-400/50 hover:-translate-y-1 p-2"
+          class="flex items-center justify-center transition-colors duration-300 text-white/70 hover:text-white focus:outline-none focus:ring-2 focus:ring-emerald-400/50 p-3 min-w-[44px] min-h-[44px]"
           :data-umami-event="`Visit ${link.name}`"
           :aria-label="`Visit my ${link.name} profile`"
         >
           <Icon
             :name="link.playfulIcon"
-            class="w-8 h-8 transition-all duration-300 sm:w-10 sm:h-10 group-hover:scale-110"
+            class="w-8 h-8 sm:w-10 sm:h-10"
             loading="lazy"
             aria-hidden="true"
           />
@@ -107,7 +107,7 @@
 </template>
 
 <script setup lang="ts">
-const { fade, slideUp, withDelay, staggered } = useAnimationPresets()
+const { fade, slideUp, withDelay, socialLink } = useAnimationPresets()
 
 const email = 'contact@leonkohli.dev'
 
@@ -122,6 +122,4 @@ const socialLinks = [
   { name: 'GitLab', url: 'https://gitlab.com/opendata-apps/mantis', playfulIcon: 'ph:gitlab-logo-simple-fill' },
   { name: 'LinkedIn', url: 'https://www.linkedin.com/in/leon-kohlhau%C3%9Fen/', playfulIcon: 'ri:linkedin-fill' },
 ]
-
-const linkMotion = (index: number) => staggered(index, 'normal', 0.3)
 </script>
