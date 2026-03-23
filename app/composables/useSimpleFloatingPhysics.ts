@@ -277,5 +277,14 @@ export function useSimpleFloatingPhysics(
     resolveCollisions()
   })
 
-  return { elements, isDragging, isInteractive, startDrag, kick }
+  /**
+   * Dynamically add a new floating element at an absolute pixel position
+   * with an initial velocity (for burst effects).
+   */
+  function addElement(absX: number, absY: number, vx = 0, vy = 0) {
+    elements.value.push({ x: absX, y: absY, vx, vy })
+    return elements.value.length - 1
+  }
+
+  return { elements, isDragging, isInteractive, startDrag, kick, addElement }
 }

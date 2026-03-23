@@ -32,12 +32,13 @@
             <!-- Tech Grid - Fixed 3 rows max -->
             <ul class="grid grid-cols-1 gap-3 xs:grid-cols-2 sm:grid-cols-3 md:grid-cols-4">
                 <li v-for="(tech, index) in techStack?.technologies" :key="tech.name">
-                    <a :href="tech.url" target="_blank" rel="noopener noreferrer"
+                    <button
                        v-motion="chipMotion(index)"
-                       class="group flex p-4 transition-[border-color,background-color,transform,box-shadow] duration-500 rounded-xl border border-white/10
+                       class="group flex w-full p-4 text-left transition-[border-color,background-color,transform,box-shadow] duration-500 rounded-xl border border-white/10
                               hover:border-emerald-500/20 bg-white/[0.02] hover:bg-emerald-500/[0.02] hover:-translate-y-1.5
                               active:scale-[0.96] focus:outline-none focus:ring-2 focus:ring-emerald-500/50 will-change-transform"
-                       v-bind="createHandlers(index)">
+                       v-bind="createHandlers(index)"
+                       @click="handleTechClick($event, tech.icon)">
                         
                         <!-- Spotlight Effect (simplified) -->
                         <span class="absolute inset-0 transition-opacity duration-500 opacity-0 pointer-events-none group-hover:opacity-100 rounded-xl bg-gradient-to-br from-emerald-500/20 to-transparent"
@@ -68,15 +69,15 @@
                         </span>
                         
                         <!-- External Link Icon -->
-                        <Icon 
-                              name="lucide:external-link" 
+                        <Icon
+                              name="lucide:sparkles"
                               class="w-4 h-4 ml-auto text-white/30 opacity-0 transition-[opacity,transform,color] duration-300
-                                     group-hover:opacity-100 group-hover:translate-x-0.5 group-hover:text-emerald-400"
+                                     group-hover:opacity-100 group-hover:scale-110 group-hover:text-emerald-400"
                               loading="lazy"
                               width="16"
                               height="16"
                               aria-hidden="true" />
-                    </a>
+                    </button>
                 </li>
             </ul>
         </div>
@@ -100,6 +101,31 @@ if (error.value || !techStack.value?.technologies) {
 
 const { fade, slideUp, withDelay, staggered } = useAnimationPresets()
 const chipMotion = (index: number) => staggered(index, 'fast', 0.12)
+
+const nuxtApp = useNuxtApp()
+
+// Map content icons (logos:*) to background icons (simple-icons:*)
+const bgIconMap: Record<string, string> = {
+  'logos:typescript-icon': 'simple-icons:typescript',
+  'logos:python': 'simple-icons:python',
+  'logos:vue': 'simple-icons:vuedotjs',
+  'logos:nuxt-icon': 'simple-icons:nuxtdotjs',
+  'logos:fastapi-icon': 'simple-icons:fastapi',
+  'simple-icons:flask': 'simple-icons:flask',
+  'logos:tailwindcss-icon': 'simple-icons:tailwindcss',
+  'logos:git-icon': 'simple-icons:git',
+  'logos:postgresql': 'simple-icons:postgresql',
+  'logos:docker-icon': 'simple-icons:docker',
+  'logos:linux-tux': 'simple-icons:linux',
+  'logos:bash-icon': 'simple-icons:gnubash',
+}
+
+function handleTechClick(event: MouseEvent, icon: string) {
+  const spawn = nuxtApp.$spawnTechIcons as ((icon: string, x: number, y: number, count?: number) => void) | undefined
+  if (!spawn) return
+  const rect = (event.currentTarget as HTMLElement).getBoundingClientRect()
+  spawn(bgIconMap[icon] || icon, rect.left + rect.width / 2, rect.top + rect.height / 2)
+}
 
 // Convert hex color to tailwind-compatible background classes to avoid hydration mismatch
 function getIconBackgroundClass(hexColor: string): string {
