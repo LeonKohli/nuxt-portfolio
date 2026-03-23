@@ -1,6 +1,6 @@
 ---
 slug: chatgpt-preview
-sort: 4
+sort: 70
 title: ChatGPT HTML Web View
 subtitle: ChatGPT Browser Extension
 description: Browser extension that adds a live HTML/CSS/JS preview button inside ChatGPT

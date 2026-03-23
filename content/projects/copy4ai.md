@@ -1,6 +1,6 @@
 ---
 slug: copy4ai
-sort: 3
+sort: 50
 title: Copy4AI
 subtitle: Code Extension for LLM Integration
 description: A Visual Studio Code extension for copying project context to AI models

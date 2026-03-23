@@ -1,6 +1,6 @@
 ---
 slug: tebiplay
-sort: 6
+sort: 90
 title: TebiPlay
 subtitle: LAN Party Management System
 description: Score tracking and team management for our annual trainee LAN party

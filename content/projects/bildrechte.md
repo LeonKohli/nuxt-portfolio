@@ -1,6 +1,6 @@
 ---
 slug: bildrechte
-sort: 6
+sort: 100
 title: Bildrechte
 subtitle: Image Rights Education
 description: Interactive site explaining image rights and copyright laws, with a quiz to test your knowledge

@@ -37,7 +37,7 @@
             <p class="mb-6 text-xl md:text-2xl text-white/90 leading-relaxed [text-wrap:balance]">
               Hi, I'm 
               <span class="relative inline-block font-medium text-emerald-400">Leon</span>, 
-              a Web Developer from Potsdam, Germany with a passion for creating intuitive, performant web experiences.
+              a Full Stack Developer from Potsdam, Germany.
             </p>
             
             <!-- Snake Game -->

@@ -1,6 +1,6 @@
 ---
 slug: repolingo
-sort: 4
+sort: 60
 title: RepoLingo
 subtitle: GitHub to LLM Data Converter
 description: Converts GitHub repos into structured XML so LLMs can actually use the code

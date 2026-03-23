@@ -1,6 +1,6 @@
 ---
 slug: mantis
-sort: 1
+sort: 10
 status: in-progress
 title: Gottesanbeterin gesucht
 subtitle: Citizen Science Platform

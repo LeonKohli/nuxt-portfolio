@@ -1,6 +1,6 @@
 ---
 slug: ip-atlas
-sort: 9
+sort: 130
 title: IP-Atlas
 subtitle: IP Address Management Tool 
 description: Simple IP address management tool with octet-based sorting, built for our trainee data center

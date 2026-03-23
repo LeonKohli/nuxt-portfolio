@@ -1,6 +1,6 @@
 ---
 slug: trackme
-sort: 2
+sort: 20
 status: active
 title: TrackMe
 subtitle: Browser Fingerprinting Demo

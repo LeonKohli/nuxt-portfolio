@@ -7,7 +7,8 @@
       "mcp__context7__get-library-docs",
       "Bash(bun run build)",
       "Bash(jobs)",
-      "Read(//tmp/**)"
+      "Read(//tmp/**)",
+      "mcp__exa__web_search_exa"
     ],
     "deny": [],
     "ask": []

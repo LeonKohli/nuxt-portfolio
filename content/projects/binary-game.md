@@ -1,6 +1,6 @@
 ---
 slug: binary-game
-sort: 8
+sort: 120
 title: Binary Game
 subtitle: Interactive Binary Learning Tool
 description: Browser puzzle where you convert decimal numbers to binary by toggling cells in a grid

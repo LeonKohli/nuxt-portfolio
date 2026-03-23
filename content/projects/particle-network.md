@@ -1,6 +1,6 @@
 ---
 slug: particle-network
-sort: 99
+sort: 999
 title: Interactive Particle Network
 subtitle: Dynamic Starfield Background
 description: Canvas-based particle animation for web backgrounds. Pure JavaScript, no dependencies.

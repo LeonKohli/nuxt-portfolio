@@ -1,6 +1,6 @@
 ---
 slug: markdown-editor
-sort: 10
+sort: 40
 title: Markdown Editor
 subtitle: Markdown Editor with Live Preview
 description: Markdown editor with live preview, syntax highlighting, math rendering, and diagram support

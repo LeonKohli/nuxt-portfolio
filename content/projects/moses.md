@@ -1,6 +1,6 @@
 ---
 slug: moses
-sort: 5
+sort: 80
 title: MOSES
 subtitle: Outlook VBA Module
 description: Outlook VBA module that turns support emails into ITSM tickets with one click
