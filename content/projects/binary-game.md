@@ -2,48 +2,36 @@
 slug: binary-game
 sort: 120
 title: Binary Game
-subtitle: Interactive Binary Learning Tool
-description: Browser puzzle where you convert decimal numbers to binary by toggling cells in a grid
-tech: [{ name: 'HTML', icon: 'logos:html-5' }, { name: 'CSS', icon: 'logos:css-3' }, { name: 'JavaScript', icon: 'logos:javascript' }, { name: 'TailwindCSS', icon: 'logos:tailwindcss-icon' }]
-link: https://leonkohli.github.io/binaryGame
+subtitle: Binary Conversion Puzzle
+description: Browser puzzle for practicing decimal to binary conversion, with a tutorial, grids from 3 to 8 bits and a daily puzzle
+tech: [{ name: 'Astro', icon: 'logos:astro-icon' }, { name: 'TypeScript', icon: 'logos:typescript-icon' }, { name: 'CSS', icon: 'logos:css-3' }]
+link: https://binary.leonkohli.dev
 repo: https://github.com/LeonKohli/binaryGame
 image: /images/projects/binary-preview.png
 category: education
-tags: ['education', 'binary', 'game', 'learning', 'puzzle', 'glassmorphism', 'interactive']
+tags: ['education', 'binary', 'game', 'learning', 'puzzle', 'interactive']
 ---
 
 # Binary Game
 
-A browser-based puzzle where you convert decimal numbers to binary by toggling cells in a grid. I built it because binary conversion is one of those things that clicks way faster when you can play with it instead of reading about it.
+I built this during my Fachinformatiker apprenticeship to prepare for binary conversion, which comes up again and again in the exams. I came across this kind of puzzle and wanted to see if I could build it myself, just as an experiment. It turned out to be fun, and playing it helped me more than another page of exercises.
 
-## How It Works
+## How it works
 
-You get a grid of 0s and 1s. Each row and column has a target decimal sum you need to match:
+Each row and each column of the grid has a decimal target. You switch bits on until every row and every column adds up to its target.
 
-1. Pick a grid size (4x4, 5x5, or 6x6)
-2. Click cells to flip between 0 and 1
-3. Match the target decimal sum for each row and column
-4. All rows and columns correct = you win
+1. Pick a grid size, from 3 bits (0–7) to 8 bits (0–255).
+2. Tap a bit to switch it between 0 and 1.
+3. Watch the running sum under each target until all of them turn green.
 
-## Under the Hood
+The place values run along the edges, so you always see what each bit is worth. If you get stuck, "Show solution" reveals the grid so you can read each row as a binary number.
 
-Binary-to-decimal conversion happens in real-time with visual feedback when you hit a target. Each puzzle is procedurally generated — random binary matrix, calculated decimal targets, guaranteed solvable.
+After a few rounds you stop adding up 16 + 4 + 1 and just see 21. That was the whole point for me.
 
-The UI is glassmorphism-style with frosted-glass backdrops and color-coded binary states.
+## What's in it
 
-## Difficulty Levels
+- A short tutorial that goes from one bit to a whole grid.
+- A daily puzzle that is the same for everyone, with a streak you can share.
+- English and German, keyboard play, and your best time per grid size.
 
-- **4x4** — 4-bit numbers (0-15), good starting point
-- **5x5** — 5-bit numbers (0-31)
-- **6x6** — 6-bit numbers (0-63), gets tricky
-
-After a few rounds you start recognizing common binary values and converting in your head without thinking about it. That's the whole point.
-
-There's a "Give Up" button that reveals the solution so you can study the pattern before trying again.
-
-## Challenges
-
-- Generating puzzles with unique solutions
-- Balancing difficulty across grid sizes
-- Getting touch interactions right on mobile
-- Keeping performance smooth with larger grids
+It is a static Astro site on Cloudflare. The boards and the handwritten notes in the tutorial are rendered at build time, so nothing jumps around while the page loads.
