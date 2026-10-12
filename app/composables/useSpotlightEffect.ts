@@ -51,7 +51,8 @@ export function useSpotlightEffect(count: number = 1): SingleSpotlightReturn | M
         background: `radial-gradient(circle at ${x}% ${y}%, ${color} 0%, transparent 60%)`,
         transform: 'translate(0%, 0%)',
       }
-    }, throttle)
+      // No trailing call: it would run after the event, when currentTarget is already null.
+    }, throttle, false)
 
     const onMouseleave = () => {
       spotlightStyles.value[index] = {

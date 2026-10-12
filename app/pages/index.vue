@@ -20,6 +20,10 @@ useSeoMeta({
   twitterTitle: 'Leon Kohlhaußen - Full Stack Developer',
   twitterDescription: 'Portfolio of Leon Kohlhaußen - Full Stack Developer based in Potsdam, Germany',
   author: 'Leon Kohlhaußen',
-  keywords: 'LeonKohli, Full Stack Developer, Web Development, Potsdam, Germany, Software Engineer',
+})
+
+// useSeoMeta no longer accepts keywords, so the tag goes through useHead.
+useHead({
+  meta: [{ name: 'keywords', content: 'LeonKohli, Full Stack Developer, Web Development, Potsdam, Germany, Software Engineer' }],
 })
 </script>

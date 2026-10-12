@@ -125,7 +125,9 @@ export default defineNuxtConfig({
     headers: {
       contentSecurityPolicy: false
     },
-    rateLimiter: false // Disable rate limiting in dev (annoying for hot-reload)
+    rateLimiter: false, // Disable rate limiting in dev (annoying for hot-reload)
+    // Its esbuild `drop` no longer applies: Vite 8 minifies with oxc. The app has no console calls.
+    removeLoggers: false
   }
 
 });

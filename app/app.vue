@@ -28,7 +28,7 @@ useHead({
 })
 
 
-defineOgImageComponent('Frame')
+defineOgImage('Frame')
 </script>
 
 <style>
